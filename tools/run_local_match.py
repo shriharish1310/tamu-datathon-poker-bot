@@ -104,6 +104,8 @@ def main() -> None:
     parser.add_argument("--seed", default="http-holdout-202")
     parser.add_argument("--output", type=Path, default=ROOT / "reports" / "http-match.json")
     parser.add_argument("--logs", action="store_true", help="save official per-hand action logs")
+    parser.add_argument("--require-opponent-diagnostics", action="store_true",
+                        help="require internal fault evidence from a compatible research opponent")
     args = parser.parse_args()
     if args.deals < 1:
         parser.error("--deals must be positive")
@@ -138,6 +140,7 @@ def main() -> None:
         for half in (1, 2):
             processes, logs, identities = [], [], []
             diagnostics = None
+            opponent_diagnostics = None
             failure = None
             ports = (free_port(), free_port())
             while ports[0] == ports[1]:
@@ -173,6 +176,8 @@ def main() -> None:
                     creationflags=flags,
                 )
                 diagnostics = capture_diagnostics(ports[0])
+                if args.require_opponent_diagnostics:
+                    opponent_diagnostics = capture_diagnostics(ports[1])
             except Exception as exc:
                 failure = exc
             finally:
@@ -194,6 +199,10 @@ def main() -> None:
                 failure = failure or exc
             half_evidence = {"half": half, "diagnostics": diagnostics,
                              "log_fault_events": log_faults, "agents": identities}
+            if args.require_opponent_diagnostics:
+                half_evidence['opponent_diagnostics'] = opponent_diagnostics
+                half_evidence['opponent_log_fault_events'] = scan_fault_log(
+                    output.with_suffix(f'.half{half}.agent2.log'))
             if failure is not None:
                 half_evidence["evidence_error"] = f"{type(failure).__name__}: {failure}"
             evidence["halves"].append(half_evidence)

@@ -1,0 +1,30 @@
+{
+  "deadline": "2026-11-08T04:00:00-06:00",
+  "development_stop": "2026-11-08T00:00:00-06:00",
+  "deadline_timezone_assumption": "America/Chicago from user environment",
+  "screen": {
+    "configurations": 24,
+    "deals": 300,
+    "seed": "adv-dev-screen-01"
+  },
+  "confirmation": {
+    "one_per_family": true,
+    "deals": 1000,
+    "seeds": [
+      "adv-dev-confirm-01",
+      "adv-dev-confirm-02"
+    ]
+  },
+  "http": {
+    "one_per_family": true,
+    "deals": 1000,
+    "seeds": [
+      "adv-dev-http-01",
+      "adv-dev-http-02"
+    ]
+  },
+  "heldout_configuration_count": 12,
+  "heldout_used": false,
+  "selection": "minimize champion points then champion BB/deal on screen; confirmation is development",
+  "decision": "Pool characterization only; no champion replacement or final holdout use."
+}
