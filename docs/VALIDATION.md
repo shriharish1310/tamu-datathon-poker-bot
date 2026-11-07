@@ -1,15 +1,23 @@
-# Local validation - 2026-11-07
+# Validation - 2026-11-07
 
 ## Correctness
 
-**54 tests passed** using Python 3.10.11, FastAPI 0.156.1 and uvicorn 0.54.0.
+**102 tests passed** using Python 3.10.11, FastAPI 0.156.1 and uvicorn 0.54.0.
 Coverage includes the official HTTP API, action legality across both seats,
 exact Omaha evaluation against the official reference, sampling without card
 collisions, split pots, per-half memory isolation, opponent-response accounting,
 conditional river bluffing, official scoring integration, and evaluation-report
-validation. The strategy/equity modules require no additional inference libraries.
+validation. Added fault-injection tests cover callback exceptions, illegal action
+types, per-half fault latching, conservative fallback, persistent diagnostics,
+stderr evidence, and release-gate rejection. Docker helper tests use mocked CLI
+responses; they do not establish a successful container run. The strategy/equity
+modules require no additional inference libraries.
 
-## Full official baseline matrix
+## Historical official baseline matrix
+
+These results describe commit `b1a73dd2c2349cc4b693c66babe9156dcdf0254f`, before
+the Starfish metadata and observable reliability adapter. They establish the
+original policy's baseline performance, not validation of the current release.
 
 The bot completed **20 full matches / 40,000 played hands**, against all four
 official baselines with seeds **7, 19, 43, 101, 202**. Each match contains 1,000
@@ -67,8 +75,16 @@ decisions on differently loaded machines.
 - The official Linux Docker build/smoke test has **not** run: Docker Desktop's
   Linux daemon was unavailable. The official base uses Python 3.12; the local
   evaluation used Python 3.10.11.
-- The team-name placeholder needs replacement before submission.
+- The team metadata is now **Starfish**.
 - No tournament submission has been made.
 
 Run `bash tools/check_build.sh` in Git Bash/WSL with Docker running before
-submitting. Keep the official Dockerfiles and package pins unchanged.
+submitting. Then run `python tools/check_container_reliability.py` to reject
+logged or counted strategy faults even if the smoke test received legal actions.
+Keep the official Dockerfiles and package pins unchanged.
+
+The manual `Starfish release checks` GitHub Actions workflow runs Python 3.12
+tests, eight sequential fresh-process matches against all four baselines on
+additional seeds 731 and 947, the unchanged official Docker check, and the
+supplementary container reliability gate. Successful execution still needs to
+be confirmed; workflow configuration is not validation evidence.

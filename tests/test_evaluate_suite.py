@@ -35,6 +35,14 @@ def save_official(tmp_path, *, own_times=(1.0, 1.0), own_errors=0,
         halves.append(part)
     report = combine_halves(*halves).to_dict()
     path.write_text(json.dumps(report), encoding="utf-8")
+    diagnostics = {"fault_events": 0, "fallback_decisions": 0, "disabled": False,
+                   "last_fault_stage": None, "last_fault_type": None}
+    sidecar = {"schema": "bot-reliability-v1", "status": "complete", "match_seed": "7",
+               "num_deals": 3, "halves": [
+                   {"half": half, "diagnostics": dict(diagnostics), "log_fault_events": 0}
+                   for half in (1, 2)
+               ]}
+    path.with_suffix(".reliability.json").write_text(json.dumps(sidecar), encoding="utf-8")
     return path, report
 
 

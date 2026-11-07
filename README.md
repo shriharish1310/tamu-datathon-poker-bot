@@ -1,4 +1,4 @@
-# ReveillePLO — TAMU Datathon poker bot
+# Starfish — TAMU Datathon poker bot
 
 A first competitive baseline for **Heads-Up Short Deck 5-card Pot-Limit Omaha**.
 Built on the official tournament engine and HTTP protocol. It is not a solved
@@ -19,7 +19,9 @@ python -m venv .venv
 The local match helper starts two **loopback-only** servers, runs the official
 judge, restarts both servers between duplicate halves, saves JSON reports,
 and stops its own processes afterward. Opponents: `calling`, `half`, `pot`, `random`.
-The helper uses the same Python interpreter that launches it.
+The helper uses the same Python interpreter that launches it. Official judge
+JSON remains unchanged; a separate `*.reliability.json` records post-half health
+diagnostics and fault-marker counts from the stopped processes' stderr logs.
 
 For direct strategy iteration without HTTP overhead:
 
@@ -30,12 +32,13 @@ For direct strategy iteration without HTTP overhead:
 Use separate, previously untouched seeds for final evaluation. Direct benchmark
 timing excludes HTTP/serialization and does not enforce the time bank.
 
-The frozen baseline scored **20/20 official match points across 40,000 hands**
+The historical frozen baseline scored **20/20 official match points across 40,000 hands**
 against the four organizer baselines on seeds 7, 19, 43, 101 and 202. All 40 bot
 halves had zero errors, timeouts or forfeits; the slowest charged half was 2.918s.
 See [validation details](docs/VALIDATION.md) and the compact
-[per-match metrics](docs/BASELINE_MATRIX.json). These are baseline results,
-not evidence of strength against other teams.
+[per-match metrics](docs/BASELINE_MATRIX.json). This run predates the reliability
+adapter and its sidecar checks; it does not validate the current adapter or
+establish strength against other teams.
 
 Run the full official baseline matrix (20 matches, fresh processes per half):
 
@@ -47,9 +50,17 @@ Defaults: all four official opponents, seeds 7/19/43/101/202, 1,000 deals per
 match. The output directory must be new or empty. Reports include untouched
 official verdicts and CIs, charged timing per half, hand logs, runtime versions,
 and an exact source snapshot. Each bot half must stay below the 4-second target;
-both bots' validity is checked. Matches run sequentially to avoid CPU contention.
+both bots' validity is checked. Our bot must also have zero strategy faults,
+fallback decisions and logged fault markers, with the fallback latch inactive.
+Missing or malformed evidence fails the gate. The suite saves results and exits
+nonzero on any runtime, validity or reliability gate failure, even if the official
+verdict is a win. Matches run sequentially to avoid CPU contention.
 
 ## What the bot does
+
+The hybrid combines Monte Carlo equity, expected-value heuristics, opponent
+adaptation and selective randomized bluffs. The reliability adapter preserves
+the existing betting policy when its callbacks succeed.
 
 1. Uses the organizer's exact evaluator: 36 cards; exactly two hole cards and
    three board cards; flush above full house; trips above straight.
@@ -71,11 +82,20 @@ legal holdings**, not an inferred betting range; range adjustments are currently
 heuristics. Bluff fold estimates can be affected by selection bias and bet size.
 This is an actionable baseline for further measurement, not a GTO claim.
 
+If a strategy callback raises or returns an invalid action, the adapter logs
+`BOT_STRATEGY_FAULT` with a traceback and disables the core for the rest of that
+half. Subsequent decisions use a legal conservative fallback: check when free,
+otherwise fold. Fault and fallback counters remain outside the strategy's state
+and are exposed by the health endpoint. A fresh half resets this state. Fallbacks
+keep a recoverable fault from becoming an illegal action; any fallback still
+blocks release. The adapter cannot recover process death or interrupt a hang.
+
 ## Structure
 
 | File | Purpose |
 |---|---|
 | `agent.py` | Official FastAPI server with our strategy adapter |
+| `reliability.py` | Callback validation, fault logging, fallback latch and health counters |
 | `strategy.py` | Betting policy and per-half opponent model |
 | `equity.py` | Small, deterministic Monte Carlo equity estimator |
 | `evaluator.py`, `game.py` | Unmodified official evaluation and game rules |
@@ -100,12 +120,13 @@ No additional inference library, GPU, Redis, database, or external API is needed
 
 Before submitting:
 
-- Replace the literal fallback `SET_YOUR_TEAM_NAME` in `agent.py` with the team's
-  actual name. Do not rely on a local environment variable being set by judges.
+- The default participant name is already **Starfish** in `agent.py`.
+- Run the fresh-process evaluation suite and require every release gate to pass.
 - Run `bash tools/check_build.sh` in Git Bash or WSL with Docker Desktop running.
   This verifies the official Linux image, size, read-only runtime, and smoke cases.
-- Push the reviewed bot to a public repository and submit that exact full commit
-  SHA using the organizer's form. Publishing/submission has not been performed.
+- Push the reviewed bot to the [team repository](https://github.com/shriharish1310/tamu-datathon-poker-bot)
+  and submit that exact full commit SHA using the organizer's form. Tournament
+  submission has not been performed.
 
 The local development environment was created with `--system-site-packages` and
 the organizer-pinned web packages installed inside it; create a clean venv using

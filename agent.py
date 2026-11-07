@@ -38,13 +38,13 @@ from game import Action, AgentConfig, HandResult, Observation, Street
 warmup()
 
 # rename as your team/bot's name
-PARTICIPANT = os.environ.get("PARTICIPANT", "SET_YOUR_TEAM_NAME")
+PARTICIPANT = os.environ.get("PARTICIPANT", "Starfish")
 AGENT_NAME = os.environ.get("AGENT_NAME", "ReveillePLO")
 
 
 # ===== STRATEGY ADAPTER =====
 # Keep the official HTTP protocol intact; strategy is independently testable.
-from strategy import new_half, choose_action, on_hand_end
+from reliability import new_half, choose_action, on_hand_end, diagnostics
 # ===== END STRATEGY ADAPTER =====
 
 
@@ -118,7 +118,8 @@ def _deliver_results(raw_results) -> list:
 @app.get("/")
 async def info():
     """Health check: tells the judge who this bot is."""
-    return {"participant": PARTICIPANT, "agent_name": AGENT_NAME}
+    return {"participant": PARTICIPANT, "agent_name": AGENT_NAME,
+            "diagnostics": diagnostics(MEMORY)}
 
 
 @app.post("/new-half")

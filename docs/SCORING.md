@@ -29,6 +29,9 @@ and BB/100 = +10.
 - Always expose results per opponent, confidence intervals, and worst losses.
 - Runtime/validity gate: no crashes, illegal actions, forfeits or bank exhaustion;
   target strictly less than 4 charged seconds in every half (official limit 8).
+- Reliability gate: zero strategy faults, fallback decisions and stderr fault
+  markers, with the fallback latch inactive in both halves. Missing or malformed
+  diagnostic evidence fails the gate, even when official match points are positive.
 - Use the official judge's verdict and JSON fields directly. The quick direct
   benchmark also delegates scoring to judge_engine.combine_halves; no separate
   scoring implementation is maintained. Validate the opponents as well as our bot.
@@ -46,6 +49,27 @@ and BB/100 = +10.
 Because match points saturate at one per opponent, extra profit against one weak
 bot cannot replace a lost match point elsewhere. Profit still matters for the
 documented standings tie-break. Final decisions should consider both criteria.
+
+## Reliability evidence and release status
+
+Starfish's adapter leaves the hybrid betting policy unchanged on successful
+callbacks. A callback exception or invalid action is logged with a traceback and
+the marker `BOT_STRATEGY_FAULT`. The adapter then disables the core for the rest
+of the half and uses a legal conservative fallback: check when free, otherwise
+fold. Health diagnostics report faults, fallback decisions and the latch state.
+
+`tools/run_local_match.py` captures those diagnostics after each official half,
+before shutdown, then independently scans the flushed stderr logs. It stores
+this evidence in `*.reliability.json`, separate from the unchanged official judge
+JSON. `tools/evaluate_suite.py` requires complete evidence for both fresh-process
+halves, reports fault and fallback counts, and saves its reports before exiting
+nonzero on a runtime, validity or reliability gate failure. Official points and
+confidence intervals remain the organizer's values; the local release gate does
+not redefine the tournament score.
+
+The historical 20-match baseline matrix predates these adapter checks. It is
+performance evidence for that frozen baseline, not proof that the current code
+has passed the new release gates or the Docker smoke check.
 
 ## Additional guide findings
 

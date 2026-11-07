@@ -137,9 +137,10 @@ def _decide(obs: Observation, memory: dict) -> Action:
 def choose_action(obs: Observation, memory: dict) -> Action:
     started = perf_counter()
     action = _decide(obs, memory)
-    # Final guard keeps rule changes from turning a strategic mistake into forfeit.
-    if action not in obs.legal_actions:
-        action = Action.CHECK_CALL if Action.CHECK_CALL in obs.legal_actions else obs.legal_actions[0]
+    # Report an invalid decision to the observable reliability adapter; never
+    # silently correct it and make a broken strategy appear healthy.
+    if not isinstance(action, Action) or action not in obs.legal_actions:
+        raise ValueError(f"Strategy selected an invalid action: {action!r}")
     memory["last_action"] = action
     memory["last_street"] = int(obs.street)
     memory["decisions"] += 1

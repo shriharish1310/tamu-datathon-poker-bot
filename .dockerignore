@@ -1,9 +1,12 @@
 .git
+.github
+.env
 .venv
 .pytest_cache
 **/__pycache__
 reports
 results
+tmp
 tests
 docs
 *.log
