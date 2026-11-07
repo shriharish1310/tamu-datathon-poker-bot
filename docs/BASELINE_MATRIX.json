@@ -1,0 +1,1099 @@
+{
+  "schema": "official-baseline-matrix-summary-v1",
+  "evaluation_date": "2026-11-07",
+  "status": "complete",
+  "official_starter_repository": "https://github.com/tamu-datathon-org/heads-up-bundle",
+  "official_starter_commit": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+  "compatibility_tests_passed": 54,
+  "runtime": {
+    "python": "3.10.11",
+    "os": "Windows",
+    "packages": {
+      "fastapi": "0.156.1",
+      "uvicorn": "0.54.0",
+      "starlette": "1.7.0",
+      "httpx": "0.28.1"
+    }
+  },
+  "seeds": [
+    "7",
+    "19",
+    "43",
+    "101",
+    "202"
+  ],
+  "opponents": [
+    "random",
+    "calling",
+    "half",
+    "pot"
+  ],
+  "fresh_processes_per_half": true,
+  "sequential_matches": true,
+  "source_sha256": {
+    "strategy.py": "d7d43fb3d9caf43299583f5ed512f0d8b53e3fcfbf2a4e62728f34c3e847c179",
+    "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+    "judge_engine.py": "fa7a7e3fb49c09588cfcf0930a8e3f6c189e419dbc54263ae7d53b953223d422",
+    "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+    "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4"
+  },
+  "summary": {
+    "matches_completed": 20,
+    "hands_played": 40000,
+    "total_points": 20.0,
+    "average_points": 1.0,
+    "runtime_target_seconds": 4.0,
+    "per_opponent": [
+      {
+        "opponent": "random",
+        "matches": 5,
+        "total_points": 5.0,
+        "average_points": 1.0,
+        "average_bb_per_deal": 7.9427,
+        "worst_match_bb_per_deal": 7.2215,
+        "min_official_ci_lower": 5.932406557629136,
+        "max_time_seconds": 1.973416,
+        "bot_valid": true,
+        "opponents_valid": true,
+        "runtime_target_met": true
+      },
+      {
+        "opponent": "calling",
+        "matches": 5,
+        "total_points": 5.0,
+        "average_points": 1.0,
+        "average_bb_per_deal": 9.4811,
+        "worst_match_bb_per_deal": 9.1865,
+        "min_official_ci_lower": 8.305878881434893,
+        "max_time_seconds": 2.918391,
+        "bot_valid": true,
+        "opponents_valid": true,
+        "runtime_target_met": true
+      },
+      {
+        "opponent": "half",
+        "matches": 5,
+        "total_points": 5.0,
+        "average_points": 1.0,
+        "average_bb_per_deal": 12.0213,
+        "worst_match_bb_per_deal": 11.704,
+        "min_official_ci_lower": 10.416129154266745,
+        "max_time_seconds": 2.644811,
+        "bot_valid": true,
+        "opponents_valid": true,
+        "runtime_target_met": true
+      },
+      {
+        "opponent": "pot",
+        "matches": 5,
+        "total_points": 5.0,
+        "average_points": 1.0,
+        "average_bb_per_deal": 6.7623999999999995,
+        "worst_match_bb_per_deal": 6.313,
+        "min_official_ci_lower": 4.6673690456461605,
+        "max_time_seconds": 2.154669,
+        "bot_valid": true,
+        "opponents_valid": true,
+        "runtime_target_met": true
+      }
+    ],
+    "bot_valid": true,
+    "opponents_valid": true,
+    "runtime_target_met": true,
+    "positive_average_each_opponent": true,
+    "note": "CIs and verdicts are official per-match results. No pooled CI or new scoring formula is computed.",
+    "max_charged_time_seconds_agent1": 2.918391,
+    "errors_both_agents": 0,
+    "timed_out_halves_both_agents": 0,
+    "forfeited_halves_both_agents": 0
+  },
+  "matches": [
+    {
+      "opponent": "random",
+      "match_seed": "7",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 7.2215,
+      "ci": [
+        5.932406557629136,
+        8.510593442370864
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.824926,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.756136,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.029678,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.04474,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "random",
+      "match_seed": "19",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 8.357,
+      "ci": [
+        7.055379111700161,
+        9.658620888299836
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.712888,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.693793,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.02719,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.031076,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "random",
+      "match_seed": "43",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 8.2855,
+      "ci": [
+        6.970272779301742,
+        9.600727220698259
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.746185,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.717636,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.035961,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.033824,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "random",
+      "match_seed": "101",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 7.8175,
+      "ci": [
+        6.507600178848989,
+        9.12739982115101
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.80119,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.973416,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.053424,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.082695,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "random",
+      "match_seed": "202",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 8.032,
+      "ci": [
+        6.748359511426386,
+        9.315640488573614
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.689768,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.574444,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.031507,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.042826,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "calling",
+      "match_seed": "7",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 9.237,
+      "ci": [
+        8.340609062806923,
+        10.133390937193077
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 2.419631,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 2.918391,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.112549,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.126156,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "calling",
+      "match_seed": "19",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 9.3675,
+      "ci": [
+        8.494074703332414,
+        10.240925296667585
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.921355,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.412309,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.037693,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.04671,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "calling",
+      "match_seed": "43",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 9.2975,
+      "ci": [
+        8.432314624416174,
+        10.162685375583825
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.471565,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.526457,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.043328,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.030272,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "calling",
+      "match_seed": "101",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 10.317,
+      "ci": [
+        9.435123152230295,
+        11.198876847769705
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.292469,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.427392,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.027126,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.042983,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "calling",
+      "match_seed": "202",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 9.1865,
+      "ci": [
+        8.305878881434893,
+        10.067121118565108
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.210403,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.446334,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.049162,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.063676,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "half",
+      "match_seed": "7",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 11.704,
+      "ci": [
+        10.416129154266745,
+        12.991870845733256
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 2.033484,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.83301,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.085149,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.081608,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "half",
+      "match_seed": "19",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 12.101,
+      "ci": [
+        10.830589714252703,
+        13.371410285747299
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 2.472772,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.886128,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.143999,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.088071,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "half",
+      "match_seed": "43",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 12.451,
+      "ci": [
+        11.194410492838688,
+        13.707589507161313
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 2.644811,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.513705,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.161497,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.027944,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "half",
+      "match_seed": "101",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 11.7875,
+      "ci": [
+        10.555333559990418,
+        13.019666440009582
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.539346,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.651937,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.039427,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.046798,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "half",
+      "match_seed": "202",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 12.063,
+      "ci": [
+        10.779308502579319,
+        13.346691497420682
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.440882,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.519378,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.041027,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.047025,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "pot",
+      "match_seed": "7",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 6.313,
+      "ci": [
+        4.6673690456461605,
+        7.958630954353839
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.852055,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.842032,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.032475,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.018421,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "pot",
+      "match_seed": "19",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 6.867,
+      "ci": [
+        5.246013289921274,
+        8.487986710078726
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.902384,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.888608,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.066192,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.045786,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "pot",
+      "match_seed": "43",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 6.914,
+      "ci": [
+        5.298777766872686,
+        8.529222233127314
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.841097,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.89073,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.043911,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.044875,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "pot",
+      "match_seed": "101",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 6.468,
+      "ci": [
+        4.857959607877533,
+        8.078040392122467
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.902921,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 1.833086,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.040991,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.019353,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    },
+    {
+      "opponent": "pot",
+      "match_seed": "202",
+      "num_deals": 1000,
+      "verdict": "AGENT1_WIN",
+      "points": {
+        "agent1": 1.0,
+        "agent2": 0.0
+      },
+      "mean_bb_per_deal": 7.25,
+      "ci": [
+        5.6037826594485365,
+        8.896217340551463
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "errors": 0,
+            "time_seconds": 1.879403,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 2.154669,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ],
+        "agent2": [
+          {
+            "errors": 0,
+            "time_seconds": 0.03296,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          },
+          {
+            "errors": 0,
+            "time_seconds": 0.091986,
+            "timed_out": false,
+            "forfeited": false,
+            "skipped_calls": 0
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Official Linux Docker build and smoke test not validated.",
+    "Competitive equity-based policies and previous-version comparisons not evaluated.",
+    "This baseline matrix is not evidence of a candidate upgrade on unused seeds.",
+    "Runtime-adaptive sampling can change decisions under different system load.",
+    "No tournament submission has been made."
+  ]
+}

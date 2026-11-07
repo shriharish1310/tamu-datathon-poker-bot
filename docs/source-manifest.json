@@ -1,0 +1,12 @@
+{
+  "official_starter_commit": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+  "sha256": {
+    "agent.py": "a33dec956e822b18554b3b28be9ab53c015f19de0537293cef5a578b63d4aab4",
+    "strategy.py": "d7d43fb3d9caf43299583f5ed512f0d8b53e3fcfbf2a4e62728f34c3e847c179",
+    "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+    "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+    "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+    "judge_engine.py": "fa7a7e3fb49c09588cfcf0930a8e3f6c189e419dbc54263ae7d53b953223d422",
+    "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7"
+  }
+}
