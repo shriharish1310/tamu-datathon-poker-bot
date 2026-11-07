@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--fail-fast", action="store_true", help="stop after any failed release gate")
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text(encoding="utf-8"))
     folder = args.output.resolve()
@@ -70,6 +71,11 @@ def main():
             print(f"  {row['verdict']} points={row['points']} BB/deal={row['mean_bb_per_deal']:+.4f} "
                   f"CI={[round(x,4) for x in row['ci']]} time={row['max_time_seconds']:.3f}s "
                   f"valid={row['bot_valid']}/{row['opponent_valid']} clean={row['reliability_clean']}", flush=True)
+            if args.fail_fast and not (row["bot_valid"] and row["opponent_valid"]
+                                      and row["runtime_target_met"] and row["reliability_clean"]):
+                status = "stopped_release_gate"
+                save()
+                return 1
         status = "complete"
     except Exception:
         status = "failed"

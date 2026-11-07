@@ -1,5 +1,7 @@
 """Statistical/reference checks for range conditioning and incremental sampling."""
 from dataclasses import replace
+import json
+from pathlib import Path
 from random import Random
 
 import pytest
@@ -44,13 +46,31 @@ def test_visible_range_features_never_use_unseen_runout():
     for batch, runout in zip(batches, ([27, 32], [28, 33])):
         class Fixed:
             def sample(self, population, k):
-                draw = villain + runout
+                draw = [1 << card for card in villain + runout]
                 assert len(draw) == k and set(draw).issubset(population)
                 return draw
         batch.rng = Fixed()
         batch.extend(1)
+        batch.estimates(range_mix=0.5)
     assert batches[0].strengths == batches[1].strengths
     assert batches[0].strengths == [visible_strength(villain, board)]
+
+
+def test_lazy_features_preserve_preoptimization_weighted_results():
+    cases = json.loads((Path(__file__).parent / "fixtures/range_equity_reference.json").read_text())
+    for case in cases:
+        batch = Rollouts(case["hole"], case["board"], case["seed"])
+        batch.extend(24)
+        batch.estimates()  # Uniform queries must not compute unused range features.
+        assert batch.strengths == []
+        batch.estimates(**case["parameters"])  # Also invalidate cached weighted ranks on extension.
+        batch.extend(case["samples"])
+        actual = batch.estimates(**case["parameters"])
+        for estimate, reference in zip(actual, case["expected"]):
+            assert estimate.equity == pytest.approx(reference["equity"], abs=1e-12)
+            assert estimate.stderr == pytest.approx(reference["stderr"], abs=1e-12)
+            assert estimate.effective_samples == pytest.approx(reference["ess"], abs=1e-12)
+        assert batch.estimates(**case["parameters"]) == actual
 
 
 def test_conditioning_river_callers_lowers_equity_against_stronger_hands():

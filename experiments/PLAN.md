@@ -48,3 +48,26 @@ both versions face that opponent on identical deals. Total: 31 full matches,
 62,000 played hands. Candidate: five versus frozen Starfish, five versus Desktop,
 eight versus the four baselines. Reference: five versus Desktop and eight versus
 the four baselines. Versions are interleaved to reduce host-load order effects.
+
+## Runtime-gate failure and revised validation
+
+The first locked version missed the local 4-second charged-time target: 4.354s
+against frozen Starfish and 5.026s against CallingStation. It stayed below the
+official 8-second bank and had no observed faults. The batch was stopped with
+13 completed matches preserved; its partial results do not constitute a passing
+release. The same eager estimator passed Linux CI, but that does not erase the
+local runtime misses.
+
+Range feature computation is now lazy, uniform estimates are cached, and sampled
+cards remain in the evaluator's bit representation until range features are
+actually needed. Thirty-six saved pre-optimization reference cases verify that
+equity, standard error and effective sample size are unchanged for fixed samples.
+Runtime pacing can still change which sample counts are used during play.
+
+Development runtime checks compare 25% and 20% compute allocations on
+`exp-dev-runtime`, against Desktop, frozen Starfish and CallingStation. The
+optimization also permits one explicit recheck of range+adaptive sampling:
+25% allocation, cap 96, boundary sigma 0.6, same development deals. None of these
+choices is selected on new holdout profit. The final validation will use fresh
+seeds exp-final-3109, exp-final-3301, exp-final-3511, exp-final-3701 and
+exp-final-3907, with a newly recorded configuration lock.

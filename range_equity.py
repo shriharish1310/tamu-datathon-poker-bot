@@ -99,9 +99,13 @@ class Rollouts:
                            if self.board else None)
         self.category = category_of(self.hero_score) if self.board else None
         self.unseen = tuple(c for c in range(36) if c not in known)
+        self.unseen_bits = tuple(1 << c for c in self.unseen)
         self.rng = Random(seed)
         self.features = features
-        self.payoffs, self.strengths = [], []
+        self.payoffs, self.strengths, self.opponents = [], [], []
+        self.total = self.squares = 0.0
+        self.uniform = None
+        self.query_cache = {}
         self.percentiles = None
 
     def extend(self, total):
@@ -110,31 +114,51 @@ class Rollouts:
         if total <= len(self.payoffs):
             return
         for _ in range(total - len(self.payoffs)):
-            drawn = self.rng.sample(self.unseen, 10 - len(self.board))
+            drawn = self.rng.sample(self.unseen_bits, 10 - len(self.board))
             opponent = drawn[:5]
-            villain_masks = _pair_masks(tuple(1 << c for c in opponent))
+            villain_masks = _pair_masks(opponent)
             if len(self.board) == 5:
                 board_masks, hero = self.visible_masks, self.hero_score
             else:
-                board_masks = _triple_masks(self.board_bits + tuple(1 << c for c in drawn[5:]))
+                board_masks = _triple_masks(self.board_bits + tuple(drawn[5:]))
                 hero = _score_masks(self.hero_masks, board_masks, self.table)
             villain = _score_masks(villain_masks, board_masks, self.table)
-            self.payoffs.append(1.0 if hero > villain else (0.5 if hero == villain else 0.0))
+            payoff = 1.0 if hero > villain else (0.5 if hero == villain else 0.0)
+            self.payoffs.append(payoff)
+            self.total += payoff
+            self.squares += payoff * payoff
             if self.features:
-                visible = (villain if len(self.board) == 5 else
-                           _score_masks(villain_masks, self.visible_masks, self.table) if self.board else None)
-                self.strengths.append(visible_strength(opponent, self.board, visible))
+                # Most decisions have no range conditioning. Defer visible-hand
+                # features until a real raise/caller query actually needs them.
+                self.opponents.append((opponent, villain_masks, villain if len(self.board) == 5 else None))
         self.percentiles = None
+        self.uniform = None
+        self.query_cache.clear()
 
     def estimates(self, *, range_mix=0.0, range_power=2.0, caller_power=0.0, fold_rate=0.2):
         if not self.payoffs:
             raise ValueError("Generate rollouts before estimating")
         if not 0 <= range_mix <= 1 or caller_power < 0:
             raise ValueError("Invalid range parameters")
+        if not range_mix and not caller_power:
+            if self.uniform is None:
+                n = len(self.payoffs)
+                variance = max(0.0, self.squares - self.total * self.total / n)
+                stderr = sqrt(variance / (n * (n - 1))) if n > 1 else 0.5
+                self.uniform = WeightedEstimate(self.total / n, stderr, n, float(n), self.category)
+            return (self.uniform,) * 3
+        cache_key = (range_mix, range_power, caller_power, fold_rate)
+        if cache_key in self.query_cache:
+            return self.query_cache[cache_key]
         if range_mix or caller_power:
             if not self.features:
                 raise ValueError("Range features were disabled")
             if self.percentiles is None:
+                for bits, masks, river_score in self.opponents[len(self.strengths):]:
+                    visible = (river_score if len(self.board) == 5 else
+                               _score_masks(masks, self.visible_masks, self.table) if self.board else None)
+                    cards = tuple(bit.bit_length() - 1 for bit in bits)
+                    self.strengths.append(visible_strength(cards, self.board, visible))
                 self.percentiles = midrank_percentiles(self.strengths)
             ranks = self.percentiles
         else:
@@ -142,11 +166,15 @@ class Rollouts:
         weights = [(1 - range_mix + range_mix * q) ** range_power for q in ranks]
         current = summarize_weighted(self.payoffs, weights, self.category)
         if not caller_power:
-            return current, current, current
+            result = (current,) * 3
+            self.query_cache[cache_key] = result
+            return result
         # A folding opponent's continuing range is narrower. Larger raises use a
         # stronger likelihood tilt. A positive rank floor retains weak calls.
         power = min(5.0, caller_power * fold_rate / max(0.05, 1 - fold_rate))
         callers = [summarize_weighted(self.payoffs,
                    [w * (0.05 + 0.95 * q) ** min(5.0, power * size) for w, q in zip(weights, ranks)],
                    self.category) for size in (1.0, 1.4)]
-        return current, *callers
+        result = (current, *callers)
+        self.query_cache[cache_key] = result
+        return result
