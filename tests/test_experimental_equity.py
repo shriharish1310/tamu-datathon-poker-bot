@@ -2,6 +2,8 @@
 from dataclasses import replace
 import json
 from pathlib import Path
+import runpy
+import sys
 from random import Random
 
 import pytest
@@ -58,7 +60,14 @@ def test_visible_range_features_never_use_unseen_runout():
 
 def test_lazy_features_preserve_preoptimization_weighted_results():
     cases = json.loads((Path(__file__).parent / "fixtures/range_equity_reference.json").read_text())
+    reference_type = runpy.run_path(str(Path(__file__).parent / "fixtures/range_equity_eager.py"))["Rollouts"]
     for case in cases:
+        # Python 3.12 changed float summation; tiny preflop feature differences
+        # can change percentile ties. Compare against the frozen eager algorithm
+        # on the SAME interpreter, not hardcoded Python 3.10 floating-point ranks.
+        eager = reference_type(case["hole"], case["board"], case["seed"])
+        eager.extend(case["samples"])
+        expected = eager.estimates(**case["parameters"])
         batch = Rollouts(case["hole"], case["board"], case["seed"])
         batch.extend(24)
         batch.estimates()  # Uniform queries must not compute unused range features.
@@ -66,10 +75,12 @@ def test_lazy_features_preserve_preoptimization_weighted_results():
         batch.estimates(**case["parameters"])  # Also invalidate cached weighted ranks on extension.
         batch.extend(case["samples"])
         actual = batch.estimates(**case["parameters"])
-        for estimate, reference in zip(actual, case["expected"]):
-            assert estimate.equity == pytest.approx(reference["equity"], abs=1e-12)
-            assert estimate.stderr == pytest.approx(reference["stderr"], abs=1e-12)
-            assert estimate.effective_samples == pytest.approx(reference["ess"], abs=1e-12)
+        for estimate, reference, saved in zip(actual, expected, case["expected"]):
+            assert estimate.equity == pytest.approx(reference.equity, abs=1e-12)
+            assert estimate.stderr == pytest.approx(reference.stderr, abs=1e-12)
+            assert estimate.effective_samples == pytest.approx(reference.effective_samples, abs=1e-12)
+            if sys.version_info[:2] == (3, 10):
+                assert estimate.equity == pytest.approx(saved["equity"], abs=1e-12)
         assert batch.estimates(**case["parameters"]) == actual
 
 
