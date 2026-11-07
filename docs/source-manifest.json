@@ -2,13 +2,33 @@
   "official_starter_commit": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
   "sha256": {
     "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
-    "strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+    "strategy.py": "d6469ae73d903359cba53a652f6f2f8fcaaca957d6751483f984ca1ce0f89036",
     "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
     "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
     "judge_engine.py": "fa7a7e3fb49c09588cfcf0930a8e3f6c189e419dbc54263ae7d53b953223d422",
     "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
-    "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781"
+    "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+    "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+    "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+    "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+    "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756"
   },
-  "hash_input": "Repository content with CRLF normalized to LF; evaluation snapshots record exact runtime bytes separately."
+  "hash_input": "Repository content with CRLF normalized to LF; evaluation snapshots record exact runtime bytes separately.",
+  "selected_profile": {
+    "name": "range_130_budget25",
+    "range_blend": 1.3,
+    "caller_power": 0.0,
+    "adaptive_max": 0,
+    "boundary_sigma": 0.75,
+    "position": "legacy",
+    "samples": [
+      24,
+      32,
+      40,
+      64
+    ],
+    "compute_fraction": 0.25
+  },
+  "validation_report": "docs/EXPERIMENTS.json"
 }

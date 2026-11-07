@@ -58,10 +58,12 @@ stream and add trials only near a call or value-raise threshold, as measured by
 private hand/public board state. Weighting is recomputed after action-history
 changes even when the sampled cards are reused.
 
-The original compute pacing remains: allocate 35% of the 8-second bank (2.8s)
-to estimated core computation. Halve initial samples when ahead of that pace;
-disable extra refinement then. This is not a guarantee of charged HTTP time;
-fresh-process full matches enforce the actual time bank.
+Initial screens allocated 35% of the 8-second bank (2.8s) to core computation.
+After runtime validation, the selected candidate uses 25% (2.0s), with extra
+refinement disabled. Initial samples are halved when ahead of that pace. This
+is not a guarantee of charged HTTP time; fresh-process full matches enforce the
+actual time bank. Range features are computed only when conditioning needs them;
+uniform and repeated weighted estimates are cached.
 
 ## Position alternatives
 

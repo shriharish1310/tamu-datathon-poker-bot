@@ -71,3 +71,9 @@ optimization also permits one explicit recheck of range+adaptive sampling:
 choices is selected on new holdout profit. The final validation will use fresh
 seeds exp-final-3109, exp-final-3301, exp-final-3511, exp-final-3701 and
 exp-final-3907, with a newly recorded configuration lock.
+
+The final lock is `RELEASE_LOCK.json`: `range_130_budget25`, extra samples off,
+unchanged caller/position choices. Each runtime candidate won 3/3 development
+matches. This candidate had the highest average profit against the two stronger
+opponents and the lowest maximum charged half (2.460434s). The final 31-match
+batch uses fail-fast release gates and preserves any incomplete/failed run.

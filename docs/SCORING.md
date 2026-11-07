@@ -71,6 +71,11 @@ The historical 20-match baseline matrix predates these adapter checks. It is
 performance evidence for that frozen baseline, not proof that the current code
 has passed the new release gates or the Docker smoke check.
 
+The current range-weighted release has separate fresh-process and Linux/Docker
+evidence in [VALIDATION.md](VALIDATION.md) and [EXPERIMENTS.json](EXPERIMENTS.json).
+On the identical final 13-match common pool it earned 13 points versus v1's 10.5;
+its additional five head-to-head wins against v1 are reported separately.
+
 ## Additional guide findings
 
 - Page 1: team registration is mandatory; one person on multiple teams invalidates

@@ -1,9 +1,18 @@
 # Starfish — TAMU Datathon poker bot
 
-A first competitive baseline for **Heads-Up Short Deck 5-card Pot-Limit Omaha**.
-Built on the official tournament engine and HTTP protocol. It is not a solved
-poker strategy, and wins against the supplied practice bots do not establish
-performance against other teams.
+A Python bot for **Heads-Up Short Deck 5-card Pot-Limit Omaha**, built on the
+official tournament engine and HTTP protocol. The current default is
+`range_130_budget25`, selected from 19 tested configurations.
+
+On final, previously unused seeds it won **18/18 official matches**, including
+**5/5 against frozen Starfish v1** and **5/5 against the separate Desktop bot**.
+Across the identical 13-match common opponent pool, it earned **13 points versus
+v1's 10.5**. These results establish an advantage against the tested policies,
+not a solved strategy or guaranteed performance against other teams.
+
+See [all experiments and rejected variants](docs/EXPERIMENTS.md),
+[exact metrics and source hashes](docs/EXPERIMENTS.json), and
+[release validation](docs/VALIDATION.md).
 
 ## Run
 
@@ -32,24 +41,19 @@ For direct strategy iteration without HTTP overhead:
 Use separate, previously untouched seeds for final evaluation. Direct benchmark
 timing excludes HTTP/serialization and does not enforce the time bank.
 
-The historical frozen baseline scored **20/20 official match points across 40,000 hands**
-against the four organizer baselines on seeds 7, 19, 43, 101 and 202. All 40 bot
-halves had zero errors, timeouts or forfeits; the slowest charged half was 2.918s.
-See [validation details](docs/VALIDATION.md) and the compact
-[per-match metrics](docs/BASELINE_MATRIX.json). This run predates the reliability
-adapter and its sidecar checks; it does not validate the current adapter or
-establish strength against other teams.
+The selected policy passed **123 tests** and fresh-process official HTTP matches
+with zero observed judge errors, strategy faults, fallbacks, forfeits or timeouts.
+Its slowest charged half was **2.850s locally** and **2.906s in Linux validation**,
+below the 4-second release target and official 8-second bank. The
+[Linux workflow](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42408822715)
+also passed eight additional baseline matches and the official and supplementary
+Docker checks. Full-match timings were measured on the hosts; the restricted
+container ran smoke checks. The staged CI policy matches the production source
+after normalizing line endings.
 
-The current Starfish reliability adapter passed the
-[Linux release checks](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42402994032):
-8/8 additional baseline matches, zero observed strategy faults or fallbacks,
-maximum charged half 2.578s, and both official and supplementary Docker checks.
-See [the recorded evidence](docs/LINUX_VALIDATION.json) for the evaluated commit.
-
-Against the separate Desktop `ShortDeckAce-v2` bot, Starfish scored **3–2 official
-points over 10,000 hands**: one win and four chops, averaging +0.4777 BB per paired
-deal. This is an observed lead with substantial uncertainty; four match CIs cross
-zero. [Comparison, timings and source hashes](docs/HEAD_TO_HEAD.md).
+Historical v1 evidence is retained in [BASELINE_MATRIX.json](docs/BASELINE_MATRIX.json),
+[LINUX_VALIDATION.json](docs/LINUX_VALIDATION.json), and
+[HEAD_TO_HEAD.md](docs/HEAD_TO_HEAD.md); those files describe the older policy.
 
 To compare a compatible bot from another folder, the helper can manage both
 servers and fresh halves automatically:
@@ -83,7 +87,9 @@ the existing betting policy when its callbacks succeed.
 1. Uses the organizer's exact evaluator: 36 cards; exactly two hole cards and
    three board cards; flush above full house; trips above straight.
 2. Estimates showdown equity by sampling disjoint opponent cards and board
-   completions. Ties count as half a pot. Caches each hand/board estimate.
+   completions. Ties count as half a pot. After a selective opponent raises,
+   importance weights favor stronger holdings; habitual aggression receives
+   less range narrowing. Only currently visible cards inform these weights.
 3. Compares call cost with pot odds, with heuristic adjustments for position,
    future betting, and observed opponent aggression.
 4. Uses Bayesian-smoothed fold and aggression counts, including terminal
@@ -94,11 +100,26 @@ the existing betting policy when its callbacks succeed.
 6. Chooses from legal actions and reduces rollout counts when computation
    runs ahead of a conservative per-half allowance.
 
-The default rollout counts are 24/32/40/64 by street and can halve under load.
-Sampling uncertainty can be substantial. Equity is **against uniformly random
-legal holdings**, not an inferred betting range; range adjustments are currently
-heuristics. Bluff fold estimates can be affected by selection bias and bet size.
-This is an actionable baseline for further measurement, not a GTO claim.
+The selected configuration is:
+
+| Setting | Value |
+|---|---|
+| Range selectivity multiplier | `range_blend=1.3`, actual mix capped at `0.90` |
+| Separate caller equity | `caller_power=0.0` (off) |
+| Extra samples near decision boundaries | `adaptive_max=0` (off) |
+| Position margin | `position="legacy"` |
+| Initial samples by street | `24, 32, 40, 64` |
+| Core compute pacing | `compute_fraction=0.25`, a 2-second allowance per half |
+
+Sample counts halve when computation runs ahead of pace. Core computation is
+different from the official charged HTTP time. Lazy feature computation and
+caching preserve sample results while reducing overhead. Separate caller equity,
+extra boundary samples and position changes did not justify inclusion in the
+tested variants. The big blind acts last preflop but first postflop, so a future
+equity-realization margin can still be useful.
+
+Range likelihoods and fold estimates remain heuristic, and Monte Carlo sampling
+is noisy. This is the best configuration measured in this search, not a GTO claim.
 
 If a strategy callback raises or returns an invalid action, the adapter logs
 `BOT_STRATEGY_FAULT` with a traceback and disables the core for the rest of that
@@ -114,17 +135,22 @@ blocks release. The adapter cannot recover process death or interrupt a hang.
 |---|---|
 | `agent.py` | Official FastAPI server with our strategy adapter |
 | `reliability.py` | Callback validation, fault logging, fallback latch and health counters |
-| `strategy.py` | Betting policy and per-half opponent model |
-| `equity.py` | Small, deterministic Monte Carlo equity estimator |
+| `strategy.py` | Selected production profile and callback adapter |
+| `advanced_policy.py`, `policy_config.py` | Experimental policies, opponent adjustments and configuration |
+| `range_equity.py` | Cached importance-weighted Monte Carlo equity and sampling uncertainty |
+| `baseline_strategy.py`, `equity.py` | Frozen v1 policy/equity and shared opponent-accounting helpers |
 | `evaluator.py`, `game.py` | Unmodified official evaluation and game rules |
 | `judge_engine.py` | Official HTTP judge and duplicate scoring |
 | `tools/benchmark_strategy.py` | Fast paired-deal evaluation |
 | `tools/run_local_match.py` | Temporary servers and fresh-process HTTP halves |
 | `tools/evaluate_suite.py` | Official 20-match matrix and per-opponent summaries |
+| `tools/experiment_grid.py` | Controlled direct policy screens using official scoring |
+| `tools/package_profile.py`, `tools/validate_profiles.py` | Frozen policy packages and sequential fresh-process validation |
 | `tests/`, `test_agent.py` | Evaluator, strategy, opponent model, and API checks |
 | `docs/OFFICIAL_GUIDE.md` | Original organizer guide |
 | `docs/VALIDATION.md` | Measured results and remaining validation |
 | `docs/SCORING.md` | Confirmed ranking, tie-break, and evaluation scorecard |
+| `experiments/`, `docs/EXPERIMENTS.md` | Configurations, locked evaluation protocol and complete experiment results |
 
 ## Runtime and submission
 
@@ -167,9 +193,10 @@ but its built-in PLO and short-deck variants do not directly match this combinat
 PyPokerEngine targets Hold'em, and poker_ai's supplied training setup uses a
 different deck. No code from those repositories was copied into this bot.
 
-## Next performance work
+## Further experiments
 
-Prioritize opponent-range-conditioned equity, more reliable preflop estimates
-trained offline, and testing against diverse competitive policies. Validate any
-change on held-out duplicate seeds; retain a change only when its measured
-benefit outweighs compute cost and uncertainty.
+Use new development seeds and reserve new final seeds before another search.
+The current experiment seeds are now validation history. Calibrated range
+likelihoods, offline preflop estimates and more diverse strong opponents remain
+useful directions; retain changes only after measuring profit, official points
+and runtime on the same opponent pool.
