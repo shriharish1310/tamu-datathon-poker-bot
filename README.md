@@ -40,6 +40,24 @@ See [validation details](docs/VALIDATION.md) and the compact
 adapter and its sidecar checks; it does not validate the current adapter or
 establish strength against other teams.
 
+The current Starfish reliability adapter passed the
+[Linux release checks](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42402994032):
+8/8 additional baseline matches, zero observed strategy faults or fallbacks,
+maximum charged half 2.578s, and both official and supplementary Docker checks.
+See [the recorded evidence](docs/LINUX_VALIDATION.json) for the evaluated commit.
+
+Against the separate Desktop `ShortDeckAce-v2` bot, Starfish scored **3–2 official
+points over 10,000 hands**: one win and four chops, averaging +0.4777 BB per paired
+deal. This is an observed lead with substantial uncertainty; four match CIs cross
+zero. [Comparison, timings and source hashes](docs/HEAD_TO_HEAD.md).
+
+To compare a compatible bot from another folder, the helper can manage both
+servers and fresh halves automatically:
+
+```powershell
+python tools/run_local_match.py --opponent-dir "$env:USERPROFILE\Desktop\heads-up-bundle" --deals 1000 --seed comparison-new-seed --output reports/desktop-comparison.json --logs
+```
+
 Run the full official baseline matrix (20 matches, fresh processes per half):
 
 ```powershell
@@ -124,6 +142,9 @@ Before submitting:
 - Run the fresh-process evaluation suite and require every release gate to pass.
 - Run `bash tools/check_build.sh` in Git Bash or WSL with Docker Desktop running.
   This verifies the official Linux image, size, read-only runtime, and smoke cases.
+- Run `python tools/check_container_reliability.py` after that check to reject
+  hidden strategy faults in the same restricted image. The manual GitHub Actions
+  workflow runs both checks on Linux when local Docker is unavailable.
 - Push the reviewed bot to the [team repository](https://github.com/shriharish1310/tamu-datathon-poker-bot)
   and submit that exact full commit SHA using the organizer's form. Tournament
   submission has not been performed.

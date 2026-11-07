@@ -71,15 +71,19 @@ def free_port() -> int:
         return sock.getsockname()[1]
 
 
-def ready(port: int, process: subprocess.Popen, deadline: float) -> None:
+def ready(port: int, process: subprocess.Popen, deadline: float) -> dict:
     while time.monotonic() < deadline:
         if process.poll() is not None:
             raise RuntimeError("Server exited; inspect its report log.")
         conn = http.client.HTTPConnection("127.0.0.1", port, timeout=0.25)
         try:
             conn.request("GET", "/")
-            if conn.getresponse().status == 200:
-                return
+            response = conn.getresponse()
+            if response.status == 200:
+                identity = json.loads(response.read())
+                if not isinstance(identity, dict):
+                    raise ValueError("Server health response must be an object")
+                return {key: identity.get(key) for key in ("participant", "agent_name")}
         except OSError:
             pass
         finally:
@@ -90,7 +94,10 @@ def ready(port: int, process: subprocess.Popen, deadline: float) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--opponent", choices=OPPONENTS, default="random")
+    opponents = parser.add_mutually_exclusive_group()
+    opponents.add_argument("--opponent", choices=OPPONENTS, default="random")
+    opponents.add_argument("--opponent-dir", type=Path,
+                           help="directory containing another compatible agent.py (served on loopback)")
     parser.add_argument("--deals", type=int, default=1000)
     parser.add_argument("--seed", default="http-holdout-202")
     parser.add_argument("--output", type=Path, default=ROOT / "reports" / "http-match.json")
@@ -98,11 +105,20 @@ def main() -> None:
     args = parser.parse_args()
     if args.deals < 1:
         parser.error("--deals must be positive")
+    if args.opponent_dir is not None:
+        opponent_dir = args.opponent_dir.resolve()
+        if not (opponent_dir / "agent.py").is_file():
+            parser.error("--opponent-dir must contain agent.py")
+        opponent_module = "agent"
+    else:
+        opponent_dir = ROOT / "baseline-bots"
+        opponent_module = OPPONENTS[args.opponent]
     output = args.output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     halves = []
     environment = os.environ.copy()
     environment["PYTHONUTF8"] = "1"
+    environment["PYTHONDONTWRITEBYTECODE"] = "1"
     # Local loopback testing uses one shared token if the caller set one.
     for key in ("AGENT1_TOKEN", "AGENT2_TOKEN"):
         if environment.get("AGENT_TOKEN"):
@@ -115,7 +131,7 @@ def main() -> None:
     write_reliability(output, evidence)
     try:
         for half in (1, 2):
-            processes, logs = [], []
+            processes, logs, identities = [], [], []
             diagnostics = None
             failure = None
             ports = (free_port(), free_port())
@@ -123,7 +139,7 @@ def main() -> None:
                 ports = (ports[0], free_port())
             try:
                 for index, (module, app_dir) in enumerate(
-                    (("agent", ROOT), (OPPONENTS[args.opponent], ROOT / "baseline-bots"))
+                    (("agent", ROOT), (opponent_module, opponent_dir))
                 ):
                     log = open(output.with_suffix(f".half{half}.agent{index + 1}.log"), "w", encoding="utf-8")
                     logs.append(log)
@@ -132,11 +148,13 @@ def main() -> None:
                     proc = subprocess.Popen(
                         [sys.executable, "-m", "uvicorn", f"{module}:app", "--app-dir", str(app_dir),
                          "--host", "127.0.0.1", "--port", str(ports[index]), "--no-access-log"],
-                        cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, creationflags=flags,
+                        cwd=app_dir, env=env, stdout=log, stderr=subprocess.STDOUT, creationflags=flags,
                     )
                     processes.append(proc)
-                    ready(ports[index], proc, started + 15)
-                    print(f"half={half} server={module} startup={time.monotonic() - started:.3f}s", flush=True)
+                    identity = ready(ports[index], proc, started + 15)
+                    identities.append(identity)
+                    print(f"half={half} server={module} identity={identity} "
+                          f"startup={time.monotonic() - started:.3f}s", flush=True)
                 half_file = output.with_suffix(f".half{half}.json")
                 halves.append(half_file)
                 judge_command = [sys.executable, "judge_engine.py", "--agent1", f"http://127.0.0.1:{ports[0]}",
@@ -169,7 +187,8 @@ def main() -> None:
                 log_faults = scan_fault_log(output.with_suffix(f".half{half}.agent1.log"))
             except (OSError, UnicodeError, ValueError) as exc:
                 failure = failure or exc
-            half_evidence = {"half": half, "diagnostics": diagnostics, "log_fault_events": log_faults}
+            half_evidence = {"half": half, "diagnostics": diagnostics,
+                             "log_fault_events": log_faults, "agents": identities}
             if failure is not None:
                 half_evidence["evidence_error"] = f"{type(failure).__name__}: {failure}"
             evidence["halves"].append(half_evidence)

@@ -13,6 +13,29 @@ stderr evidence, and release-gate rejection. Docker helper tests use mocked CLI
 responses; they do not establish a successful container run. The strategy/equity
 modules require no additional inference libraries.
 
+## Current release: Linux validation passed
+
+Commit `f7941ca79785dc78bfecfae38bf4f6679008114b` passed the
+[Linux release workflow](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42402994032):
+
+- All **102 tests passed** on Python 3.12.16.
+- **8/8 official match points across 16,000 hands**, all four baselines on
+  additional seeds 731 and 947. Both servers restarted between every half.
+- Zero judge errors, forfeits or bank exhaustion for either bot; zero Starfish
+  strategy faults, fallback decisions or stderr fault markers.
+- Largest Starfish charged half: **2.578290 seconds**, below the 4-second target.
+- Unchanged official Docker build/size/smoke check passed.
+- Supplementary container check passed with zero fault evidence, under 1 CPU,
+  4 GB RAM, no network and a read-only filesystem except `/tmp`. Smoke startup
+  was 0.8 seconds and the sampled action requests were 2–3 milliseconds.
+
+[LINUX_VALIDATION.json](LINUX_VALIDATION.json) preserves official per-match
+metrics, source hashes, environment and restricted-container evidence. Raw logs
+are retained in the workflow artifact. Match timing above was measured on the
+Linux runner outside Docker; the restricted container ran smoke cases, not the
+full matches. This validates compatibility and these baseline results, not an
+advantage over other teams or a candidate improvement over the previous policy.
+
 ## Historical official baseline matrix
 
 These results describe commit `b1a73dd2c2349cc4b693c66babe9156dcdf0254f`, before
@@ -72,9 +95,8 @@ decisions on differently loaded machines.
   improvement on additional, unused seeds. Reserve separate seeds for that test.
 - The policy uses noisy, uniformly sampled opponent holdings with heuristic
   range discounts. No offline training or equilibrium-solving has been performed.
-- The official Linux Docker build/smoke test has **not** run: Docker Desktop's
-  Linux daemon was unavailable. The official base uses Python 3.12; the local
-  evaluation used Python 3.10.11.
+- Docker Desktop failed to start locally. The successful official Linux build
+  and smoke check ran on GitHub Actions as documented above.
 - The team metadata is now **Starfish**.
 - No tournament submission has been made.
 
@@ -86,5 +108,6 @@ Keep the official Dockerfiles and package pins unchanged.
 The manual `Starfish release checks` GitHub Actions workflow runs Python 3.12
 tests, eight sequential fresh-process matches against all four baselines on
 additional seeds 731 and 947, the unchanged official Docker check, and the
-supplementary container reliability gate. Successful execution still needs to
-be confirmed; workflow configuration is not validation evidence.
+supplementary container reliability gate. Successful execution must be checked
+for each future release; the successful run above covers its exact
+recorded commit.
