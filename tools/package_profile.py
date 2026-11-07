@@ -1,5 +1,6 @@
 """Freeze a policy configuration into a standalone bot folder for HTTP evaluation."""
 import argparse
+from dataclasses import replace
 import hashlib
 import json
 from pathlib import Path
@@ -15,6 +16,9 @@ FILES = ("agent.py", "reliability.py", "advanced_policy.py", "baseline_strategy.
 
 
 def package(settings, target):
+    # JSON represents tuples as lists. Emit the same frozen wrapper whether the
+    # settings came from a dataclass in a local experiment or JSON in Linux CI.
+    settings = replace(settings, samples=tuple(settings.samples))
     target = Path(target).resolve()
     target.mkdir(parents=True, exist_ok=False)
     for name in FILES:
