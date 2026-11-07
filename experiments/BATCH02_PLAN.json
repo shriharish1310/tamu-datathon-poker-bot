@@ -1,0 +1,272 @@
+{
+  "started_utc": "2026-11-07T23:20:36+00:00",
+  "ends_utc": "2026-11-08T00:50:36+00:00",
+  "deadline_status": "Organizer deadline/timezone unverified; user 04:00 is a planning assumption only.",
+  "configs": {
+    "A25s32": {
+      "name": "A25s32",
+      "alpha": 0.25,
+      "shrink": 32,
+      "action_values": false,
+      "uncertainty": 1.0,
+      "risk_penalty": 0.02,
+      "ess_floor": 0.45
+    },
+    "A50s16": {
+      "name": "A50s16",
+      "alpha": 0.5,
+      "shrink": 16,
+      "action_values": false,
+      "uncertainty": 1.0,
+      "risk_penalty": 0.02,
+      "ess_floor": 0.45
+    },
+    "A50s64": {
+      "name": "A50s64",
+      "alpha": 0.5,
+      "shrink": 64,
+      "action_values": false,
+      "uncertainty": 1.0,
+      "risk_penalty": 0.02,
+      "ess_floor": 0.45
+    },
+    "Bz075": {
+      "name": "Bz075",
+      "alpha": 0,
+      "shrink": 32,
+      "action_values": true,
+      "uncertainty": 0.75,
+      "risk_penalty": 0.01,
+      "ess_floor": 0.45
+    },
+    "Bz125": {
+      "name": "Bz125",
+      "alpha": 0,
+      "shrink": 32,
+      "action_values": true,
+      "uncertainty": 1.25,
+      "risk_penalty": 0.03,
+      "ess_floor": 0.45
+    }
+  },
+  "screen": {
+    "seeds": [
+      "b02-screen-17"
+    ],
+    "deals": 400,
+    "opponents": [
+      "range_aware_2",
+      "champion"
+    ],
+    "matches": 12
+  },
+  "confirm": {
+    "seeds": [
+      "b02-confirm-29",
+      "b02-confirm-61"
+    ],
+    "deals": 1000,
+    "opponents": [
+      "tight_3",
+      "loose_2",
+      "aggressive_1",
+      "selective_2",
+      "bluffy_1",
+      "range_aware_2"
+    ],
+    "matches_per_profile": 12,
+    "profiles": "champion plus best A and best B; combination only if both screen gains positive"
+  },
+  "selection": "Highest equally weighted official points, then mean BB/deal. Best A/B representatives confirmed even if screen inconclusive.",
+  "holdouts_used": false,
+  "source_hashes": {
+    "bluffy_1": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "7620d68bc41a5179531ef2f827faac93275bd07561861f9651e9349424e62bad",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "6ceb83efc520c5bde05ea82d1b25fe851407fab215440c1bdc75b7817c6220a3"
+    },
+    "tight_3": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "dc8910f0c79271e47dba3d86a8593f8e8078a058801279121c2d3da477d7e7e3",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "2acc1d8f495998f930db7febd7c6aee689283898607451c05f81122ef71d5fca"
+    },
+    "A50s16": {
+      "action_model.py": "eac690867249191e4ade0237107022c71f1d5b4feebfa885bea5c81fd779eb69",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "batch02_action_model.json": "025340a249dc9a962e62a77908e53a90cf6af0407ac3dd504266335b56c05f10",
+      "batch02_policy.py": "ab3c692548d39c369b7aac8a1da66c69b20d9010382095fefbc69fc15b429f9b",
+      "config.json": "6494434cbd878051f205ad405fe834c396037a640addafb4657628b8235e64cc",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "5e8804eb97249d21822edcecb4b71f703ff1153cc16f0048386beb08229f8db5"
+    },
+    "A50s64": {
+      "action_model.py": "eac690867249191e4ade0237107022c71f1d5b4feebfa885bea5c81fd779eb69",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "batch02_action_model.json": "025340a249dc9a962e62a77908e53a90cf6af0407ac3dd504266335b56c05f10",
+      "batch02_policy.py": "ab3c692548d39c369b7aac8a1da66c69b20d9010382095fefbc69fc15b429f9b",
+      "config.json": "956bd4318c03f5ad3b273512e6ef67cbfb3cced4d786c7093c29779c48568f30",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "98e26e8b1f3a796ea4ae5fb80e18330060c9c8da83411d723434f49a8f03cb8d"
+    },
+    "Bz125": {
+      "action_model.py": "eac690867249191e4ade0237107022c71f1d5b4feebfa885bea5c81fd779eb69",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "batch02_action_model.json": "025340a249dc9a962e62a77908e53a90cf6af0407ac3dd504266335b56c05f10",
+      "batch02_policy.py": "ab3c692548d39c369b7aac8a1da66c69b20d9010382095fefbc69fc15b429f9b",
+      "config.json": "4e97af49d7c80cbb591ab0e99af93413f9051d12e1d11c571b1ff03f0feef0d6",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "d0b6f9d13720bbe68432c008c42370559c77cc6429b4708b96971f40a0649a24"
+    },
+    "loose_2": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "b403fff133e7faf27c8d638139bc1cd050b9cfaf1ec01c70af107a4e628808dd",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "312c52853ef1ef46ab10403d3f55d1d352d6e9be4f172d2611c33c4960659c0d"
+    },
+    "aggressive_1": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "0e5e1ba8d0144dc528a1428eec00751441ba94eaa7318b66d2c0c8006d019eef",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "1c97bf29e4aa7bc44925638918346be17a9a0399b9cb4d0f08bbb5572b35ade9"
+    },
+    "champion-fd5c428": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "d6469ae73d903359cba53a652f6f2f8fcaaca957d6751483f984ca1ce0f89036"
+    },
+    "selective_2": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "aafaa60cfc23799a3a0e6f94a073b0ee4564c42dcf049fdeadc42f557b845e1e",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "2793ee288757e2d40c2dcbe23fefa0e9366cc472b47123cd12ecccc870ec3e4e"
+    },
+    "Bz075": {
+      "action_model.py": "eac690867249191e4ade0237107022c71f1d5b4feebfa885bea5c81fd779eb69",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "batch02_action_model.json": "025340a249dc9a962e62a77908e53a90cf6af0407ac3dd504266335b56c05f10",
+      "batch02_policy.py": "ab3c692548d39c369b7aac8a1da66c69b20d9010382095fefbc69fc15b429f9b",
+      "config.json": "77afae29231dff405fb6782eeeea64287bc389e988af14b02c83b7eb6db2d08d",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "8298b1199090c7d59e0755e82d92bdd84231452c752ba513efddddd2fb83b206"
+    },
+    "range_aware_2": {
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "config.json": "cb2af564651d360f1e4b1e8811fc53f194df75aa22eec10663e64d829d9223d5",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "opponent_policy.py": "8db9da7b98c4a0279c4a4d3c10364ffd46dcda351aa2b3cb004abfa14bd19fde",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "fa2a772bf0fb66ff8ec0af13506c6261b4f952aadc115fb3d290a5a0d43fb57a"
+    },
+    "A25s32": {
+      "action_model.py": "eac690867249191e4ade0237107022c71f1d5b4feebfa885bea5c81fd779eb69",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "batch02_action_model.json": "025340a249dc9a962e62a77908e53a90cf6af0407ac3dd504266335b56c05f10",
+      "batch02_policy.py": "ab3c692548d39c369b7aac8a1da66c69b20d9010382095fefbc69fc15b429f9b",
+      "config.json": "727e65439866890606a353682326ad1fc54b71651cf966f00f3ee1927f2b7cf2",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+      "strategy.py": "3333d60ecfebbac44471664e9fdaa270be62d57efe969ca6e52aabeaf698f17d"
+    }
+  }
+}
