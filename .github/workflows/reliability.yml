@@ -2,6 +2,13 @@ name: Starfish release checks
 
 on:
   workflow_dispatch:
+    inputs:
+      profile:
+        description: Use committed strategy or stage a frozen experimental profile
+        type: choice
+        options: [release, baseline, range_130]
+        default: release
+        required: true
 
 permissions:
   contents: read
@@ -12,6 +19,7 @@ defaults:
 
 jobs:
   release-checks:
+    name: release-checks (${{ inputs.profile }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
@@ -26,6 +34,13 @@ jobs:
           python-version: '3.12'
       - name: Install test dependencies
         run: python -m pip install -r requirements-dev.txt
+      - name: Stage requested experimental profile
+        if: inputs.profile != 'release'
+        env:
+          EXPERIMENT_PROFILE: ${{ inputs.profile }}
+        run: |
+          python tools/package_profile.py --profile "$EXPERIMENT_PROFILE" --configs experiments/finalist_config.json --output reports/ci-profile
+          cp reports/ci-profile/strategy.py strategy.py
       - name: Full correctness and fault-injection tests
         run: python -m pytest -q
       # These matches are sequential and run before Docker builds to avoid

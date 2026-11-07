@@ -29,6 +29,7 @@ from tools.run_local_match import validate_diagnostics
 OPPONENTS = ("random", "calling", "half", "pot")
 SOURCE_FILES = (
     "agent.py", "strategy.py", "reliability.py", "equity.py", "evaluator.py", "game.py",
+    "advanced_policy.py", "baseline_strategy.py", "range_equity.py", "policy_config.py",
     "judge_engine.py", "requirements.txt", "tools/run_local_match.py",
     "tools/evaluate_suite.py", "baseline-bots/baseline_random.py",
     "baseline-bots/baseline_calling_station.py", "baseline-bots/baseline_always_half.py",

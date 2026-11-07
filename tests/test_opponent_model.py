@@ -10,7 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import strategy
+# Preserve regression checks for the frozen baseline's shared opponent accounting
+# and bluff helpers. Advanced-policy and production-API behavior have separate tests.
+import baseline_strategy as strategy
 from equity import EquityEstimate
 from evaluator import cards_from_str
 from game import Action, AgentConfig, Deal, Game, Street, make_deal

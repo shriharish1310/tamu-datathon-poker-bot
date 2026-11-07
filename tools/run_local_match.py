@@ -94,6 +94,8 @@ def ready(port: int, process: subprocess.Popen, deadline: float) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--agent-dir", type=Path, default=ROOT,
+                        help="our bot directory; defaults to this repository")
     opponents = parser.add_mutually_exclusive_group()
     opponents.add_argument("--opponent", choices=OPPONENTS, default="random")
     opponents.add_argument("--opponent-dir", type=Path,
@@ -105,6 +107,9 @@ def main() -> None:
     args = parser.parse_args()
     if args.deals < 1:
         parser.error("--deals must be positive")
+    agent_dir = args.agent_dir.resolve()
+    if not (agent_dir / "agent.py").is_file():
+        parser.error("--agent-dir must contain agent.py")
     if args.opponent_dir is not None:
         opponent_dir = args.opponent_dir.resolve()
         if not (opponent_dir / "agent.py").is_file():
@@ -139,7 +144,7 @@ def main() -> None:
                 ports = (ports[0], free_port())
             try:
                 for index, (module, app_dir) in enumerate(
-                    (("agent", ROOT), (opponent_module, opponent_dir))
+                    (("agent", agent_dir), (opponent_module, opponent_dir))
                 ):
                     log = open(output.with_suffix(f".half{half}.agent{index + 1}.log"), "w", encoding="utf-8")
                     logs.append(log)

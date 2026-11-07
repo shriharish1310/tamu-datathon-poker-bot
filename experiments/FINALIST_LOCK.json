@@ -1,0 +1,46 @@
+{
+  "selected_before_holdout": true,
+  "profile": {
+    "name": "range_130",
+    "range_blend": 1.3,
+    "caller_power": 0.0,
+    "adaptive_max": 0,
+    "boundary_sigma": 0.75,
+    "position": "legacy",
+    "samples": [
+      24,
+      32,
+      40,
+      64
+    ],
+    "compute_fraction": 0.35
+  },
+  "planned_matches": 31,
+  "seeds": [
+    "exp-hold-1709",
+    "exp-hold-1907",
+    "exp-hold-2111",
+    "exp-hold-2309",
+    "exp-hold-2503"
+  ],
+  "development_evidence": [
+    "experiments-screen-A",
+    "experiments-confirm-B",
+    "experiments-confirm-C"
+  ],
+  "reason": "Range 1.30 won all B/C strong-opponent matches, with higher profit against both strong opponents than range 1.0 or all-four. Caller, boundary, and position changes did not add value in confirmation.",
+  "candidate_source_sha256": {
+    "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+    "agent.py": "c2ef2349f7a7557276cf06bc14bb12bf56f1d85bfa5df087e7abee466ce7dec2",
+    "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+    "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+    "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+    "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+    "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+    "range_equity.py": "a3df68990e4f46b40da46b1444bc5a3aa079c831eefc32c83c34ef74cfe45a83",
+    "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+    "requirements.txt": "5dcc7f7e055be6ada8bec3c31d4a507075882c31ca0f89ba89eb2596a7d41df7",
+    "strategy.py": "513271d5c4c27c903de9675401e805b240c22e2262029baf07ef61a37d9e3050"
+  },
+  "holdout_plan_sha256": "b2aa4c61e3aabe37748d1e4c9f89a2caaecd7946008a7e59927d072cb4b6a7d7"
+}
