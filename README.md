@@ -15,8 +15,15 @@ The strategy and model data originate from upstream **teammate_baseline_4** at
 are not included. See [PROVENANCE.json](PROVENANCE.json) for exact hashes.
 
 **Starfish strategy change:** when the estimated continuing range has fewer than
-64 effective samples, a pot-sized raise must clear a 25% larger EV margin over
-calling. Half-pot selection and the preflop model remain as upstream.
+64 effective samples, the bot estimates sampling noise in the pot-raise versus
+call EV difference using the same rollouts. The required EV margin ranges from
+1.25 to 2 times the original margin, according to that estimate. This is a bounded
+heuristic, not a calibrated confidence guarantee. Half-pot selection and the
+preflop model remain as upstream.
+
+Health diagnostics expose guard evaluations, rejected pot raises, effective
+sample size, approximate EV standard error, and illegal-action corrections.
+No additional rollouts or dependencies are introduced.
 
 **Validation status:** this final adjustment was published without further tests
 at the team's request. It has not demonstrated an improvement over teammate_baseline_4.

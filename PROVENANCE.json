@@ -8,11 +8,12 @@
     "Tournament identity set to Starfish",
     "Existing fallback and compute counters exposed through untimed health endpoint",
     "Attribution, source manifest, packaging and validation workflow",
-    "Pot raises require 25% larger EV margin when effective continuing-range samples are below 64"
+    "Paired-rollout sampling-noise guard for pot raises with fewer than 64 effective callers; required margin bounded to 1.25-2.0 times upstream",
+    "Observable guard rejections, sample concentration, approximate EV uncertainty, and illegal-action correction counters"
   ],
   "playing_functions_modified": true,
   "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
-  "integrated_agent_sha256": "73eb175bd17cef50c395d42a34eb2fc6a299191195882a0a46f92042649659ba",
+  "integrated_agent_sha256": "7d26a3d3dee3a5edc6d90cb46a8ac1c96a19d85ae80cefd1fc662752147e1cf9",
   "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
   "unchanged_files": {
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
@@ -25,5 +26,5 @@
     "tools/check_build.sh": "bddedcd556ca4145378738ff4ee64add44ee9b7d6fb2f1609d5104dfdc893c6c",
     "tools/smoke_test.py": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e"
   },
-  "validation_status": "Final riskguard adjustment intentionally untested at user request"
+  "validation_status": "Sampling-aware riskguard refinement intentionally untested at user request"
 }

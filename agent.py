@@ -387,12 +387,28 @@ def _decide(obs, memory):
         if st < 3:
             ev -= call_prob * invest * max(0.0, 0.62 - eq_called) * (0.70 if spr > 1 else 0.25)
         margin = max(0.35, obs.pot * (0.035 if st < 3 else 0.018))
-        # Starfish adjustment: concentrated continuing ranges make large bets
-        # less certain. Require extra EV headroom before choosing a pot raise.
+        # Starfish adjustment: compare raise and call on the SAME rollouts.
+        # This measures sampling noise in their difference, not two independent
+        # errors. It excludes uncertainty in the opponent/continuation model.
         if action == Action.RAISE_POT:
             effective_callers = call_prob * call_prob / max(1e-12, float(np.dot(continuing, continuing)))
             if effective_callers < 64:
-                margin *= 1.25
+                gains = ((1.0 - continue_p) * obs.pot
+                         + continue_p * (outcomes * (obs.pot + invest + reply) - invest)
+                         - (outcomes * (obs.pot + cost) - cost))
+                centered = gains - float(np.dot(weights, gains))
+                n = len(outcomes)
+                variance = float(np.dot(weights * weights, centered * centered))
+                stderr_gain = math.sqrt(max(0.0, variance) * n / max(1, n - 1))
+                original_margin = margin
+                # Bound the response: noise can at most double the existing
+                # margin, avoiding arbitrarily large penalties in tiny ranges.
+                margin = max(1.25 * margin, min(2.0 * margin, 0.5 * stderr_gain))
+                memory['riskguard_evaluations'] = memory.get('riskguard_evaluations', 0) + 1
+                memory['riskguard_last_ess'] = effective_callers
+                memory['riskguard_last_stderr'] = stderr_gain
+                if ev > base_ev + original_margin and ev > best_ev and ev <= base_ev + margin:
+                    memory['riskguard_rejections'] = memory.get('riskguard_rejections', 0) + 1
         # Apply the uncertainty margin against calling once, then rank
         # qualifying raises by their estimated value, independent of order.
         if ev > base_ev + margin and ev > best_ev:
@@ -412,7 +428,11 @@ def choose_action(obs: Observation, memory: dict) -> Action:
     memory['last_obs'], memory['last_action'] = obs, action
     memory['decisions'] += 1
     memory['compute_seconds'] += time.perf_counter() - start
-    return action if action in obs.legal_actions else Action.CHECK_CALL
+    if action not in obs.legal_actions:
+        memory['illegal_action_corrections'] = memory.get('illegal_action_corrections', 0) + 1
+        memory['fallback_count'] = memory.get('fallback_count', 0) + 1
+        return Action.CHECK_CALL
+    return action
 
 
 def _learn_checks(result, memory):
@@ -553,7 +573,12 @@ async def info():
     return {"participant": PARTICIPANT, "agent_name": AGENT_NAME,
             "diagnostics": {"fallback_count": MEMORY.get("fallback_count", 0),
                             "decisions": MEMORY.get("decisions", 0),
-                            "compute_seconds": MEMORY.get("compute_seconds", 0.0)}}
+                            "compute_seconds": MEMORY.get("compute_seconds", 0.0),
+                            "illegal_action_corrections": MEMORY.get("illegal_action_corrections", 0),
+                            "riskguard_evaluations": MEMORY.get("riskguard_evaluations", 0),
+                            "riskguard_rejections": MEMORY.get("riskguard_rejections", 0),
+                            "riskguard_last_ess": MEMORY.get("riskguard_last_ess", 0.0),
+                            "riskguard_last_stderr": MEMORY.get("riskguard_last_stderr", 0.0)}}
 
 
 @app.post("/new-half")
