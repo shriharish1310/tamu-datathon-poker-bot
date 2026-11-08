@@ -1,0 +1,14 @@
+{
+  "commit": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+  "branch": "codex/batch04-runtime",
+  "optimizations": [
+    "Pin httptools==0.8.0 for Uvicorn's automatic native HTTP parser",
+    "Return the primitive /act payload through JSONResponse, bypassing generic recursive encoding"
+  ],
+  "profiling_run": "https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434045945",
+  "justification": "Official-image profiling exposes H11 request/response processing and FastAPI jsonable_encoder overhead outside the policy timer. Batch03 separately measured a 16.2% parser reduction. Packaging cost and benefit must be measured again in this batch.",
+  "unchanged": ["strategy.py", "advanced_policy.py", "baseline_strategy.py", "range_equity.py", "policy_config.py", "equity.py", "evaluator.py", "game.py", "reliability.py"],
+  "packaging": "Runtime-only .dockerignore allowlist; research and model artifacts excluded",
+  "local_tests": "127 passed; exact-commit CI tests and official Docker validation required before scoring",
+  "equivalence_scope": "Same policy for identical observations, RNG seeds and clock-budget inputs; live wall-clock pacing remains nondeterministic and must be reported."
+}

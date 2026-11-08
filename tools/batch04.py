@@ -102,12 +102,28 @@ def equivalent(images):
             hashes={p:hashlib.sha256(path.read_bytes()).hexdigest() for p,path in paths.items()}))
     save(OUT/'equivalence.json',result)
     if not result['passed']:raise RuntimeError('Behavioral equivalence failed; do not begin match timing')
+    wire={}
+    for label,image in images.items():
+        name='b04-protocol-'+uuid.uuid4().hex[:12]
+        try:
+            docker(*restrictions(name),*mounts(),'-e','B04_MODE=protocol','--entrypoint','python',image,'/research/server.py',capture_output=True)
+            client(name,image,'--replay','--output','/out/'+label+'-protocol.json')
+            data=json.loads((OUT/(label+'-protocol.json')).read_text())
+            wire[label]={k:data[k] for k in ('response_body_sha256','actions','decisions','experiment','diagnostics')}
+        finally:
+            logs=subprocess.run(['docker','logs',name],capture_output=True,text=True)
+            (OUT/(label+'-protocol.log')).write_text(logs.stdout+'\n'+logs.stderr)
+            cleanup([name])
+    result['protocol_passed']=wire['baseline']==wire['candidate']
+    result['protocol_response_hashes']={p:v['response_body_sha256'] for p,v in wire.items()}
+    result['passed'] &= result['protocol_passed'];save(OUT/'equivalence.json',result)
+    if not result['passed']:raise RuntimeError('HTTP protocol equivalence failed; no scored matches permitted')
 
 def cpu_sample():
     import psutil
     return psutil.cpu_percent(interval=3)
 
-def play(profile,image,opponent,opp_image,seed,index):
+def play(profile,image,opponent,opp_image,seed,index,judge_image):
     from tools.evaluate_suite import read_official
     out=OUT/'matches'/f'{index:02}_{profile}_{opponent}_{seed}.json';out.parent.mkdir(parents=True,exist_ok=True)
     if out.exists():raise RuntimeError('Never overwrite a completed match')
@@ -118,20 +134,20 @@ def play(profile,image,opponent,opp_image,seed,index):
         try:
             began=time.monotonic()
             docker(*restrictions(bot),*mounts(),'--entrypoint','python',image,'/research/server.py',capture_output=True)
-            identity.append(json.loads(client(bot,image,'--health').stdout));started.append(time.monotonic()-began)
+            identity.append(json.loads(client(bot,judge_image,'--health').stdout));started.append(time.monotonic()-began)
             began=time.monotonic()
             docker(*restrictions(opp,'container:'+bot,5009),opp_image,capture_output=True)
-            identity.append(json.loads(client(bot,image,'--health','--port','5009').stdout));started.append(time.monotonic()-began)
+            identity.append(json.loads(client(bot,judge_image,'--health','--port','5009').stdout));started.append(time.monotonic()-began)
             half_file=out.with_suffix(f'.half{half}.json');half_files.append(half_file)
             launcher="import sys,runpy;sys.path.insert(0,'/app');runpy.run_path('/research/judge_engine.py',run_name='__main__')"
             cmd=['run','--rm','--user','0','--network','container:'+bot,'--cpus','1','--memory','4g','--read-only',
                 '--tmpfs','/tmp:rw,nosuid,nodev,size=512m','-v',f'{ROOT / "judge_engine.py"}:/research/judge_engine.py:ro',
-                '-v',f'{OUT.resolve()}:/out','--entrypoint','python',image,'-c',launcher,
+                '-v',f'{OUT.resolve()}:/out','--entrypoint','python',judge_image,'-c',launcher,
                 '--agent1','http://127.0.0.1:5008','--agent2','http://127.0.0.1:5009',
                 '--deals','1000','--seed',seed,'--half',str(half),'--logs','--json','/out/matches/'+half_file.name]
             with out.with_suffix(f'.half{half}.judge.log').open('w') as log:docker(*cmd,stdout=log,stderr=subprocess.STDOUT,timeout=600)
-            m=json.loads(client(bot,image).stdout);diag=m['diagnostics']
-            opp_diag=json.loads(client(bot,image,'--health','--port','5009').stdout)['diagnostics']
+            m=json.loads(client(bot,judge_image).stdout);diag=m['diagnostics']
+            opp_diag=json.loads(client(bot,judge_image,'--health','--port','5009').stdout)['diagnostics']
             m.update(half=half,startup_readiness_upper_seconds=started)
             metrics.append(m)
         except Exception as exc:failure=repr(exc)
@@ -162,6 +178,7 @@ def bench():
     baseline=build(PLAN['baseline'],'baseline')
     source=OUT/'candidate-source'
     run(['git','worktree','add','--detach',str(source),candidate],cwd=ROOT)
+    run([sys.executable,'-m','pip','install','-r',str(source/'requirements-dev.txt')])
     with (OUT/'candidate-tests.log').open('w') as log:
         run([sys.executable,'-m','pytest','-q'],cwd=source,stdout=log,stderr=subprocess.STDOUT)
     # Official script, exact commit, unmodified official Docker recipe.
@@ -170,6 +187,9 @@ def bench():
     run([sys.executable,'tools/check_container_reliability.py','--output',str(OUT/'candidate-container-reliability.json')],cwd=source)
     candidate_image=subprocess.check_output(['docker','image','inspect','-f','{{.Id}}','poker-agent-check:latest'],text=True).strip()
     save(OUT/'candidate-image.json',dict(commit=candidate,image=candidate_image))
+    package_code="import importlib.metadata as m,pathlib,json;d=m.distribution('httptools');files=[pathlib.Path(d.locate_file(f)) for f in d.files];print(json.dumps({'version':d.version,'installed_bytes':sum(p.stat().st_size for p in files if p.is_file()),'app_files':sorted(p.name for p in pathlib.Path('/app').iterdir())}))"
+    info=docker('run','--rm','--network','none','--read-only','--entrypoint','python',candidate_image,'-c',package_code,capture_output=True)
+    save(OUT/'candidate-packaging.json',json.loads(info.stdout))
     images={'baseline':baseline,'candidate':candidate_image}
     equivalent(images)
     opponents=prepare_opponents();rows=[];ledger=[]
@@ -179,7 +199,7 @@ def bench():
             assert index<=PLAN['max_full_official_matches']
             ledger.append(dict(index=index,profile=profile,seed=pair['seed'],opponent=pair['opponent'],status='started'))
             save(OUT/'match-ledger.json',ledger)
-            row=play(profile,images[profile],pair['opponent'],opponents[pair['opponent']],pair['seed'],index)
+            row=play(profile,images[profile],pair['opponent'],opponents[pair['opponent']],pair['seed'],index,baseline)
             rows.append(row);ledger[-1]['status']='complete';save(OUT/'match-ledger.json',ledger)
             save(OUT/'benchmark.json',dict(status='running',matches=rows))
     save(OUT/'benchmark.json',dict(status='complete',matches=rows,images=images,candidate_commit=candidate))

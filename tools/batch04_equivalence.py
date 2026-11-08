@@ -48,10 +48,12 @@ def run(mode):
         states=[]
         for key,value in memory['cache'].items():
             states.append((key,tuple(value.payoffs),value.rng.getstate(),tuple(value.strengths),
-                           value.total,value.squares,tuple(value.percentiles or ())))
+                           value.total,value.squares,tuple(value.percentiles or ()),tuple(value.opponents),
+                           value.uniform,tuple(value.query_cache.items())))
         records.append(dict(index=index,hand=obs.hand_index,street=int(obs.street),clock_budget=budget,
             action=action.name,bet_amount=amount,legal_raise_to=sizes,equity_digest=digest(estimates),
             rollout_and_rng_digest=digest(states),actual_total_samples=memory['experiment']['sampled_trials']))
+        records[-1]['opponent_memory_digest']=digest(tuple(memory[k] for k in ('folds','continues','raises','passive')))
         index+=1
     return dict(mode=mode,decisions=index,records=records,
         scope='Exact equivalence conditional on identical recorded observations and clock-budget inputs. Not a claim of identical natural-clock trajectories.')
