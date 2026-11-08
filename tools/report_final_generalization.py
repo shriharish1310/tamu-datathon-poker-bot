@@ -206,6 +206,18 @@ def main():
         report_source_sha256=sha(Path(__file__).read_bytes()))
     save(ROOT/'docs/FINAL_GENERALIZATION.json',report)
     (ROOT/'docs/FINAL_GENERALIZATION.md').write_text(markdown(report),encoding='utf-8')
+    (ROOT/'docs/SUBMISSION.md').write_text('\n'.join([
+        '**Starfish submission preparation**', '',
+        'Repository: https://github.com/shriharish1310/tamu-datathon-poker-bot', '',
+        f"Exact commit SHA: `{plan['candidate']}`", '',
+        'Frozen tag: `release-candidate-6e5b590`', '',
+        f"Recommendation: **{report['recommendation']}**. See [complete final evaluation](FINAL_GENERALIZATION.md).", '',
+        f"Validated Docker image: `{image['image']}`", '',
+        f"Prepared ZIP: `{archive.name}`. SHA-256: `{archive_manifest['sha256']}`.", '',
+        f"Frozen fallback SHA: `{plan['fallback']}`", '',
+        '**Submission has not been performed by this agent.** Team registration is confirmed; no submission receipt for this commit was found in available records. Independent submissions by teammates are unverified. Use the exact commit above, not the research branch HEAD or default branch HEAD.', '',
+        'This is a prepared artifact and benchmark recommendation, not an organizer acceptance or tournament result.', ''
+    ]),encoding='utf-8')
     save(ROOT/'experiments/FINAL_EVALUATION_STATUS.json',dict(candidate=plan['candidate'],
         pool_sha256=plan['opponents_canonical_sha256'],seeds=plan['seeds'],status=report['pool_status'],
         recommendation=report['recommendation'],tuned_on_final_results=False,submission=report['submission']))

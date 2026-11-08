@@ -1,0 +1,20 @@
+{
+  "candidate": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+  "pool_sha256": "8f8afb2ef96cf6a632e3982d2093e90c40f4ac3a6960a5a4faeb0419cc0a5abb",
+  "seeds": [
+    "final-6e5b590-20261107-a-19f273e4",
+    "final-6e5b590-20261107-b-62ad8301",
+    "final-6e5b590-20261107-c-b4c9175e"
+  ],
+  "status": "consumed final validation history; reclassify as development if used to develop another candidate",
+  "recommendation": "release 6e5b590",
+  "tuned_on_final_results": false,
+  "submission": {
+    "filename": "Starfish-6e5b590.zip",
+    "path": "C:\\Users\\shrih\\OneDrive\\Documents\\ChatGPT\\TAMU Datathon\\reports\\batch04-bench\\submission\\Starfish-6e5b590.zip",
+    "sha256": "ae8e1de9360dfcef3ac60262a6cfb3b5e509601076f1c512daceeb2f39c04227",
+    "submitted_by_agent": false,
+    "organizer_receipt_verified": false,
+    "independent_team_member_submission": "not verified"
+  }
+}

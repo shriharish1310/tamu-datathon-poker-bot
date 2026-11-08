@@ -1,9 +1,34 @@
 # Starfish research leaderboard
 
-Champion: **range_130_budget25**, commit
-`fd5c428475eee98edb7c38bd1e7fc0870ddbf42d`, tag `champion-range-130-budget25`.
-Production source and configuration remain frozen. Latest research branch:
-`codex/batch02-ranges-actions`.
+Recommended release: **range_130_budget25 with transport optimizations**, frozen
+commit `6e5b590bc922f047de670efdd5fd599f7459a75d`, tag `release-candidate-6e5b590`.
+Fallback remains `fd5c428475eee98edb7c38bd1e7fc0870ddbf42d`, tag
+`champion-range-130-budget25`. Latest research branch: `codex/final-generalization`.
+
+Final generalization: **36/36 official points, 36 wins, no chops or losses**, on
+12 previously unevaluated configurations and three locked new seeds each.
+Equally weighted mean: **1.000 points/match**, **+3.625069 BB/paired deal**;
+across-seed 95% t interval **[+2.498999, +4.751140]**. Worst candidate charged
+half: **3.728515s**; all 72 halves below four seconds, with zero faults, fallbacks,
+errors, forfeits or bank exhaustion. Exact-commit 127 tests and official Docker
+checks passed. [Full final scorecard and all official CIs](FINAL_GENERALIZATION.md).
+
+All 12 held-out configurations and these three seeds are now **consumed final
+validation history**. No tuning occurred during this evaluation. If these results
+inform another candidate, reclassify the pool as development history and reserve
+a new independent final evaluation. These policies share known architectures;
+the result is not a claim of tournament dominance.
+
+Batch 04: both champion and candidate earned 6/6 points on the runtime pool.
+The candidate reduced median charged time by 21.47%; controlled-clock behavior
+matched exactly, while live pacing still varied. [Batch 04 evidence](BATCH04.md).
+
+[Exact submission values](SUBMISSION.md) are prepared. The agent has not submitted
+the bot; no organizer receipt was found. Independent teammate submissions remain
+unverified. A Git tag or successful CI run is not a tournament submission.
+
+The following entries and notes are preserved **historical Batch 01/02 records**;
+their statements that the held-out pool was unused apply at that earlier time.
 
 | Policy | Evaluation pool | Official points | Decision |
 |---|---|---:|---|
