@@ -392,7 +392,8 @@ def _decide(obs, memory):
         # errors. It excludes uncertainty in the opponent/continuation model.
         if action == Action.RAISE_POT:
             effective_callers = call_prob * call_prob / max(1e-12, float(np.dot(continuing, continuing)))
-            if effective_callers < 64:
+            # Detect concentration relative to the actual rollout budget.
+            if effective_callers < max(64, 0.75 * len(outcomes)):
                 gains = ((1.0 - continue_p) * obs.pot
                          + continue_p * (outcomes * (obs.pot + invest + reply) - invest)
                          - (outcomes * (obs.pot + cost) - cost))

@@ -8,12 +8,12 @@
     "Both tournament identity fields set to Starfish",
     "Existing fallback and compute counters exposed through untimed health endpoint",
     "Attribution, source manifest, packaging and validation workflow",
-    "Paired-rollout sampling-noise guard for pot raises with fewer than 64 effective callers; required margin bounded to 1.25-2.0 times upstream",
+    "Paired-rollout sampling-noise guard for pot raises with fewer than max(64, 75% of actual rollouts) effective callers; required margin bounded to 1.25-2.0 times upstream",
     "Observable guard rejections, sample concentration, approximate EV uncertainty, and illegal-action correction counters"
   ],
   "playing_functions_modified": true,
   "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
-  "integrated_agent_sha256": "00864b8d04d7d56672d34498f08b5d6f4a0acc02f6e02db3ca702da0ccea6f1e",
+  "integrated_agent_sha256": "faf71ad127041d1f892b39aae7e3130757b8d1d979cbfaf7fa37a0eb412910f3",
   "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
   "unchanged_files": {
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
@@ -26,5 +26,5 @@
     "tools/check_build.sh": "bddedcd556ca4145378738ff4ee64add44ee9b7d6fb2f1609d5104dfdc893c6c",
     "tools/smoke_test.py": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e"
   },
-  "validation_status": "Sampling-aware riskguard refinement intentionally untested at user request"
+  "validation_status": "Selected for release at user request after two 1000-paired-deal development matches: two chops, mean +0.027 BB/deal, worst charged half 2.548218 seconds; zero observed errors, fallbacks, illegal corrections, timeouts or forfeits. Matched improvement 95% seed-block interval [-0.316068, 0.370068]: inconclusive."
 }
