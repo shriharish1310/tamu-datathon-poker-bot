@@ -157,7 +157,9 @@ async def route_act(request: Request):
         answer = action
     else:
         answer = repr(action)
-    return {"action": answer, "hand_end_errors": hand_end_errors}
+    # These fields are already JSON primitives; avoid a second recursive walk
+    # through FastAPI's generic encoder outside the policy's computation timer.
+    return JSONResponse({"action": answer, "hand_end_errors": hand_end_errors})
 
 
 @app.post("/hand-end")
