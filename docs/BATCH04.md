@@ -100,3 +100,22 @@ Baseline image: `sha256:f1acdf5f810b1adc128cdc0db643fb88c9039525643bbc78e40dee0f
 [Successful profile](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434045945), [exact-commit validation and all 12 matches](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434610957). Full gates, source hashes, official per-match statistics, reliability counters and evidence-file SHA-256 hashes are preserved in `BATCH04.json`.
 
 Submission ZIP: `Starfish-6e5b590.zip`, 40,637 bytes, SHA-256 `ae8e1de9360dfcef3ac60262a6cfb3b5e509601076f1c512daceeb2f39c04227`. Every archived file was verified against the exact candidate commit. Its adjacent manifest contains all file hashes. No submission form was posted; default branch and frozen fallback remain unchanged.
+
+**Independent verification (handoff, November 7)**
+
+The `batch04-bench` artifact was re-downloaded and every finding above was recomputed from the raw per-half judge JSON by `tools/verify_batch04_artifact.py`, which does not use `report_batch04.py`. The raw artifact zip (7,109,287 bytes) matches GitHub's recorded digest `sha256:0e15d8f9e66725bb0582a456d32ca4855284ebeb15239d5df55119c0e30ed1fa`; the artifact expires 2026-12-08. All 80 bench evidence hashes stored in `BATCH04.json` match the download; the two unmatched hashes belong to the separate profile artifact.
+
+Confirmed: ledger of exactly 12 complete matches; 6/6 points for each version; every match verdict, mean and official 95% interval recomputed from `paired_bb`, and `paired_bb` rebuilt from the two halves' per-deal nets; worst charged half 2.497638s candidate versus 3.202339s baseline; bluff-heavy median 2.101650s versus 2.676216s (21.47%); all 24 halves below 4s; zero judge errors, skipped calls, timeouts or forfeits and zero reliability faults or fallbacks for either player; three equivalence modes of 4,021 decisions each with byte-identical baseline and candidate output files; identical protocol response hashes; 127 tests passed; official build log ends `ALL CHECKS PASSED`. All 61 archived candidate source files match `6e5b590` and all 16 baseline package files match `fd5c428` (line-ending normalized). Both image digests match their commits' image records. The 17 files in the submission ZIP match `6e5b590`.
+
+Locally, the exact candidate worktree also passed 127 tests on Windows with Python 3.10.11 and 3.13. This local environment resolved Starlette 1.7.0 rather than the image's 1.10.0; Starlette is an unpinned transitive dependency.
+
+**Desktop compatibility check**
+
+One pre-registered, fresh-process full match on new seed `cursor-desktop-6e5b590-20261107-a`, run with the candidate's unmodified `tools/run_local_match.py`: frozen candidate worktree at `6e5b590` versus a read-only snapshot of the Desktop `heads-up-bundle` bot. Both sources were hashed before and after; the Desktop project was never written and its bot is byte-identical to the `ShortDeckAce-v2` snapshot used in earlier comparisons.
+
+| Bot | Points | BB/paired deal [official 95% CI] | Charged halves (s) | Calls | Errors / timeouts / forfeits | Faults / fallbacks / log faults |
+|---|---:|---|---|---|---|---|
+| Starfish / ReveillePLO (`6e5b590`) | 1 | +1.799 [+0.861, +2.737] | 5.010, 4.835 | 4103, 4119 | 0 / 0 / 0 | 0 / 0 / 0 |
+| TAMU Datathon Team / ShortDeckAce-v2 | 0 | −1.799 | 7.708, 7.404 | 3469, 3494 | 0 / 0 / 0 | not observable |
+
+This is one match against one opponent; it is a compatibility check, not a strength estimate. An older Starfish (`f7941ca`, before range weighting) scored 3/5 points and +0.478 BB/deal against the same Desktop bot; the two are not a controlled comparison. Starfish's charged time is above the 4s engineering target but within the exact champion's earlier Windows range of 2.939–7.163s (Batch 03); the official Linux container measurement remains the relevant release number. The Desktop bot used 96% of its eight-second bank in half 1, and it suppresses its own decision exceptions. It ran under the candidate's interpreter, which includes `httptools`. Raw logs and hashes are in `BATCH04_VERIFY.json`.
