@@ -11,12 +11,16 @@ def request(conn,path,body=None):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--replay',action='store_true');p.add_argument('--port',type=int,default=5008)
-    p.add_argument('--output',default='/out/replay.json');args=p.parse_args()
+    p.add_argument('--output',default='/out/replay.json');p.add_argument('--health',action='store_true');args=p.parse_args()
     conn=http.client.HTTPConnection('127.0.0.1',args.port,timeout=60)
     for _ in range(300):
         try:request(conn,'/');break
-        except OSError:time.sleep(.05)
+        except (OSError,http.client.HTTPException):
+            conn.close()
+            time.sleep(.05)
     else:raise RuntimeError('Server not ready')
+    if args.health:
+        result,_=request(conn,'/');print(json.dumps(result));return
     if not args.replay:
         result,_=request(conn,'/batch04-metrics');print(json.dumps(result));return
     trace=json.loads(gzip.decompress(Path('/research/observations.json.gz').read_bytes()))
