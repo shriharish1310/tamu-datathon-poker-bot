@@ -1,13 +1,8 @@
-# Submission image contains only runtime source and its dependency manifest.
 *
 !agent.py
-!strategy.py
-!reliability.py
-!advanced_policy.py
-!baseline_strategy.py
-!range_equity.py
-!policy_config.py
-!equity.py
-!evaluator.py
 !game.py
+!evaluator.py
 !requirements.txt
+!data/
+!data/preflop.npy
+!data/preflop_metadata.json

@@ -3,8 +3,5 @@ __pycache__/
 .pytest_cache/
 .venv/
 .env
-tmp/
-*.log
 reports/
-results/
-heads-up-bundle.zip
+*.log

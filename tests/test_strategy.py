@@ -1,89 +1,115 @@
-"""Strategy checks independent of the FastAPI server and transport."""
-
-from __future__ import annotations
-
-import sys
+"""Independent rule, sampling, state-isolation, and strategy regression checks."""
+import itertools
+import random
 from pathlib import Path
-from types import SimpleNamespace
+import sys
 
-import pytest
-
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import numpy as np
+import agent
+from evaluator import cards_from_str, omaha_score, score_five
 from game import Action, AgentConfig, Game, make_deal
-from tools.benchmark_strategy import OPPONENTS, paired_summary, run_match
 
 
-@pytest.mark.parametrize("opponent", OPPONENTS)
-def test_strategy_plays_legal_actions_in_both_seats(opponent):
-    result = run_match(opponent, deals=20, seed=f"strategy-legality-{opponent}")
-    assert result["errors"] == 0
-    assert len(result["paired_bb"]) == 20
-    assert {half["seat"] for half in result["halves"]} == {0, 1}
-    assert all(half["hand_callbacks"] == 20 for half in result["halves"])
-    assert all(half["decisions"] > 0 for half in result["halves"])
+def test_all_five_card_lookup_scores_match_referee():
+    # Exhaustively check every legal 5-card hand, including the short-deck wheel.
+    for cards in itertools.combinations(range(36), 5):
+        index = sum(5 ** (c >> 2) for c in cards)
+        flush = int(len({c & 3 for c in cards}) == 1)
+        assert agent._SCORE[flush, index] == score_five(cards)
 
 
-def test_benchmark_starts_each_half_with_fresh_memory_and_delivers_results():
-    """A prior half's learned state must never leak into its duplicate half."""
-    memories = []
-
-    def new_half(config, memory):
-        assert memory == {}
-        memory["completed"] = 0
-        memories.append(memory)
-
-    def choose_action(obs, memory):
-        # All earlier results must arrive before the next hand's decision.
-        assert memory["completed"] == obs.hand_index
-        return Action.CHECK_CALL
-
-    def on_hand_end(result, memory):
-        assert result.hand_index == memory["completed"]
-        memory["completed"] += 1
-
-    probe = SimpleNamespace(new_half=new_half, choose_action=choose_action, on_hand_end=on_hand_end)
-    result = run_match("calling", deals=5, seed="callback-order", strategy=probe)
-    assert memories[0] is not memories[1]
-    assert [memory["completed"] for memory in memories] == [5, 5]
-    # Identical always-call policies cancel exactly under duplicate dealing.
-    assert result["paired_bb"] == [0.0] * 5
-    assert result["verdict"] == "CHOP"
+def test_omaha_evaluator_matches_referee():
+    rng = random.Random(4571)
+    for _ in range(2000):
+        cards = rng.sample(range(36), 10)
+        hole, board = cards[:5], cards[5:]
+        assert agent._fast_score(np.array(hole, dtype=np.int32), np.array(board, dtype=np.int32), agent._SCORE) == omaha_score(hole, board)
 
 
-def test_fresh_strategy_state_is_independent_of_prior_play():
-    import strategy
-
-    config = AgentConfig(num_hands=10)
-    old, fresh = {}, {}
-    strategy.new_half(config, old)
-    obs = Game(make_deal("memory-isolation", 0), button_seat=0).observation(0)
-    assert strategy.choose_action(obs, old) in obs.legal_actions
-    old["_test_prior_half_marker"] = object()
-    strategy.new_half(config, fresh)
-    assert "_test_prior_half_marker" not in fresh
-    assert strategy.choose_action(obs, fresh) in obs.legal_actions
-    # Mutable per-half structures must not be shared across memory dictionaries.
-    for key in old.keys() & fresh.keys():
-        if isinstance(fresh[key], (dict, list, set)):
-            assert old[key] is not fresh[key], f"shared mutable per-half state: {key}"
+def test_exactly_two_hole_cards_required():
+    hole = np.array(cards_from_str('Th 7s 7d 8c 9c'), dtype=np.int32)
+    board = np.array(cards_from_str('Ah Kh Qh Jh 6c'), dtype=np.int32)
+    assert agent._fast_score(hole, board, agent._SCORE) >> 20 == 3  # straight, not flush
 
 
-def test_paired_scoring_uses_paired_deals_not_individual_hands():
-    result = paired_summary([2, 4, 6], [0, 2, 4])
-    assert result["paired_bb"] == [1.0, 3.0, 5.0]
-    assert result["mean_bb_per_paired_deal"] == 3.0
-    assert result["std_bb"] == 2.0
-    assert result["ci95_bb"][0] == pytest.approx(3 - 1.96 * 2 / 3**0.5)
+def test_samples_are_legal_and_river_results_exact():
+    hole = np.array([0, 5, 10, 15, 20], dtype=np.int32)
+    board = np.array([24, 29, 34, 3, 9], dtype=np.int32)
+    other, scores, results = agent._sample(hole, board, 300, 1, np.uint64(987), agent._SCORE, agent._PREFLOP)
+    mine = omaha_score(hole.tolist(), board.tolist())
+    for h, strength, outcome in zip(other, scores, results):
+        assert len(set(h)) == 5
+        assert not set(h).intersection(set(hole) | set(board))
+        theirs = omaha_score(h.tolist(), board.tolist())
+        assert strength[3] == theirs
+        assert outcome == (1.0 if mine > theirs else 0.5 if mine == theirs else 0.0)
 
 
-def test_benchmark_rejects_illegal_action_immediately():
-    probe = SimpleNamespace(
-        new_half=lambda config, memory: None,
-        choose_action=lambda obs, memory: "RAISE_POT",
-        on_hand_end=lambda result, memory: None,
-    )
-    with pytest.raises(AssertionError, match="Illegal strategy action"):
-        run_match("calling", deals=1, seed="invalid-action", strategy=probe)
+def test_preflop_data_is_complete_and_suit_invariant():
+    assert agent._DATA.is_file(), 'Run tools/train_preflop.py before shipping'
+    assert agent._PREFLOP.shape == (376992,)
+    assert 0.49 < agent._PREFLOP.mean() < 0.51
+    assert agent._PREFLOP.std() > 0.02
+    rng = random.Random(135)
+    for _ in range(200):
+        hole = rng.sample(range(36), 5)
+        value = agent._PREFLOP[agent._index(np.array(hole, dtype=np.int32))]
+        for perm in itertools.permutations(range(4)):
+            changed = np.array([(c & ~3) | perm[c & 3] for c in hole], dtype=np.int32)
+            assert agent._PREFLOP[agent._index(changed)] == value
+
+
+def test_half_reset_reproduces_decisions_without_fallbacks():
+    def run(memory):
+        agent.new_half(AgentConfig(), memory)
+        actions = []
+        for hand in range(50):
+            game = Game(make_deal('isolation', hand), hand % 2, hand)
+            while not game.is_terminal:
+                obs = game.observation(game.to_act)
+                if game.to_act == 0:
+                    action = agent.choose_action(obs, memory)
+                    actions.append(action)
+                else:
+                    action = Action.RAISE_POT if Action.RAISE_POT in obs.legal_actions else Action.CHECK_CALL
+                assert action in obs.legal_actions
+                game.apply(action)
+            agent.on_hand_end(game.hand_result(0), memory)
+        assert memory['fallback_count'] == 0
+        return actions
+    memory = {}
+    assert run(memory) == run(memory)
+
+
+def test_unbeatable_river_hand_value_bets():
+    from dataclasses import replace
+    from game import Street
+    memory = {}
+    agent.new_half(AgentConfig(), memory)
+    obs = Game(make_deal('nuts', 0), 0).observation(0)
+    obs = replace(obs, street=Street.RIVER,
+                  hole_cards=tuple(cards_from_str('Ah Kh 6c 7d 8s')),
+                  board=tuple(cards_from_str('Qh Jh Th 9c 6d')),
+                  pot=20, to_call=0, my_bet=0, opp_bet=0,
+                  my_stack=70, opp_stack=70,
+                  legal_actions=(Action.CHECK_CALL, Action.RAISE_HALF, Action.RAISE_POT),
+                  raise_to={Action.RAISE_HALF: 10, Action.RAISE_POT: 20})
+    assert agent.choose_action(obs, memory) == Action.RAISE_POT
+    assert memory['fallback_count'] == 0
+
+
+def test_forced_terminal_call_does_not_imply_passivity():
+    from dataclasses import replace
+    from game import HandResult
+    memory = {}
+    agent.new_half(AgentConfig(), memory)
+    obs = Game(make_deal('cap', 0), 0).observation(0)
+    obs = replace(obs, raises_this_street=3)
+    memory['last_obs'] = obs
+    memory['last_action'] = Action.RAISE_POT
+    before = memory['counts'].copy()
+    result = HandResult(hand_index=0, my_net=0, pot=160, went_to_showdown=True,
+                        board=(), opp_hole=None, winner='split')
+    agent.on_hand_end(result, memory)
+    assert np.array_equal(before, memory['counts'])

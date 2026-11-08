@@ -1,0 +1,10 @@
+{
+  "samples_per_class": 65536,
+  "suit_classes": 19998,
+  "total_hands": 376992,
+  "seed_formula": "413887 + canonical_index * 7919",
+  "min_equity": 0.0989837646484375,
+  "max_equity": 0.6973724365234375,
+  "mean_equity": 0.5000209212303162,
+  "elapsed_seconds": 252.2724928748794
+}

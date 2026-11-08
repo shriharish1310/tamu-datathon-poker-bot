@@ -1,65 +1,35 @@
-name: Starfish release checks
-
+name: Starfish team integration validation
 on:
+  push:
+    branches: [codex/starfish-quad-integration]
   workflow_dispatch:
-    inputs:
-      profile:
-        description: Use committed strategy or stage a frozen experimental profile
-        type: choice
-        options: [release, baseline, range_130, range_130_budget25]
-        default: release
-        required: true
-
 permissions:
   contents: read
-
-defaults:
-  run:
-    shell: bash
-
 jobs:
-  release-checks:
-    name: release-checks (${{ inputs.profile }})
+  validate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 15
     env:
-      PYTHONUTF8: '1'
       PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: '3.12'
-      - name: Install test dependencies
+      - name: Install pinned dependencies
         run: python -m pip install -r requirements-dev.txt
-      - name: Stage requested experimental profile
-        if: inputs.profile != 'release'
-        env:
-          EXPERIMENT_PROFILE: ${{ inputs.profile }}
-        run: |
-          python tools/package_profile.py --profile "$EXPERIMENT_PROFILE" --configs experiments/release_configs.json --output reports/ci-profile
-          cp reports/ci-profile/strategy.py strategy.py
-      - name: Full correctness and fault-injection tests
+      - name: Official protocol and upstream strategy tests
         run: python -m pytest -q
-      # These matches are sequential and run before Docker builds to avoid
-      # competing CPU load. They measure host HTTP timing, not container timing.
-      - name: Fresh-process matches on additional seeds
-        timeout-minutes: 12
-        run: python tools/evaluate_suite.py --seeds 731 947 --deals 1000 --output reports/linux-reliability
-      - name: Official Docker build and smoke check
-        timeout-minutes: 30
+      - name: Exact-commit official Docker checks
         run: |
           mkdir -p reports
-          bash tools/check_build.sh 2>&1 | tee reports/official-build.log
-      - name: Reject hidden faults in the restricted container
-        run: python tools/check_container_reliability.py --output reports/container-reliability.json
-      - name: Preserve validation evidence
+          set -o pipefail
+          bash tools/check_build.sh 2>&1 | tee reports/official-docker-check.log
+      - name: Preserve check output
         if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: starfish-release-evidence
+          name: starfish-quad-release-checks
           path: reports/
-          if-no-files-found: warn
-          retention-days: 30
