@@ -1,0 +1,50 @@
+{
+  "schema": "starfish-final-generalization-lock-v1",
+  "locked_before_opening_configurations": true,
+  "candidate": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+  "fallback": "fd5c428475eee98edb7c38bd1e7fc0870ddbf42d",
+  "profile": "range_130_budget25",
+  "opponents_path": "experiments/opponents-heldout.json",
+  "opponents_canonical_sha256": "8f8afb2ef96cf6a632e3982d2093e90c40f4ac3a6960a5a4faeb0419cc0a5abb",
+  "opponent_policy_commit": "b725121",
+  "opponent_runtime_commit": "fd5c428475eee98edb7c38bd1e7fc0870ddbf42d",
+  "prior_use_audit": {
+    "canonical_hash_equals_original_batch01_hash": true,
+    "file_history": "Single creation commit 10221d5; unchanged since generation",
+    "prior_evaluation_records_found": 0,
+    "scope": "Search available reports/docs JSON, JSONL and CSV for evaluated opponent/name fields ending _held_0 or _held_1; prior Batch01-04 reports and harnesses show no holdout evaluation. This cannot prove absence of unrecorded external use.",
+    "prior_github_runs": "All recorded runs completed; no concurrent training or evaluation job found",
+    "seeds_found_in_prior_reports_docs_experiments": false
+  },
+  "configuration_count": 12,
+  "seeds": [
+    "final-6e5b590-20261107-a-19f273e4",
+    "final-6e5b590-20261107-b-62ad8301",
+    "final-6e5b590-20261107-c-b4c9175e"
+  ],
+  "seed_design": "Same three new independent match seeds for each configuration; preserve whole seed clusters when describing aggregate uncertainty",
+  "matches_per_configuration": 3,
+  "max_full_match_slots": 36,
+  "paired_deals_per_match": 1000,
+  "halves_per_match": 2,
+  "process_isolation": "New bot and opponent containers for every half; official Docker recipe and restricted runtime; sequential matches on one fresh CI runner with no training",
+  "order": "Seed rounds in listed order; within round r, visit stored opponent indices starting at (4*r)%12 then wrap; no outcome-based scheduling",
+  "weighting": "Each of 12 configurations gets weight 1/12; each of its three seeds gets weight 1/3; no filtering or family reweighting",
+  "primary": "Equally weighted official points (1 win, 0.5 chop, 0 loss)",
+  "secondary": "Equally weighted official mean_bb_per_deal; do not substitute hand-win rate",
+  "acceptance": {
+    "complete_match_slots": 36,
+    "minimum_equally_weighted_points": 0.75,
+    "minimum_points_per_configuration": 1.5,
+    "positive_mean_bb_every_configuration": true,
+    "aggregate_profit_seed_t_ci95_lower_above_zero": true,
+    "candidate_max_charged_half_strictly_below_seconds": 4.0,
+    "official_time_bank_seconds": 8.0,
+    "zero_observed_candidate_and_opponent_faults_fallbacks_errors_forfeits_bank_exhaustion": true,
+    "exact_candidate_tests_and_official_docker_protocol_pass": true
+  },
+  "uncertainty": "Preserve every official match CI. Report per-configuration mean/min/max across three seeds and Student-t 95% interval with df=2. Aggregate across the three equally weighted seed-round means, also df=2. The small number of seed clusters and related opponent architectures limits inference; no tournament dominance claim.",
+  "execution_rules": "Never modify candidate or opponent parameters; no outcome-based stopping; complete all 36 unless an infrastructure failure prevents continuation. Preserve every started/failed slot, process log, official JSON and diagnostic. Never silently rerun a started match or discard a loss.",
+  "post_evaluation": "If all gates pass, recommend release of exact candidate SHA. Otherwise recommend further investigation and keep both frozen. If outcomes inform another candidate, this entire pool and seed set become development history and a new independent final evaluation is required.",
+  "submission": "Prepare the exact validated SHA and existing allowlisted ZIP. Do not submit to organizers in this task; report observed submission status separately."
+}
