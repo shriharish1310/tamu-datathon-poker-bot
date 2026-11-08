@@ -6,7 +6,7 @@ on:
       profile:
         description: Use committed strategy or stage a frozen experimental profile
         type: choice
-        options: [release, baseline, range_130, range_130_budget25, batch03]
+        options: [release, baseline, range_130, range_130_budget25, batch03, batch03_parser]
         default: release
         required: true
 
@@ -19,7 +19,7 @@ defaults:
 
 jobs:
   release-checks:
-    if: inputs.profile != 'batch03'
+    if: inputs.profile != 'batch03' && inputs.profile != 'batch03_parser'
     name: release-checks (${{ inputs.profile }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -67,3 +67,6 @@ jobs:
   batch03-research:
     if: inputs.profile == 'batch03'
     uses: ./.github/workflows/batch03.yml
+  batch03-parser:
+    if: inputs.profile == 'batch03_parser'
+    uses: ./.github/workflows/batch03-parser.yml
