@@ -1,7 +1,7 @@
 {
   "upstream_author_profile": "https://github.com/650JoshLee",
   "upstream_commit": "987f97aa183cf93cb846afb5cc235664db24a90f",
-  "upstream_bot": "teammate_baseline_4",
+  "upstream_bot": "Authorized teammate baseline, generation 4",
   "upstream_author_credit": "quad-j / 650JoshLee",
   "authorization": "Repository owner is a teammate; user confirmed author permission to modify and submit this team integration.",
   "changes": [
@@ -13,7 +13,7 @@
   ],
   "playing_functions_modified": true,
   "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
-  "integrated_agent_sha256": "8f1e691879f997cd51199b165d8f46d0102ab2b254851cbcb7c39e81b1d3f64a",
+  "integrated_agent_sha256": "00864b8d04d7d56672d34498f08b5d6f4a0acc02f6e02db3ca702da0ccea6f1e",
   "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
   "unchanged_files": {
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",

@@ -17,7 +17,7 @@ Check that the tournament can run it:
 Team: Starfish. Bot: Starfish. Original contributor: quad-j / 650JoshLee.
 Strategy: precomputed preflop equity, compiled Monte Carlo evaluation,
 opponent range inference, learned interpretation of checks, and half-local
-adaptation. See BOT_NOTES.md.
+adaptation. See PROVENANCE.json.
 
 Everything under "SERVER PLUMBING" talks to the judge. You normally never
 need to change it, and if you break it the judge can't talk to your bot.
@@ -40,7 +40,7 @@ from game import Action, AgentConfig, HandResult, Observation, Street
 warmup()
 
 # Tournament identity
-# Team integration of quad-j's teammate_baseline_4, used with our teammate's permission.
+# Starfish integration, with the original contributor's permission.
 # Strategy and model provenance are recorded in PROVENANCE.json.
 PARTICIPANT = "Starfish"
 AGENT_NAME = "Starfish"

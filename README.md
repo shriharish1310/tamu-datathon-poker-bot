@@ -1,6 +1,6 @@
 # Starfish
 
-Starfish's current poker entry integrates our teammate's **teammate_baseline_4** from
+Starfish's current poker entry integrates an authorized teammate baseline from
 [650JoshLee (teammate baseline)](https://github.com/650JoshLee), used with the
 author's permission. The original strategy and preflop table are credited to
 quad-j. Our integration changes the tournament identity, exposes existing
@@ -10,7 +10,7 @@ fallback counters through the health endpoint, and adds the strategy adjustment 
 
 Heads-up Short Deck 5-card Pot-Limit Omaha, using precomputed preflop equity,
 Numba-compiled Monte Carlo evaluation, opponent-range inference, and bet selection.
-The strategy and model data originate from upstream **teammate_baseline_4** at
+The strategy and model data originate from our teammate's baseline at
 `987f97aa183cf93cb846afb5cc235664db24a90f`. Later upstream experimental generations
 are not included. See [PROVENANCE.json](PROVENANCE.json) for exact hashes.
 
@@ -26,7 +26,7 @@ sample size, approximate EV standard error, and illegal-action corrections.
 No additional rollouts or dependencies are introduced.
 
 **Validation status:** this final adjustment was published without further tests
-at the team's request. It has not demonstrated an improvement over teammate_baseline_4.
+at the team's request. It has not demonstrated an improvement over the teammate baseline.
 
 ## Run
 
@@ -54,7 +54,7 @@ workflow can be started manually. Automatic checks are disabled for this rushed 
 
 ## Evidence and attribution
 
-Before integration, this exact upstream teammate_baseline_4 defeated the previous Starfish
+Before integration, this exact teammate baseline defeated the previous Starfish
 release in three official 1,000-paired-deal matches. That establishes the direct
 matchup in our sample, not general superiority or a tournament placement.
 Earlier Starfish benchmark claims describe the previous implementation and do
