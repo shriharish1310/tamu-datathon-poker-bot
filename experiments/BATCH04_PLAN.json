@@ -1,0 +1,24 @@
+{
+  "baseline": "fd5c428475eee98edb7c38bd1e7fc0870ddbf42d",
+  "batch03": "f9aa8ce3ad0ac123fb0288dc63a16c9151fa4094",
+  "scope": "Runtime only; no learned estimators or strategy tuning",
+  "max_optimizations": 2,
+  "max_full_official_matches": 12,
+  "profiling": "Replay previously recorded bluff-heavy observations inside official image; separate from timing and scoring",
+  "paired_repeats": [
+    {"seed": "b03-runtime-13", "opponent": "bluffy_1", "order": ["baseline", "candidate"]},
+    {"seed": "b03-runtime-37", "opponent": "bluffy_1", "order": ["candidate", "baseline"]},
+    {"seed": "b03-runtime-73", "opponent": "bluffy_1", "order": ["baseline", "candidate"]},
+    {"seed": "b02-confirm-29", "opponent": "bluffy_1", "order": ["candidate", "baseline"]},
+    {"seed": "b02-confirm-61", "opponent": "bluffy_1", "order": ["baseline", "candidate"]},
+    {"seed": "b03-screen-23", "opponent": "range_aware_2", "order": ["candidate", "baseline"]}
+  ],
+  "deals_per_match": 1000,
+  "equivalence": "Exact actions, legal bet amounts, equity outputs, actual sample counts and RNG progression on identical observations with controlled clock inputs. Cover full/half budget and pacing boundaries. Document natural-clock differences separately.",
+  "gates": "No controlled-input behavioral mismatch; >=15% lower median charged half time over five paired bluff-heavy repeats; no observed worst-case regression; zero faults/errors/forfeits/bank exhaustion; required tests and exact-commit official Docker smoke",
+  "four_second_target": "Reported separately from official eight-second bank; not a runtime guarantee",
+  "heldout_configurations_used": false,
+  "unused_confirmation_seeds_used": false,
+  "final_holdout_seeds_used": false,
+  "submission": "Allowlisted ZIP only if every gate passes; otherwise retain fd5c428. Research harness and reports stay on a separate branch."
+}
