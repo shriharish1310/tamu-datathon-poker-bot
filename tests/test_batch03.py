@@ -1,6 +1,7 @@
 """Scientific compatibility checks for the preflop-only replacement."""
 from itertools import permutations
 from pathlib import Path
+import asyncio
 import pytest
 import advanced_policy
 import batch03_policy as research
@@ -9,6 +10,16 @@ from preflop_model import canonical,features
 from range_equity import Rollouts
 
 MODEL=Path(__file__).resolve().parents[1]/'experiments/batch03_preflop_weights.json'
+
+
+def test_readonly_audit_reads_wrapped_strategy_memory(monkeypatch):
+    import batch03_audit_server as audit
+    from reliability import CORE_KEY
+    monkeypatch.setattr(audit.agent,'MEMORY',{CORE_KEY:{'compute_seconds':1.25,'decisions':7,
+        'experiment':{'sampled_trials':24}}})
+    result=asyncio.run(audit.metrics())
+    assert result['core_wall_seconds']==1.25 and result['decisions']==7
+    assert result['experiment']['sampled_trials']==24
 
 
 def test_suit_grouping_and_feature_invariance():

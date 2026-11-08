@@ -119,6 +119,7 @@ def play(profile,opponent,seed,deals,phase,lock):
     r['gate_passed']=all(r[k] for k in ('bot_valid','opponent_valid','reliability_clean','opponent_reliability_clean','runtime_target_met'))
     r['metrics']=[]
     r['original_counters']=[h['batch03_metrics'] for h in evidence['halves']]
+    assert all(isinstance(m['core_wall_seconds'],(int,float)) and isinstance(m['decisions'],int) for m in r['original_counters'])
     for half in (1,2):
         for line in path.with_suffix(f'.half{half}.agent1.log').read_text().splitlines():
             if line.startswith('BATCH03_METRICS '):r['metrics'].append(json.loads(line[16:]))
