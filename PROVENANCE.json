@@ -1,0 +1,30 @@
+{
+  "upstream_author_profile": "https://github.com/650JoshLee",
+  "upstream_commit": "987f97aa183cf93cb846afb5cc235664db24a90f",
+  "upstream_bot": "Authorized teammate baseline, generation 4",
+  "upstream_author_credit": "quad-j / 650JoshLee",
+  "authorization": "Repository owner is a teammate; user confirmed author permission to modify and submit this team integration.",
+  "changes": [
+    "Both tournament identity fields set to Starfish",
+    "Existing fallback and compute counters exposed through untimed health endpoint",
+    "Attribution, source manifest, packaging and validation workflow",
+    "Paired-rollout sampling-noise guard for pot raises with fewer than 64 effective callers; required margin bounded to 1.25-2.0 times upstream",
+    "Observable guard rejections, sample concentration, approximate EV uncertainty, and illegal-action correction counters"
+  ],
+  "playing_functions_modified": true,
+  "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
+  "integrated_agent_sha256": "00864b8d04d7d56672d34498f08b5d6f4a0acc02f6e02db3ca702da0ccea6f1e",
+  "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
+  "unchanged_files": {
+    "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+    "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+    "judge_engine.py": "fa7a7e3fb49c09588cfcf0930a8e3f6c189e419dbc54263ae7d53b953223d422",
+    "requirements.txt": "254018ad62d56f87a89323b4b5c6d5a15c200ef27e85925d3ed57722fee43287",
+    "data/preflop_metadata.json": "c8fde7b2ae76fb657b49c5dc8ce9ea2aa258a46a828de1009a046ab76584fcff",
+    "docker/Dockerfile.agent": "6baea809885f97fd50187d437009bb9ac38d5d0855e29e71dcf1194b4c2ce186",
+    "docker/Dockerfile.base": "d54f26ad44236c8a90308286e7de703d9e8c3916e6baa77d3a6fc3c56ab04d15",
+    "tools/check_build.sh": "bddedcd556ca4145378738ff4ee64add44ee9b7d6fb2f1609d5104dfdc893c6c",
+    "tools/smoke_test.py": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e"
+  },
+  "validation_status": "Sampling-aware riskguard refinement intentionally untested at user request"
+}

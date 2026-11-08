@@ -1,3 +1,4 @@
 fastapi==0.156.1
 uvicorn==0.54.0
-httptools==0.8.0
+numpy==2.5.4
+numba==0.68.1
