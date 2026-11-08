@@ -1,202 +1,122 @@
-# Starfish — TAMU Datathon poker bot
+# Starfish
 
-A Python bot for **Heads-Up Short Deck 5-card Pot-Limit Omaha**, built on the
-official tournament engine and HTTP protocol. The current default is
-`range_130_budget25`, selected from 19 tested configurations.
+**A range-aware poker bot built for profit under a strict compute budget.**
 
-On final, previously unused seeds it won **18/18 official matches**, including
-**5/5 against frozen Starfish v1** and **5/5 against the separate Desktop bot**.
-Across the identical 13-match common opponent pool, it earned **13 points versus
-v1's 10.5**. These results establish an advantage against the tested policies,
-not a solved strategy or guaranteed performance against other teams.
+Starfish plays heads-up **Short Deck 5-card Pot-Limit Omaha** for the TAMU
+Datathon Heads Up challenge. It combines Monte Carlo equity, opponent modeling,
+pot-odds decisions, and selective bluffs in a lightweight Python service.
+The objective is official match points and chip profit, rather than hand-win rate.
 
-See [all experiments and rejected variants](docs/EXPERIMENTS.md),
-[exact metrics and source hashes](docs/EXPERIMENTS.json), and
-[release validation](docs/VALIDATION.md).
+**Submission / project link:**
+[github.com/shriharish1310/tamu-datathon-poker-bot](https://github.com/shriharish1310/tamu-datathon-poker-bot)
 
-## Run
+The default branch contains the current release. This public presentation keeps
+the playing code and dependencies byte-for-byte identical to the validated
+release. No model download, GPU, external API, or database is required.
 
-PowerShell from this project directory:
+## Measured results
 
-```powershell
+| Final generalization benchmark | Result |
+|---|---:|
+| Official match points | **36 / 36** |
+| Wins / chops / losses | **36 / 0 / 0** |
+| Equally weighted mean points per match | **1.000** |
+| Mean profit | **+3.625 BB per paired deal** |
+| Across-seed 95% interval for mean profit | **[+2.499, +4.751]** |
+| Worst charged bot half | **3.729 s** |
+| Observed errors, faults, fallbacks, forfeits, bank exhaustion | **0** |
+
+The frozen bot faced **12 previously unused opponent configurations**, three
+new seeds each, with 1,000 paired deals per match: **72,000 played hands**.
+Both bots restarted between halves. Matches ran sequentially in restricted
+Linux containers. All 72 Starfish halves met our four-second engineering target;
+the official bank is eight seconds per half.
+
+These are benchmark results against parameter configurations in six known
+opponent families, **not an organizer tournament ranking**. Three seeds give
+limited evidence about future opponents, and measured timing is not a runtime
+guarantee. See [results, confidence intervals, and provenance](docs/RESULTS.md).
+
+## How it plays
+
+1. **Estimate equity.** Sample legal opponent holdings and board completions with
+   the official evaluator. Omaha hands use exactly two private cards and three
+   board cards; short-deck hand rankings follow the organizer's rules.
+2. **Condition on the opponent.** Importance weighting favors stronger holdings
+   after selective raises, with less narrowing against habitual aggression.
+   Smoothed fold and aggression estimates adapt within each half.
+3. **Choose profitable actions.** Combine equity and pot odds with heuristic
+   adjustments for position, future betting, and opponent tendencies. Value bets
+   and selective semi-bluffs or blocker bluffs use only decision-time information.
+4. **Respect the time bank.** Cache repeated calculations, pace rollout work,
+   and serve decisions through FastAPI/Uvicorn with the `httptools` parser.
+5. **Make failures observable.** Validate legal actions, log internal faults,
+   and expose fault/fallback counters. Any observed fallback blocks release.
+
+The final policy uses simulation and explicit decision rules. It does not use a
+trained neural estimator and is not a solved or GTO policy.
+
+## Run locally
+
+Use Python 3.12. From the repository directory:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m pytest test_agent.py tests -q
-.\.venv\Scripts\python.exe tools/run_local_match.py --opponent random --deals 1000 --seed practice-1
 ```
 
-The local match helper starts two **loopback-only** servers, runs the official
-judge, restarts both servers between duplicate halves, saves JSON reports,
-and stops its own processes afterward. Opponents: `calling`, `half`, `pot`, `random`.
-The helper uses the same Python interpreter that launches it. Official judge
-JSON remains unchanged; a separate `*.reliability.json` records post-half health
-diagnostics and fault-marker counts from the stopped processes' stderr logs.
+Activate it with `.\.venv\Scripts\Activate.ps1` on Windows PowerShell, or
+`source .venv/bin/activate` on Linux/macOS, then:
 
-For direct strategy iteration without HTTP overhead:
-
-```powershell
-.\.venv\Scripts\python.exe tools/benchmark_strategy.py --deals 1000 --seed dev-a dev-b --opponent all --output reports/development.json
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+python agent.py
 ```
 
-Use separate, previously untouched seeds for final evaluation. Direct benchmark
-timing excludes HTTP/serialization and does not enforce the time bank.
+The bot serves the official HTTP protocol on port **5008**. To run a practice
+match instead of starting the server manually:
 
-The selected policy passed **123 tests** and fresh-process official HTTP matches
-with zero observed judge errors, strategy faults, fallbacks, forfeits or timeouts.
-Its slowest charged half was **2.850s locally** and **2.906s in Linux validation**,
-below the 4-second release target and official 8-second bank. The
-[Linux workflow](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42408822715)
-also passed eight additional baseline matches and the official and supplementary
-Docker checks. Full-match timings were measured on the hosts; the restricted
-container ran smoke checks. The staged CI policy matches the production source
-after normalizing line endings.
-
-Historical v1 evidence is retained in [BASELINE_MATRIX.json](docs/BASELINE_MATRIX.json),
-[LINUX_VALIDATION.json](docs/LINUX_VALIDATION.json), and
-[HEAD_TO_HEAD.md](docs/HEAD_TO_HEAD.md); those files describe the older policy.
-
-To compare a compatible bot from another folder, the helper can manage both
-servers and fresh halves automatically:
-
-```powershell
-python tools/run_local_match.py --opponent-dir "$env:USERPROFILE\Desktop\heads-up-bundle" --deals 1000 --seed comparison-new-seed --output reports/desktop-comparison.json --logs
+```bash
+python tools/run_local_match.py --opponent random --deals 1000 --seed practice-1
 ```
 
-Run the full official baseline matrix (20 matches, fresh processes per half):
+The helper starts both servers, restarts them between halves, preserves official
+judge JSON and reliability diagnostics, then stops its own processes. Other
+practice opponents: `calling`, `half`, and `pot`.
 
-```powershell
-.\.venv\Scripts\python.exe tools/evaluate_suite.py --output reports/baseline_matrix
+## Docker validation
+
+With Docker running, use Bash, WSL, or Git Bash from the repository root:
+
+```bash
+bash tools/check_build.sh
+python tools/check_container_reliability.py --output reports/container-reliability.json
 ```
 
-Defaults: all four official opponents, seeds 7/19/43/101/202, 1,000 deals per
-match. The output directory must be new or empty. Reports include untouched
-official verdicts and CIs, charged timing per half, hand logs, runtime versions,
-and an exact source snapshot. Each bot half must stay below the 4-second target;
-both bots' validity is checked. Our bot must also have zero strategy faults,
-fallback decisions and logged fault markers, with the fallback latch inactive.
-Missing or malformed evidence fails the gate. The suite saves results and exits
-nonzero on any runtime, validity or reliability gate failure, even if the official
-verdict is a win. Matches run sequentially to avoid CPU contention.
+The first command is the organizer's build/startup/protocol smoke check. The
+second inspects internal fault counters and logs in the same restricted image.
+The image includes only the required runtime files, excluding research and docs.
+The [release-check workflow](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/workflows/reliability.yml)
+also verifies that runtime files still match the frozen, match-tested release
+before testing.
 
-## What the bot does
+## Code map
 
-The hybrid combines Monte Carlo equity, expected-value heuristics, opponent
-adaptation and selective randomized bluffs. The reliability adapter preserves
-the existing betting policy when its callbacks succeed.
-
-1. Uses the organizer's exact evaluator: 36 cards; exactly two hole cards and
-   three board cards; flush above full house; trips above straight.
-2. Estimates showdown equity by sampling disjoint opponent cards and board
-   completions. Ties count as half a pot. After a selective opponent raises,
-   importance weights favor stronger holdings; habitual aggression receives
-   less range narrowing. Only currently visible cards inform these weights.
-3. Compares call cost with pot odds, with heuristic adjustments for position,
-   future betting, and observed opponent aggression.
-4. Uses Bayesian-smoothed fold and aggression counts, including terminal
-   responses missing from the next observation.
-5. Makes value bets against callers. Mixes occasional nut-draw semi-bluffs,
-   nut-flush-blocker river bluffs, and button steals only after sufficient
-   evidence that the opponent folds.
-6. Chooses from legal actions and reduces rollout counts when computation
-   runs ahead of a conservative per-half allowance.
-
-The selected configuration is:
-
-| Setting | Value |
+| File | Responsibility |
 |---|---|
-| Range selectivity multiplier | `range_blend=1.3`, actual mix capped at `0.90` |
-| Separate caller equity | `caller_power=0.0` (off) |
-| Extra samples near decision boundaries | `adaptive_max=0` (off) |
-| Position margin | `position="legacy"` |
-| Initial samples by street | `24, 32, 40, 64` |
-| Core compute pacing | `compute_fraction=0.25`, a 2-second allowance per half |
+| `strategy.py`, `policy_config.py` | Frozen production configuration |
+| `advanced_policy.py` | Betting decisions and opponent adaptation |
+| `range_equity.py`, `equity.py` | Equity sampling, weighting, and caches |
+| `baseline_strategy.py` | Shared strategy/accounting helpers required at runtime |
+| `reliability.py` | Legal-action checks, fault logging, and diagnostics |
+| `agent.py` | FastAPI service and official judge protocol |
+| `evaluator.py`, `game.py`, `judge_engine.py` | Official rules, hand evaluation, and scoring |
+| `tests/`, `test_agent.py` | Correctness, protocol, and fault-injection tests |
 
-Sample counts halve when computation runs ahead of pace. Core computation is
-different from the official charged HTTP time. Lazy feature computation and
-caching preserve sample results while reducing overhead. Separate caller equity,
-extra boundary samples and position changes did not justify inclusion in the
-tested variants. The big blind acts last preflop but first postflop, so a future
-equity-realization margin can still be useful.
+[Devpost project write-up](docs/DEVPOST.md) · [Current benchmark details](docs/RESULTS.md)
 
-Range likelihoods and fold estimates remain heuristic, and Monte Carlo sampling
-is noisy. This is the best configuration measured in this search, not a GTO claim.
-
-If a strategy callback raises or returns an invalid action, the adapter logs
-`BOT_STRATEGY_FAULT` with a traceback and disables the core for the rest of that
-half. Subsequent decisions use a legal conservative fallback: check when free,
-otherwise fold. Fault and fallback counters remain outside the strategy's state
-and are exposed by the health endpoint. A fresh half resets this state. Fallbacks
-keep a recoverable fault from becoming an illegal action; any fallback still
-blocks release. The adapter cannot recover process death or interrupt a hang.
-
-## Structure
-
-| File | Purpose |
-|---|---|
-| `agent.py` | Official FastAPI server with our strategy adapter |
-| `reliability.py` | Callback validation, fault logging, fallback latch and health counters |
-| `strategy.py` | Selected production profile and callback adapter |
-| `advanced_policy.py`, `policy_config.py` | Experimental policies, opponent adjustments and configuration |
-| `range_equity.py` | Cached importance-weighted Monte Carlo equity and sampling uncertainty |
-| `baseline_strategy.py`, `equity.py` | Frozen v1 policy/equity and shared opponent-accounting helpers |
-| `evaluator.py`, `game.py` | Unmodified official evaluation and game rules |
-| `judge_engine.py` | Official HTTP judge and duplicate scoring |
-| `tools/benchmark_strategy.py` | Fast paired-deal evaluation |
-| `tools/run_local_match.py` | Temporary servers and fresh-process HTTP halves |
-| `tools/evaluate_suite.py` | Official 20-match matrix and per-opponent summaries |
-| `tools/experiment_grid.py` | Controlled direct policy screens using official scoring |
-| `tools/package_profile.py`, `tools/validate_profiles.py` | Frozen policy packages and sequential fresh-process validation |
-| `tests/`, `test_agent.py` | Evaluator, strategy, opponent model, and API checks |
-| `docs/OFFICIAL_GUIDE.md` | Original organizer guide |
-| `docs/VALIDATION.md` | Measured results and remaining validation |
-| `docs/SCORING.md` | Confirmed ranking, tie-break, and evaluation scorecard |
-| `experiments/`, `docs/EXPERIMENTS.md` | Configurations, locked evaluation protocol and complete experiment results |
-
-## Runtime and submission
-
-The official constraints are **8 seconds charged per 1,000-hand half**,
-at most **1 second per request**, and **15 seconds startup**. Files are read-only,
-there is no external network, and each half uses a fresh process. Learning and
-equity caches live only in the per-half `memory` dictionary.
-
-Keep `requirements.txt` at the root and retain the pinned FastAPI/uvicorn versions.
-No additional inference library, GPU, Redis, database, or external API is needed.
-
-Before submitting:
-
-- The default participant name is already **Starfish** in `agent.py`.
-- Run the fresh-process evaluation suite and require every release gate to pass.
-- Run `bash tools/check_build.sh` in Git Bash or WSL with Docker Desktop running.
-  This verifies the official Linux image, size, read-only runtime, and smoke cases.
-- Run `python tools/check_container_reliability.py` after that check to reject
-  hidden strategy faults in the same restricted image. The manual GitHub Actions
-  workflow runs both checks on Linux when local Docker is unavailable.
-- Push the reviewed bot to the [team repository](https://github.com/shriharish1310/tamu-datathon-poker-bot)
-  and submit that exact full commit SHA using the organizer's form. Tournament
-  submission has not been performed.
-
-The local development environment was created with `--system-site-packages` and
-the organizer-pinned web packages installed inside it; create a clean venv using
-the commands above when reproducing on another machine.
-
-## Source and reuse decision
-
-Official starter:
-https://github.com/tamu-datathon-org/heads-up-bundle
-
-Imported snapshot: `c83ab6eeb7660a2fd1fae7df224315d41fe985a9`.
-Organizer files retain their original comments and rules. Our new strategy,
-equity estimator, tests, and local match tooling are separate.
-
-The user's repository search was reviewed. PokerKit is useful reference material,
-but its built-in PLO and short-deck variants do not directly match this combination.
-PyPokerEngine targets Hold'em, and poker_ai's supplied training setup uses a
-different deck. No code from those repositories was copied into this bot.
-
-## Further experiments
-
-Use new development seeds and reserve new final seeds before another search.
-The current experiment seeds are now validation history. Calibrated range
-likelihoods, offline preflop estimates and more diverse strong opponents remain
-useful directions; retain changes only after measuring profit, official points
-and runtime on the same opponent pool.
+Built on the [official Heads Up starter](https://github.com/tamu-datathon-org/heads-up-bundle),
+imported at `c83ab6eeb7660a2fd1fae7df224315d41fe985a9`. The organizer's evaluator,
+game rules, and judge remain the scoring authority. Historical experiments and
+fallback revisions remain available in Git history; the default branch is the
+current release entry point.

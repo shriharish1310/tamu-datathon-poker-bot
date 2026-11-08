@@ -2,13 +2,6 @@ name: Starfish release checks
 
 on:
   workflow_dispatch:
-    inputs:
-      profile:
-        description: Use committed strategy or stage a frozen experimental profile
-        type: choice
-        options: [release, baseline, range_130, range_130_budget25]
-        default: release
-        required: true
 
 permissions:
   contents: read
@@ -19,7 +12,7 @@ defaults:
 
 jobs:
   release-checks:
-    name: release-checks (${{ inputs.profile }})
+    name: Frozen runtime and Docker validation
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
@@ -28,38 +21,52 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
-      - name: Install test dependencies
-        run: python -m pip install -r requirements-dev.txt
-      - name: Stage requested experimental profile
-        if: inputs.profile != 'release'
-        env:
-          EXPERIMENT_PROFILE: ${{ inputs.profile }}
-        run: |
-          python tools/package_profile.py --profile "$EXPERIMENT_PROFILE" --configs experiments/release_configs.json --output reports/ci-profile
-          cp reports/ci-profile/strategy.py strategy.py
-      - name: Full correctness and fault-injection tests
-        run: python -m pytest -q
-      # These matches are sequential and run before Docker builds to avoid
-      # competing CPU load. They measure host HTTP timing, not container timing.
-      - name: Fresh-process matches on additional seeds
-        timeout-minutes: 12
-        run: python tools/evaluate_suite.py --seeds 731 947 --deals 1000 --output reports/linux-reliability
-      - name: Official Docker build and smoke check
-        timeout-minutes: 30
+      - name: Verify frozen runtime, dependencies, and build inputs
         run: |
           mkdir -p reports
-          bash tools/check_build.sh 2>&1 | tee reports/official-build.log
+          python - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          base = '6e5b590bc922f047de670efdd5fd599f7459a75d'
+          files = ['agent.py', 'strategy.py', 'reliability.py', 'advanced_policy.py',
+                   'baseline_strategy.py', 'range_equity.py', 'policy_config.py',
+                   'equity.py', 'evaluator.py', 'game.py', 'requirements.txt',
+                   '.dockerignore', 'docker/Dockerfile.base', 'docker/Dockerfile.agent',
+                   'tools/check_build.sh', 'tools/smoke_test.py',
+                   'tools/check_container_reliability.py', 'requirements-dev.txt']
+          result = {'validated_runtime_commit': base,
+                    'public_release_commit': subprocess.check_output(
+                        ['git', 'rev-parse', 'HEAD'], text=True).strip(), 'files': {}}
+          for name in files:
+              expected = subprocess.check_output(['git', 'show', f'{base}:{name}'])
+              actual = pathlib.Path(name).read_bytes()
+              result['files'][name] = {'sha256': hashlib.sha256(actual).hexdigest(),
+                                       'identical': expected == actual}
+          pathlib.Path('reports/runtime-equivalence.json').write_text(
+              json.dumps(result, indent=2) + '\n')
+          assert all(item['identical'] for item in result['files'].values()), result
+          print(f'All {len(files)} frozen runtime/build inputs match {base}.')
+          PY
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Full correctness and fault-injection tests
+        run: python -m pytest -q 2>&1 | tee reports/pytest.log
+      # This is a presentation-only release. Final benchmark results are already
+      # frozen; do not consume or reuse evaluation seeds in these build checks.
+      - name: Official Docker build and smoke check
+        timeout-minutes: 30
+        run: bash tools/check_build.sh 2>&1 | tee reports/official-build.log
       - name: Reject hidden faults in the restricted container
         run: python tools/check_container_reliability.py --output reports/container-reliability.json
       - name: Preserve validation evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: starfish-release-evidence
+          name: starfish-public-release-evidence
           path: reports/
-          if-no-files-found: warn
-          retention-days: 30
+          if-no-files-found: error
+          retention-days: 90
