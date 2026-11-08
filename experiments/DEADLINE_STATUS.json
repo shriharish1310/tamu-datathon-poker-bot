@@ -1,0 +1,12 @@
+{
+  "checked_utc": "2026-11-07T23:37:30.525895+00:00",
+  "guide_url": "https://docs.google.com/document/d/1D1ruabeQ25scYg97ehBMnzA9fqaEWWsnFDfOmrLme4E/edit",
+  "guide_sha256": "44d8446fbc99e67b525abfc55208d6ca13756f61eaeba495f25e22984cfc288e",
+  "guide_deadline_text": "Deadline: [[Date and time]].",
+  "submission_form_url": "https://docs.google.com/forms/d/e/1FAIpQLSeoFC6kGqXspQBRyNgeTpSuwfCC747qwkfaBKKw0K3BVRSaHw/viewform?usp=send_form",
+  "verified_poker_deadline": null,
+  "verified_timezone": null,
+  "user_planning_assumption": "2026-11-08 04:00, unverified",
+  "final_freeze_scheduled": false,
+  "user_followup": "User will check with organizers; not a dependency for 90-minute A/B batch."
+}

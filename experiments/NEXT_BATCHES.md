@@ -1,5 +1,11 @@
 # Champion and remaining-time protocol
 
+**Updated after Batch 02:** the user confirmed the 04:00 time below is an
+unverified planning assumption. The live guide and submission form did not
+establish a poker deadline/timezone. No authoritative final freeze is scheduled;
+the earlier midnight cutoff is historical provisional planning, not organizer
+confirmation. Batch 02 independently enforces its original 90-minute budget.
+
 Champion is `range_130_budget25` at `fd5c428475eee98edb7c38bd1e7fc0870ddbf42d`.
 CHAMPION.json records canonical source hashes and configuration. Its runtime
 files are reconstructed from Git into `reports/champion-fd5c428`; research
