@@ -96,7 +96,7 @@ def restrictions(name, network, port):
 
 
 def judge_cmd(image, network, output, *args):
-    return ['docker', 'run', '--rm', '--user', '0', '--network', network, '--cpus', '1', '--memory', '4g',
+    return ['docker', 'run', '--rm', '--user', f'{os.getuid()}:{os.getgid()}', '--network', network, '--cpus', '1', '--memory', '4g',
             '--pids-limit', '256', '--read-only', '--tmpfs', '/tmp:rw,nosuid,nodev,size=512m',
             '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
             '-v', f'{ROOT}:/judge:ro', '-v', f'{output}:/out',
