@@ -43,7 +43,7 @@ warmup()
 # Team integration of quad-j's teammate_baseline_4, used with our teammate's permission.
 # Strategy and model provenance are recorded in PROVENANCE.json.
 PARTICIPANT = "Starfish"
-AGENT_NAME = "Starfish-riskguard"
+AGENT_NAME = "Starfish"
 
 
 # ===== YOUR CODE HERE =====

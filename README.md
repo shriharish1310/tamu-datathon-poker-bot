@@ -1,4 +1,4 @@
-# Starfish — teammate_baseline_4 team integration
+# Starfish
 
 Starfish's current poker entry integrates our teammate's **teammate_baseline_4** from
 [650JoshLee (teammate baseline)](https://github.com/650JoshLee), used with the
@@ -38,7 +38,7 @@ python agent.py
 ```
 
 The HTTP service listens on port 5008, or the tournament-provided `PORT`.
-Team identity: **Starfish**. Agent identity: **Starfish-riskguard**.
+Team identity: **Starfish**. Agent identity: **Starfish**.
 
 ## Validate
 

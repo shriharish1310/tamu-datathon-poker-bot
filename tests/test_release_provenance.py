@@ -27,5 +27,5 @@ def test_team_identity_and_health_counters():
     import asyncio
     result = asyncio.run(agent.info())
     assert result['participant'] == 'Starfish'
-    assert result['agent_name'] == 'Starfish-riskguard'
+    assert result['agent_name'] == 'Starfish'
     assert isinstance(result['diagnostics']['fallback_count'], int)

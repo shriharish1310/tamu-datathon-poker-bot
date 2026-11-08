@@ -5,7 +5,7 @@
   "upstream_author_credit": "quad-j / 650JoshLee",
   "authorization": "Repository owner is a teammate; user confirmed author permission to modify and submit this team integration.",
   "changes": [
-    "Tournament identity set to Starfish",
+    "Both tournament identity fields set to Starfish",
     "Existing fallback and compute counters exposed through untimed health endpoint",
     "Attribution, source manifest, packaging and validation workflow",
     "Paired-rollout sampling-noise guard for pot raises with fewer than 64 effective callers; required margin bounded to 1.25-2.0 times upstream",
@@ -13,7 +13,7 @@
   ],
   "playing_functions_modified": true,
   "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
-  "integrated_agent_sha256": "7d26a3d3dee3a5edc6d90cb46a8ac1c96a19d85ae80cefd1fc662752147e1cf9",
+  "integrated_agent_sha256": "8f1e691879f997cd51199b165d8f46d0102ab2b254851cbcb7c39e81b1d3f64a",
   "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
   "unchanged_files": {
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
