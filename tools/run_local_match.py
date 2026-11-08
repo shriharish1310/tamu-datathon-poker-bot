@@ -106,6 +106,8 @@ def main() -> None:
     parser.add_argument("--logs", action="store_true", help="save official per-hand action logs")
     parser.add_argument("--require-opponent-diagnostics", action="store_true",
                         help="require internal fault evidence from a compatible research opponent")
+    parser.add_argument("--agent-module", default="agent", help="research-only server module; default is official agent")
+    parser.add_argument("--collect-batch03-metrics", action="store_true", help="read optional metrics after official timed requests")
     args = parser.parse_args()
     if args.deals < 1:
         parser.error("--deals must be positive")
@@ -141,13 +143,14 @@ def main() -> None:
             processes, logs, identities = [], [], []
             diagnostics = None
             opponent_diagnostics = None
+            batch03_metrics = None
             failure = None
             ports = (free_port(), free_port())
             while ports[0] == ports[1]:
                 ports = (ports[0], free_port())
             try:
                 for index, (module, app_dir) in enumerate(
-                    (("agent", agent_dir), (opponent_module, opponent_dir))
+                    ((args.agent_module, agent_dir), (opponent_module, opponent_dir))
                 ):
                     log = open(output.with_suffix(f".half{half}.agent{index + 1}.log"), "w", encoding="utf-8")
                     logs.append(log)
@@ -176,6 +179,16 @@ def main() -> None:
                     creationflags=flags,
                 )
                 diagnostics = capture_diagnostics(ports[0])
+                if args.collect_batch03_metrics:
+                    conn = http.client.HTTPConnection('127.0.0.1', ports[0], timeout=2)
+                    try:
+                        conn.request('GET', '/batch03-metrics')
+                        response = conn.getresponse()
+                        if response.status != 200:
+                            raise ValueError('Missing post-match metrics endpoint')
+                        batch03_metrics = json.loads(response.read())
+                    finally:
+                        conn.close()
                 if args.require_opponent_diagnostics:
                     opponent_diagnostics = capture_diagnostics(ports[1])
             except Exception as exc:
@@ -199,6 +212,8 @@ def main() -> None:
                 failure = failure or exc
             half_evidence = {"half": half, "diagnostics": diagnostics,
                              "log_fault_events": log_faults, "agents": identities}
+            if batch03_metrics is not None:
+                half_evidence['batch03_metrics'] = batch03_metrics
             if args.require_opponent_diagnostics:
                 half_evidence['opponent_diagnostics'] = opponent_diagnostics
                 half_evidence['opponent_log_fault_events'] = scan_fault_log(

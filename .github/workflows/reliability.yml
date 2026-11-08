@@ -6,7 +6,7 @@ on:
       profile:
         description: Use committed strategy or stage a frozen experimental profile
         type: choice
-        options: [release, baseline, range_130, range_130_budget25]
+        options: [release, baseline, range_130, range_130_budget25, batch03]
         default: release
         required: true
 
@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   release-checks:
+    if: inputs.profile != 'batch03'
     name: release-checks (${{ inputs.profile }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -63,3 +64,6 @@ jobs:
           path: reports/
           if-no-files-found: warn
           retention-days: 30
+  batch03-research:
+    if: inputs.profile == 'batch03'
+    uses: ./.github/workflows/batch03.yml

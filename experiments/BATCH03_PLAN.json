@@ -1,0 +1,16 @@
+{
+  "started_utc": "2026-11-08T00:14:17+00:00",
+  "ends_utc": "2026-11-08T01:44:17+00:00",
+  "champion": "fd5c428475eee98edb7c38bd1e7fc0870ddbf42d",
+  "deadline": "04:00 remains an unverified planning assumption; no official freeze scheduled",
+  "estimator": {"train_groups": 6000, "selection_groups": 1000, "test_groups": 1000, "train_rollouts": 256, "selection_rollouts": 1024, "test_rollouts": 2048, "grouping": "minimum sorted hand over all 24 suit permutations; disjoint canonical configurations", "models": ["MLP32", "ExtraTrees12_depth10"], "selection": "selection RMSE; estimator test is opened only after model selection", "scope": "uniform component only (range_mix=caller_power=0); all conditioned queries retain champion simulation"},
+  "runtime": {"opponent": "bluffy_1", "deals": 1000, "seeds": ["b03-runtime-13", "b03-runtime-37", "b03-runtime-73"], "order": [["raw", "observed"], ["observed", "raw"], ["raw", "observed"]], "platforms": ["Windows local", "Linux fresh CI runner"], "cpu_monitor_seconds": 1, "idle_preflight_seconds": 5, "max_background_core_equivalents": 0.5},
+  "screen": {"seeds": ["b03-screen-23", "b03-screen-59"], "deals": 1000, "opponents": ["range_aware_2", "champion"], "profiles": ["raw", "observed", "hybrid"], "matches": 12},
+  "confirm": {"seeds": ["b03-confirm-83", "b03-confirm-127"], "deals": 1000, "opponents": ["tight_3", "loose_2", "aggressive_1", "selective_2", "bluffy_1", "range_aware_2"], "profiles": ["raw", "observed", "hybrid"], "matches_if_promising": 36},
+  "promising": "Zero faults and official violations, max charged half <4s, no screen point regression and positive mean matched BB/deal delta versus EXACT RAW champion; otherwise stop confirmation and retain champion",
+  "pre_run_amendment": "Before any match: include raw champion in screen/confirmation to separate instrumentation effects; no outcome-informed adjustment",
+  "selection": "Equally weighted official points first, BB/paired deal second; matched uncertainty required for promotion",
+  "holdout_configurations_used": false,
+  "final_holdout_seeds_used": false,
+  "no_mccfr_or_rl": true
+}
