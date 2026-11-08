@@ -13,9 +13,10 @@ def normalized_strategy(source):
                  and not (isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id in ('PARTICIPANT', 'AGENT_NAME') for t in node.targets))]
     return hashlib.sha256(ast.dump(tree, include_attributes=False).encode()).hexdigest()
 
-def test_playing_code_matches_authorized_upstream():
+def test_playing_code_matches_recorded_integration():
     provenance = json.loads((ROOT / 'PROVENANCE.json').read_text())
-    assert normalized_strategy((ROOT / 'agent.py').read_text()) == provenance['strategy_ast_sha256']
+    raw = (ROOT / 'agent.py').read_bytes().replace(b'\r\n', b'\n')
+    assert hashlib.sha256(raw).hexdigest() == provenance['integrated_agent_sha256']
 
 def test_preflop_table_matches_authorized_upstream():
     provenance = json.loads((ROOT / 'PROVENANCE.json').read_text())
@@ -26,5 +27,5 @@ def test_team_identity_and_health_counters():
     import asyncio
     result = asyncio.run(agent.info())
     assert result['participant'] == 'Starfish'
-    assert result['agent_name'] == 'Starfish'
+    assert result['agent_name'] == 'Starfish-riskguard'
     assert isinstance(result['diagnostics']['fallback_count'], int)

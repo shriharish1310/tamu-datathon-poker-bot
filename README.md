@@ -4,15 +4,22 @@ Starfish's current poker entry integrates our teammate's **teammate_baseline_4**
 [650JoshLee (teammate baseline)](https://github.com/650JoshLee), used with the
 author's permission. The original strategy and preflop table are credited to
 quad-j. Our integration changes the tournament identity, exposes existing
-fallback counters through the health endpoint, and packages the tested bot.
+fallback counters through the health endpoint, and adds the strategy adjustment below.
 
 ## Playing approach
 
 Heads-up Short Deck 5-card Pot-Limit Omaha, using precomputed preflop equity,
 Numba-compiled Monte Carlo evaluation, opponent-range inference, and bet selection.
-The playing functions and model data are preserved from upstream **teammate_baseline_4** at
+The strategy and model data originate from upstream **teammate_baseline_4** at
 `987f97aa183cf93cb846afb5cc235664db24a90f`. Later upstream experimental generations
 are not included. See [PROVENANCE.json](PROVENANCE.json) for exact hashes.
+
+**Starfish strategy change:** when the estimated continuing range has fewer than
+64 effective samples, a pot-sized raise must clear a 25% larger EV margin over
+calling. Half-pot selection and the preflop model remain as upstream.
+
+**Validation status:** this final adjustment was published without further tests
+at the team's request. It has not demonstrated an improvement over teammate_baseline_4.
 
 ## Run
 
@@ -24,7 +31,7 @@ python agent.py
 ```
 
 The HTTP service listens on port 5008, or the tournament-provided `PORT`.
-Team identity: **Starfish**. Agent identity: **Starfish**.
+Team identity: **Starfish**. Agent identity: **Starfish-riskguard**.
 
 ## Validate
 
@@ -36,7 +43,7 @@ bash tools/check_build.sh
 
 The official Docker check covers image size, startup, authentication, legal
 actions, and the hand-end protocol under tournament restrictions. The release
-workflow runs these checks on the exact pushed commit.
+workflow can be started manually. Automatic checks are disabled for this rushed release.
 
 ## Evidence and attribution
 

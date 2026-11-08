@@ -1,7 +1,5 @@
 name: Starfish team integration validation
 on:
-  push:
-    branches: [codex/starfish-quad-integration]
   workflow_dispatch:
 permissions:
   contents: read

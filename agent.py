@@ -43,7 +43,7 @@ warmup()
 # Team integration of quad-j's teammate_baseline_4, used with our teammate's permission.
 # Strategy and model provenance are recorded in PROVENANCE.json.
 PARTICIPANT = "Starfish"
-AGENT_NAME = "Starfish"
+AGENT_NAME = "Starfish-riskguard"
 
 
 # ===== YOUR CODE HERE =====
@@ -387,6 +387,12 @@ def _decide(obs, memory):
         if st < 3:
             ev -= call_prob * invest * max(0.0, 0.62 - eq_called) * (0.70 if spr > 1 else 0.25)
         margin = max(0.35, obs.pot * (0.035 if st < 3 else 0.018))
+        # Starfish adjustment: concentrated continuing ranges make large bets
+        # less certain. Require extra EV headroom before choosing a pot raise.
+        if action == Action.RAISE_POT:
+            effective_callers = call_prob * call_prob / max(1e-12, float(np.dot(continuing, continuing)))
+            if effective_callers < 64:
+                margin *= 1.25
         # Apply the uncertainty margin against calling once, then rank
         # qualifying raises by their estimated value, independent of order.
         if ev > base_ev + margin and ev > best_ev:

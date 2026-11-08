@@ -7,12 +7,12 @@
   "changes": [
     "Tournament identity set to Starfish",
     "Existing fallback and compute counters exposed through untimed health endpoint",
-    "Attribution, source manifest, packaging and validation workflow"
+    "Attribution, source manifest, packaging and validation workflow",
+    "Pot raises require 25% larger EV margin when effective continuing-range samples are below 64"
   ],
-  "playing_functions_modified": false,
-  "strategy_ast_sha256": "da3c301590174abc249005d165032750693059a6e742853e653556117851e583",
+  "playing_functions_modified": true,
   "upstream_agent_sha256": "6f776e99dc169a4af5eddb03e29593009f05d575b22cfe29f5e625a93b1526f6",
-  "integrated_agent_sha256": "5047662cd1389dada8843c7abfd15e0f7bf3219ae141e47118599841c2cc10f4",
+  "integrated_agent_sha256": "73eb175bd17cef50c395d42a34eb2fc6a299191195882a0a46f92042649659ba",
   "preflop_sha256": "695d95bb00f198badf9bf888775343770b3d7717674a5cac7e95e133d3eef90d",
   "unchanged_files": {
     "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
@@ -24,5 +24,6 @@
     "docker/Dockerfile.base": "d54f26ad44236c8a90308286e7de703d9e8c3916e6baa77d3a6fc3c56ab04d15",
     "tools/check_build.sh": "bddedcd556ca4145378738ff4ee64add44ee9b7d6fb2f1609d5104dfdc893c6c",
     "tools/smoke_test.py": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e"
-  }
+  },
+  "validation_status": "Final riskguard adjustment intentionally untested at user request"
 }
