@@ -1,0 +1,3965 @@
+{
+  "reported_utc": "2026-11-08T02:41:09.102899+00:00",
+  "baseline": "fd5c428475eee98edb7c38bd1e7fc0870ddbf42d",
+  "candidate": {
+    "commit": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+    "branch": "codex/batch04-runtime",
+    "optimizations": [
+      "Pin httptools==0.8.0 for Uvicorn's automatic native HTTP parser",
+      "Return the primitive /act payload through JSONResponse, bypassing generic recursive encoding"
+    ],
+    "profiling_run": "https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434045945",
+    "justification": "Official-image profiling exposes H11 request/response processing and FastAPI jsonable_encoder overhead outside the policy timer. Batch03 separately measured a 16.2% parser reduction. Packaging cost and benefit must be measured again in this batch.",
+    "unchanged": [
+      "strategy.py",
+      "advanced_policy.py",
+      "baseline_strategy.py",
+      "range_equity.py",
+      "policy_config.py",
+      "equity.py",
+      "evaluator.py",
+      "game.py",
+      "reliability.py"
+    ],
+    "packaging": "Runtime-only .dockerignore allowlist; research and model artifacts excluded",
+    "local_tests": "127 passed; exact-commit CI tests and official Docker validation required before scoring",
+    "equivalence_scope": "Same policy for identical observations, RNG seeds and clock-budget inputs; live wall-clock pacing remains nondeterministic and must be reported."
+  },
+  "benchmark_source": "ef4403900a7b0df755648bfc2631282056115088",
+  "profile": {
+    "exclusive_seconds": {
+      "Other framework/dispatch overhead": 2.717226752,
+      "Rollout generation/helpers": 0.9953651489999998,
+      "Parsing/serialization": 0.296473005,
+      "HTTP protocol processing": 1.1640558330000004,
+      "Range features/weights": 0.295412922,
+      "Hand evaluation": 3.3902659880000003,
+      "Idle/poll": 0.30741820400000003
+    },
+    "profiled": {
+      "startup_import_seconds": 1.0326875049999984,
+      "core_seconds": 5.363337074000242,
+      "experiment": {
+        "extra_samples": 0,
+        "refinements": 0,
+        "weighted_decisions": 1329,
+        "caller_decisions": 0,
+        "sampled_states": 3309,
+        "sampled_trials": 62724
+      },
+      "requests": 4023,
+      "request_wall_seconds": 9.048727807000105,
+      "charged_equivalent_seconds": 5.02749841900011
+    },
+    "unprofiled": {
+      "startup_import_seconds": 0.7552069529999983,
+      "core_seconds": 3.804249014999911,
+      "experiment": {
+        "extra_samples": 0,
+        "refinements": 0,
+        "weighted_decisions": 1329,
+        "caller_decisions": 0,
+        "sampled_states": 3309,
+        "sampled_trials": 63296
+      },
+      "requests": 4023,
+      "request_wall_seconds": 6.09990652700013,
+      "charged_equivalent_seconds": 2.2626805810000623
+    },
+    "environment": {
+      "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+      "versions": {
+        "fastapi": "0.156.1",
+        "uvicorn": "0.54.0",
+        "starlette": "1.10.0",
+        "pydantic": "2.14.3",
+        "h11": "0.16.0"
+      },
+      "httptools": null,
+      "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 1\nmodel name\t: AMD EPYC 7763 64-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3243.794\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 4890.86\nTLB size\t: 2560 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+      "cgroup_cpu_max": "100000 100000",
+      "cgroup_memory_max": "4294967296",
+      "image": "sha256:73a57552887503f53809d73d2c3ea5216c33eab722b6ac11bf2e7806cb509bc0"
+    },
+    "scope": "Recorded-request replay. Charged-equivalent values follow the 1ms grace convention but are not scored matches. cProfile distorts timings and sample pacing; not included in speed gates.",
+    "artifact_sha256": {
+      "profile-replay.json": "0755a24746dd4c679bc76d973ff5259744b22ca2ea7dd1f587968287829e3d9c",
+      "audit-replay.json": "d9486a3037316314d51e2ab3d3033d1aa3ad46803f6aa6d7947d514bd8008f30"
+    }
+  },
+  "equivalence": {
+    "passed": true,
+    "comparisons": [
+      {
+        "mode": "full",
+        "decisions": 4021,
+        "passed": true,
+        "differences": [],
+        "hashes": {
+          "baseline": "2f7064ab135322329e430e013ff2950491099239156ecaf89b547a8cee25cc04",
+          "candidate": "2f7064ab135322329e430e013ff2950491099239156ecaf89b547a8cee25cc04"
+        }
+      },
+      {
+        "mode": "half",
+        "decisions": 4021,
+        "passed": true,
+        "differences": [],
+        "hashes": {
+          "baseline": "19524db209fc68c1d204e40574429144ad11475e0533b5b67a5ec37e4b106c64",
+          "candidate": "19524db209fc68c1d204e40574429144ad11475e0533b5b67a5ec37e4b106c64"
+        }
+      },
+      {
+        "mode": "boundary",
+        "decisions": 4021,
+        "passed": true,
+        "differences": [],
+        "hashes": {
+          "baseline": "378962540c982a4eed32632fc11cb45d4f40d289a47a5dc723894b76d6118807",
+          "candidate": "378962540c982a4eed32632fc11cb45d4f40d289a47a5dc723894b76d6118807"
+        }
+      }
+    ],
+    "protocol_passed": true,
+    "protocol_response_hashes": {
+      "baseline": "ae0d4028b25a7dd34971372dd6deddd40e631279d795519c0ac9d03cd4aca33d",
+      "candidate": "ae0d4028b25a7dd34971372dd6deddd40e631279d795519c0ac9d03cd4aca33d"
+    }
+  },
+  "gates": {
+    "policy_source_unchanged": true,
+    "controlled_behavior_and_protocol": true,
+    "five_paired_repeats": true,
+    "median_at_least_15_percent": true,
+    "no_observed_worst_case_regression": true,
+    "zero_observed_faults": true,
+    "official_bank_not_exhausted": true,
+    "required_tests": true,
+    "official_docker_protocol": true,
+    "exact_image_validated": true,
+    "research_excluded_from_image": true,
+    "match_cap": true
+  },
+  "promotion": true,
+  "decision": "advance candidate",
+  "timing": {
+    "bluffy_repeats": 5,
+    "baseline_median": 2.6762164999999998,
+    "candidate_median": 2.1016500000000002,
+    "median_reduction": 0.21469357953663304,
+    "paired_bootstrap_ci95": [
+      0.1452348405561844,
+      0.280701838920866
+    ],
+    "interval_scope": "Five match-pair clusters, both seats kept together; 10000 resamples. Descriptive, not a guarantee across hosts.",
+    "worst_by_opponent": {
+      "bluffy_1": {
+        "baseline": 3.202339,
+        "candidate": 2.497638
+      },
+      "range_aware_2": {
+        "baseline": 2.262231,
+        "candidate": 2.236684
+      }
+    },
+    "profiles": {
+      "baseline": {
+        "points": 6.0,
+        "matches": 6,
+        "mean_bb_per_deal": 5.008583333333333,
+        "worst_seconds": 3.202339,
+        "all_under_four": true,
+        "halves_over_four": 0,
+        "bank_exhaustions": 0,
+        "faults": 0,
+        "fallbacks": 0,
+        "errors": 0,
+        "forfeits": 0,
+        "samples": [
+          63144,
+          62580,
+          62292,
+          63120,
+          62032,
+          62484,
+          62740,
+          62800,
+          61768,
+          62992,
+          49088,
+          50072
+        ],
+        "worst_startup_readiness_upper_seconds": 1.2715721580000263
+      },
+      "candidate": {
+        "points": 6.0,
+        "matches": 6,
+        "mean_bb_per_deal": 5.008666666666667,
+        "worst_seconds": 2.497638,
+        "all_under_four": true,
+        "halves_over_four": 0,
+        "bank_exhaustions": 0,
+        "faults": 0,
+        "fallbacks": 0,
+        "errors": 0,
+        "forfeits": 0,
+        "samples": [
+          63204,
+          62428,
+          62008,
+          63156,
+          62460,
+          62556,
+          62780,
+          63168,
+          61672,
+          63396,
+          49072,
+          49980
+        ],
+        "worst_startup_readiness_upper_seconds": 1.1171915169999806
+      }
+    }
+  },
+  "pairs": [
+    {
+      "seed": "b03-runtime-13",
+      "opponent": "bluffy_1",
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline_charged": [
+        2.66582,
+        2.942795
+      ],
+      "candidate_charged": [
+        2.049626,
+        2.257423
+      ],
+      "baseline_samples": [
+        63144,
+        62580
+      ],
+      "candidate_samples": [
+        63204,
+        62428
+      ],
+      "baseline_core_seconds": [
+        4.398204764999292,
+        4.567943605998835
+      ],
+      "candidate_core_seconds": [
+        4.158136649998369,
+        4.327380607000606
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 5.9555,
+      "candidate_bb": 5.9695,
+      "baseline_official_ci": [
+        4.946141916854275,
+        6.9648580831457245
+      ],
+      "candidate_official_ci": [
+        4.9560223176783005,
+        6.9829776823217
+      ],
+      "profit_delta": 0.014,
+      "profit_delta_ci": [
+        -0.10220865155872474,
+        0.13020865155872474
+      ],
+      "different_hand_action_traces": 26,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    },
+    {
+      "seed": "b03-runtime-37",
+      "opponent": "bluffy_1",
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "baseline_charged": [
+        2.528226,
+        2.342974
+      ],
+      "candidate_charged": [
+        2.497638,
+        1.996586
+      ],
+      "baseline_samples": [
+        62292,
+        63120
+      ],
+      "candidate_samples": [
+        62008,
+        63156
+      ],
+      "baseline_core_seconds": [
+        4.294284834999132,
+        4.156854092999424
+      ],
+      "candidate_core_seconds": [
+        4.473329648999453,
+        4.127529498000797
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 6.3405,
+      "candidate_bb": 6.2815,
+      "baseline_official_ci": [
+        5.313620291040731,
+        7.367379708959268
+      ],
+      "candidate_official_ci": [
+        5.255819888921179,
+        7.3071801110788215
+      ],
+      "profit_delta": -0.059,
+      "profit_delta_ci": [
+        -0.21300278519639912,
+        0.09500278519639913
+      ],
+      "different_hand_action_traces": 13,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    },
+    {
+      "seed": "b03-runtime-73",
+      "opponent": "bluffy_1",
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline_charged": [
+        2.730062,
+        2.489177
+      ],
+      "candidate_charged": [
+        2.168405,
+        2.004367
+      ],
+      "baseline_samples": [
+        62032,
+        62484
+      ],
+      "candidate_samples": [
+        62460,
+        62556
+      ],
+      "baseline_core_seconds": [
+        4.369062143000292,
+        4.225367275998394
+      ],
+      "candidate_core_seconds": [
+        4.281821155002092,
+        4.101544342001262
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 6.008,
+      "candidate_bb": 6.052,
+      "baseline_official_ci": [
+        4.9884994566477685,
+        7.0275005433522315
+      ],
+      "candidate_official_ci": [
+        5.030036820891744,
+        7.073963179108255
+      ],
+      "profit_delta": 0.044,
+      "profit_delta_ci": [
+        -0.014372174648313162,
+        0.10237217464831316
+      ],
+      "different_hand_action_traces": 11,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    },
+    {
+      "seed": "b02-confirm-29",
+      "opponent": "bluffy_1",
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "baseline_charged": [
+        2.686613,
+        3.028298
+      ],
+      "candidate_charged": [
+        2.153674,
+        2.298578
+      ],
+      "baseline_samples": [
+        62740,
+        62800
+      ],
+      "candidate_samples": [
+        62780,
+        63168
+      ],
+      "baseline_core_seconds": [
+        4.398290906000625,
+        4.628201577999562
+      ],
+      "candidate_core_seconds": [
+        4.243382897000629,
+        4.367097107998916
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 5.481,
+      "candidate_bb": 5.4435,
+      "baseline_official_ci": [
+        4.475484035165061,
+        6.486515964834939
+      ],
+      "candidate_official_ci": [
+        4.439462432730284,
+        6.447537567269716
+      ],
+      "profit_delta": -0.0375,
+      "profit_delta_ci": [
+        -0.11901275286038915,
+        0.044012752860389144
+      ],
+      "different_hand_action_traces": 13,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    },
+    {
+      "seed": "b02-confirm-61",
+      "opponent": "bluffy_1",
+      "order": [
+        "baseline",
+        "candidate"
+      ],
+      "baseline_charged": [
+        3.202339,
+        2.3165
+      ],
+      "candidate_charged": [
+        1.940624,
+        1.829945
+      ],
+      "baseline_samples": [
+        61768,
+        62992
+      ],
+      "candidate_samples": [
+        61672,
+        63396
+      ],
+      "baseline_core_seconds": [
+        4.694420441998716,
+        4.125118372000941
+      ],
+      "candidate_core_seconds": [
+        4.033812814000555,
+        3.9947351150002532
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 5.263,
+      "candidate_bb": 5.268,
+      "baseline_official_ci": [
+        4.2427050380507705,
+        6.283294961949229
+      ],
+      "candidate_official_ci": [
+        4.248424511918074,
+        6.2875754880819255
+      ],
+      "profit_delta": 0.005,
+      "profit_delta_ci": [
+        -0.0530057637535153,
+        0.0630057637535153
+      ],
+      "different_hand_action_traces": 20,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    },
+    {
+      "seed": "b03-screen-23",
+      "opponent": "range_aware_2",
+      "order": [
+        "candidate",
+        "baseline"
+      ],
+      "baseline_charged": [
+        2.262231,
+        2.185636
+      ],
+      "candidate_charged": [
+        2.117489,
+        2.236684
+      ],
+      "baseline_samples": [
+        49088,
+        50072
+      ],
+      "candidate_samples": [
+        49072,
+        49980
+      ],
+      "baseline_core_seconds": [
+        3.6837223740021727,
+        3.672393829995258
+      ],
+      "candidate_core_seconds": [
+        3.8069996870036675,
+        3.9562787060025357
+      ],
+      "baseline_points": 1.0,
+      "candidate_points": 1.0,
+      "baseline_bb": 1.0035,
+      "candidate_bb": 1.0375,
+      "baseline_official_ci": [
+        0.12317528027860514,
+        1.883824719721395
+      ],
+      "candidate_official_ci": [
+        0.15380378457800847,
+        1.9211962154219917
+      ],
+      "profit_delta": 0.034,
+      "profit_delta_ci": [
+        -0.03759175154505781,
+        0.10559175154505782
+      ],
+      "different_hand_action_traces": 16,
+      "behavior_note": "Natural clocks can change pacing, sample counts, actions, and subsequent opponent memory. This is not bit-identical live trajectory equivalence."
+    }
+  ],
+  "matches": [
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-13",
+      "num_deals": 1000,
+      "report": "matches/01_baseline_bluffy_1_b03-runtime-13.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.9555,
+      "ci": [
+        4.946141916854275,
+        6.9648580831457245
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 4023,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.66582,
+            "wall_seconds": 6.440854
+          },
+          {
+            "calls": 3979,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.942795,
+            "wall_seconds": 6.714742
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3842,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.17246,
+            "wall_seconds": 6.734159
+          },
+          {
+            "calls": 3808,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.458168,
+            "wall_seconds": 7.01373
+          }
+        ]
+      },
+      "max_time_seconds": 2.942795,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5819709970000133,
+          "core_seconds": 4.398204764999292,
+          "decisions": 4021,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1329,
+            "caller_decisions": 0,
+            "sampled_states": 3309,
+            "sampled_trials": 63144
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3694.422\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7083818\nuser_usec 6859812\nsystem_usec 224006\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 156\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0709943020000026,
+            1.0158173119999958
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6292487350000044,
+          "core_seconds": 4.567943605998835,
+          "decisions": 3977,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1292,
+            "caller_decisions": 0,
+            "sampled_states": 3288,
+            "sampled_trials": 62580
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3696.882\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7375954\nuser_usec 7127473\nsystem_usec 248480\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 162\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0946061699999916,
+            1.1050587059999941
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.3,
+      "match_index": 1
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-13",
+      "num_deals": 1000,
+      "report": "matches/02_candidate_bluffy_1_b03-runtime-13.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.9695,
+      "ci": [
+        4.9560223176783005,
+        6.9829776823217
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 4025,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.049626,
+            "wall_seconds": 5.743065
+          },
+          {
+            "calls": 3979,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.257423,
+            "wall_seconds": 5.932328
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3843,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.949201,
+            "wall_seconds": 6.516526
+          },
+          {
+            "calls": 3808,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.479255,
+            "wall_seconds": 7.045529
+          }
+        ]
+      },
+      "max_time_seconds": 2.257423,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.6179340260000004,
+          "core_seconds": 4.158136649998369,
+          "decisions": 4023,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1330,
+            "caller_decisions": 0,
+            "sampled_states": 3310,
+            "sampled_trials": 63204
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3693.808\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6297114\nuser_usec 6066073\nsystem_usec 231040\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 146\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0705348089999802,
+            1.043565708999978
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6204518510000128,
+          "core_seconds": 4.327380607000606,
+          "decisions": 3977,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1292,
+            "caller_decisions": 0,
+            "sampled_states": 3288,
+            "sampled_trials": 62428
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3694.620\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6473299\nuser_usec 6246096\nsystem_usec 227203\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 152\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0946101289999888,
+            1.040024633999991
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 2
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-37",
+      "num_deals": 1000,
+      "report": "matches/03_candidate_bluffy_1_b03-runtime-37.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 6.2815,
+      "ci": [
+        5.255819888921179,
+        7.3071801110788215
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3961,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.497638,
+            "wall_seconds": 6.181948
+          },
+          {
+            "calls": 4015,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 1.996586,
+            "wall_seconds": 5.689054
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3780,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.386742,
+            "wall_seconds": 6.919784
+          },
+          {
+            "calls": 3819,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.89407,
+            "wall_seconds": 6.453512
+          }
+        ]
+      },
+      "max_time_seconds": 2.497638,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5990478939999946,
+          "core_seconds": 4.473329648999453,
+          "decisions": 3959,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1248,
+            "caller_decisions": 0,
+            "sampled_states": 3273,
+            "sampled_trials": 62008
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3754.331\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6707172\nuser_usec 6462457\nsystem_usec 244714\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 153\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0863362620000032,
+            1.1676896410000097
+          ]
+        },
+        {
+          "startup_import_seconds": 0.5949994819999915,
+          "core_seconds": 4.127529498000797,
+          "decisions": 4013,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1327,
+            "caller_decisions": 0,
+            "sampled_states": 3306,
+            "sampled_trials": 63156
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3688.815\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6227416\nuser_usec 5994352\nsystem_usec 233063\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 144\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0479481140000075,
+            0.9921066990000327
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.1,
+      "match_index": 3
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-37",
+      "num_deals": 1000,
+      "report": "matches/04_baseline_bluffy_1_b03-runtime-37.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 6.3405,
+      "ci": [
+        5.313620291040731,
+        7.367379708959268
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3965,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.528226,
+            "wall_seconds": 6.242789
+          },
+          {
+            "calls": 4016,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.342974,
+            "wall_seconds": 6.090801
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3785,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.153278,
+            "wall_seconds": 6.683087
+          },
+          {
+            "calls": 3821,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.914718,
+            "wall_seconds": 6.471475
+          }
+        ]
+      },
+      "max_time_seconds": 2.528226,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.6094000649999884,
+          "core_seconds": 4.294284834999132,
+          "decisions": 3963,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1251,
+            "caller_decisions": 0,
+            "sampled_states": 3275,
+            "sampled_trials": 62292
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3704.429\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6891363\nuser_usec 6628126\nsystem_usec 263236\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 152\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0687722320000148,
+            1.044822335000049
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6087460159999978,
+          "core_seconds": 4.156854092999424,
+          "decisions": 4014,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1326,
+            "caller_decisions": 0,
+            "sampled_states": 3307,
+            "sampled_trials": 63120
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3693.119\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6758645\nuser_usec 6522693\nsystem_usec 235952\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 149\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0976898190000384,
+            1.0534002469999564
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 4
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-73",
+      "num_deals": 1000,
+      "report": "matches/05_baseline_bluffy_1_b03-runtime-73.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 6.008,
+      "ci": [
+        4.9884994566477685,
+        7.0275005433522315
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3961,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.730062,
+            "wall_seconds": 6.46338
+          },
+          {
+            "calls": 3949,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.489177,
+            "wall_seconds": 6.197804
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3777,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.008265,
+            "wall_seconds": 6.521516
+          },
+          {
+            "calls": 3791,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.946293,
+            "wall_seconds": 6.468525
+          }
+        ]
+      },
+      "max_time_seconds": 2.730062,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5935959649999631,
+          "core_seconds": 4.369062143000292,
+          "decisions": 3959,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1339,
+            "caller_decisions": 0,
+            "sampled_states": 3268,
+            "sampled_trials": 62032
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 2596.137\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7049951\nuser_usec 6802760\nsystem_usec 247190\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 152\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.1708702140000469,
+            1.0532317959999773
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6197830240000144,
+          "core_seconds": 4.225367275998394,
+          "decisions": 3947,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1280,
+            "caller_decisions": 0,
+            "sampled_states": 3282,
+            "sampled_trials": 62484
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3676.492\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6860053\nuser_usec 6612926\nsystem_usec 247127\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 151\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0558906059999913,
+            1.0068234320000329
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.6,
+      "match_index": 5
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b03-runtime-73",
+      "num_deals": 1000,
+      "report": "matches/06_candidate_bluffy_1_b03-runtime-73.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 6.052,
+      "ci": [
+        5.030036820891744,
+        7.073963179108255
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3962,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.168405,
+            "wall_seconds": 5.817684
+          },
+          {
+            "calls": 3943,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.004367,
+            "wall_seconds": 5.641773
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3778,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.027162,
+            "wall_seconds": 6.540968
+          },
+          {
+            "calls": 3787,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.895869,
+            "wall_seconds": 6.420158
+          }
+        ]
+      },
+      "max_time_seconds": 2.168405,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5972186829999941,
+          "core_seconds": 4.281821155002092,
+          "decisions": 3960,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1339,
+            "caller_decisions": 0,
+            "sampled_states": 3269,
+            "sampled_trials": 62460
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3695.971\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6408428\nuser_usec 6191193\nsystem_usec 217234\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 147\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0935637640000095,
+            1.0468677609999872
+          ]
+        },
+        {
+          "startup_import_seconds": 0.5874143959999856,
+          "core_seconds": 4.101544342001262,
+          "decisions": 3941,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1275,
+            "caller_decisions": 0,
+            "sampled_states": 3276,
+            "sampled_trials": 62556
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3700.513\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6191708\nuser_usec 5977164\nsystem_usec 214544\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 143\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0949993979999704,
+            1.0428069810000125
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 6
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b02-confirm-29",
+      "num_deals": 1000,
+      "report": "matches/07_candidate_bluffy_1_b02-confirm-29.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.4435,
+      "ci": [
+        4.439462432730284,
+        6.447537567269716
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3973,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.153674,
+            "wall_seconds": 5.820765
+          },
+          {
+            "calls": 3973,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.298578,
+            "wall_seconds": 5.976295
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3787,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.065104,
+            "wall_seconds": 6.606173
+          },
+          {
+            "calls": 3774,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.25918,
+            "wall_seconds": 6.793824
+          }
+        ]
+      },
+      "max_time_seconds": 2.298578,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.6020624249999855,
+          "core_seconds": 4.243382897000629,
+          "decisions": 3971,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1243,
+            "caller_decisions": 0,
+            "sampled_states": 3300,
+            "sampled_trials": 62780
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 2596.137\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6354831\nuser_usec 6141595\nsystem_usec 213235\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 146\nnr_throttled 1\nthrottled_usec 397\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0997338189999937,
+            1.021811667999998
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6252477070000282,
+          "core_seconds": 4.367097107998916,
+          "decisions": 3971,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1254,
+            "caller_decisions": 0,
+            "sampled_states": 3304,
+            "sampled_trials": 63168
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3695.032\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6557088\nuser_usec 6317939\nsystem_usec 239149\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 152\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.1171915169999806,
+            1.037522101000036
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 7
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b02-confirm-29",
+      "num_deals": 1000,
+      "report": "matches/08_baseline_bluffy_1_b02-confirm-29.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.481,
+      "ci": [
+        4.475484035165061,
+        6.486515964834939
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3972,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.686613,
+            "wall_seconds": 6.431297
+          },
+          {
+            "calls": 3971,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.028298,
+            "wall_seconds": 6.793679
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3786,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.293633,
+            "wall_seconds": 6.840035
+          },
+          {
+            "calls": 3779,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.589131,
+            "wall_seconds": 7.1363
+          }
+        ]
+      },
+      "max_time_seconds": 3.028298,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.6235590150000121,
+          "core_seconds": 4.398290906000625,
+          "decisions": 3970,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1242,
+            "caller_decisions": 0,
+            "sampled_states": 3300,
+            "sampled_trials": 62740
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3721.850\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7061613\nuser_usec 6821252\nsystem_usec 240361\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 156\nnr_throttled 1\nthrottled_usec 531\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0882227760000092,
+            1.0691049780000412
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6293655849999595,
+          "core_seconds": 4.628201577999562,
+          "decisions": 3969,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1253,
+            "caller_decisions": 0,
+            "sampled_states": 3303,
+            "sampled_trials": 62800
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 2596.137\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7423828\nuser_usec 7161952\nsystem_usec 261875\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 166\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.2715721580000263,
+            1.2191736280000214
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 8
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b02-confirm-61",
+      "num_deals": 1000,
+      "report": "matches/09_baseline_bluffy_1_b02-confirm-61.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.263,
+      "ci": [
+        4.2427050380507705,
+        6.283294961949229
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3956,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.202339,
+            "wall_seconds": 6.969611
+          },
+          {
+            "calls": 4001,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.3165,
+            "wall_seconds": 6.057748
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3768,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.677056,
+            "wall_seconds": 7.204603
+          },
+          {
+            "calls": 3842,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.857756,
+            "wall_seconds": 6.416172
+          }
+        ]
+      },
+      "max_time_seconds": 3.202339,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.6325026869999988,
+          "core_seconds": 4.694420441998716,
+          "decisions": 3954,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1277,
+            "caller_decisions": 0,
+            "sampled_states": 3262,
+            "sampled_trials": 61768
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3704.194\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 7572698\nuser_usec 7339304\nsystem_usec 233394\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 165\nnr_throttled 1\nthrottled_usec 276\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.1559673920000364,
+            1.0576797550000379
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6097472879999941,
+          "core_seconds": 4.125118372000941,
+          "decisions": 3999,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1304,
+            "caller_decisions": 0,
+            "sampled_states": 3304,
+            "sampled_trials": 62992
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3692.991\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6681443\nuser_usec 6423966\nsystem_usec 257477\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 148\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.044738739999957,
+            1.0542754820000368
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 9
+    },
+    {
+      "opponent": "bluffy_1",
+      "seed": "b02-confirm-61",
+      "num_deals": 1000,
+      "report": "matches/10_candidate_bluffy_1_b02-confirm-61.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 5.268,
+      "ci": [
+        4.248424511918074,
+        6.2875754880819255
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3952,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 1.940624,
+            "wall_seconds": 5.565664
+          },
+          {
+            "calls": 4006,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 1.829945,
+            "wall_seconds": 5.50278
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3769,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.738193,
+            "wall_seconds": 6.243351
+          },
+          {
+            "calls": 3845,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.765014,
+            "wall_seconds": 6.328043
+          }
+        ]
+      },
+      "max_time_seconds": 1.940624,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5836286370000039,
+          "core_seconds": 4.033812814000555,
+          "decisions": 3950,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1276,
+            "caller_decisions": 0,
+            "sampled_states": 3259,
+            "sampled_trials": 61672
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3695.152\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6082090\nuser_usec 5841795\nsystem_usec 240295\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 140\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0685253159999775,
+            1.0387346400000297
+          ]
+        },
+        {
+          "startup_import_seconds": 0.5862263100000291,
+          "core_seconds": 3.9947351150002532,
+          "decisions": 4004,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1310,
+            "caller_decisions": 0,
+            "sampled_states": 3307,
+            "sampled_trials": 63396
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3695.074\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6031709\nuser_usec 5793008\nsystem_usec 238700\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 139\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            0.9883718849999923,
+            1.016591835999975
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.1,
+      "match_index": 10
+    },
+    {
+      "opponent": "range_aware_2",
+      "seed": "b03-screen-23",
+      "num_deals": 1000,
+      "report": "matches/11_candidate_range_aware_2_b03-screen-23.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 1.0375,
+      "ci": [
+        0.15380378457800847,
+        1.9211962154219917
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3414,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.117489,
+            "wall_seconds": 5.227953
+          },
+          {
+            "calls": 3505,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.236684,
+            "wall_seconds": 5.443561
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3073,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.235117,
+            "wall_seconds": 6.20604
+          },
+          {
+            "calls": 3097,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 3.257278,
+            "wall_seconds": 6.266564
+          }
+        ]
+      },
+      "max_time_seconds": 2.236684,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "candidate",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.5814434280000569,
+          "core_seconds": 3.8069996870036675,
+          "decisions": 3412,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1223,
+            "caller_decisions": 0,
+            "sampled_states": 2732,
+            "sampled_trials": 49072
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3696.219\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 5766993\nuser_usec 5529842\nsystem_usec 237151\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 137\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.0766862840000613,
+            1.0571504569999206
+          ]
+        },
+        {
+          "startup_import_seconds": 0.5982486860000336,
+          "core_seconds": 3.9562787060025357,
+          "decisions": 3503,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1316,
+            "caller_decisions": 0,
+            "sampled_states": 2770,
+            "sampled_trials": 49980
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3692.282\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6024646\nuser_usec 5812469\nsystem_usec 212177\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 139\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+          "httptools": "0.8.0",
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0506301530000428,
+            1.0670905470000207
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.1,
+      "match_index": 11
+    },
+    {
+      "opponent": "range_aware_2",
+      "seed": "b03-screen-23",
+      "num_deals": 1000,
+      "report": "matches/12_baseline_range_aware_2_b03-screen-23.json",
+      "verdict": "AGENT1_WIN",
+      "points": 1.0,
+      "mean_bb_per_deal": 1.0035,
+      "ci": [
+        0.12317528027860514,
+        1.883824719721395
+      ],
+      "agent_stats": {
+        "agent1": [
+          {
+            "calls": 3418,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.262231,
+            "wall_seconds": 5.436772
+          },
+          {
+            "calls": 3500,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.185636,
+            "wall_seconds": 5.421087
+          }
+        ],
+        "agent2": [
+          {
+            "calls": 3075,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.947772,
+            "wall_seconds": 5.918184
+          },
+          {
+            "calls": 3096,
+            "skipped_calls": 0,
+            "timed_out": false,
+            "errors": 0,
+            "forfeited": false,
+            "error_messages": [],
+            "time_seconds": 2.872583,
+            "wall_seconds": 5.859045
+          }
+        ]
+      },
+      "max_time_seconds": 2.262231,
+      "bot_valid": true,
+      "opponent_valid": true,
+      "runtime_target_met": true,
+      "reliability_clean": true,
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "log_fault_events": 0,
+      "reliability_halves": [
+        {
+          "half": 1,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        },
+        {
+          "half": 2,
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "opponent_diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "log_fault_events": 0,
+          "opponent_log_fault_events": 0,
+          "agents": [
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            },
+            {
+              "participant": "Starfish",
+              "agent_name": "ReveillePLO",
+              "diagnostics": {
+                "fault_events": 0,
+                "fallback_decisions": 0,
+                "disabled": false,
+                "last_fault_stage": null,
+                "last_fault_type": null
+              }
+            }
+          ]
+        }
+      ],
+      "opponent_reliability_clean": true,
+      "profile": "baseline",
+      "metrics": [
+        {
+          "startup_import_seconds": 0.597413109999934,
+          "core_seconds": 3.6837223740021727,
+          "decisions": 3416,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1225,
+            "caller_decisions": 0,
+            "sampled_states": 2734,
+            "sampled_trials": 49088
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 2596.137\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6095647\nuser_usec 5826132\nsystem_usec 269514\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 137\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 1,
+          "startup_readiness_upper_seconds": [
+            1.1365863570000556,
+            1.0628572480000003
+          ]
+        },
+        {
+          "startup_import_seconds": 0.6040025160000368,
+          "core_seconds": 3.672393829995258,
+          "decisions": 3498,
+          "experiment": {
+            "extra_samples": 0,
+            "refinements": 0,
+            "weighted_decisions": 1312,
+            "caller_decisions": 0,
+            "sampled_states": 2767,
+            "sampled_trials": 50072
+          },
+          "sample_hist": {},
+          "diagnostics": {
+            "fault_events": 0,
+            "fallback_decisions": 0,
+            "disabled": false,
+            "last_fault_stage": null,
+            "last_fault_type": null
+          },
+          "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+          "versions": {
+            "fastapi": "0.156.1",
+            "uvicorn": "0.54.0",
+            "starlette": "1.10.0",
+            "pydantic": "2.14.3",
+            "h11": "0.16.0"
+          },
+          "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 17\nmodel name\t: AMD EPYC 9V74 80-Core Processor\nstepping\t: 1\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3702.842\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 4\ncore id\t\t: 0\ncpu cores\t: 2\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 28\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user tsa\nbogomips\t: 5192.27\nTLB size\t: 3584 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+          "cgroup_cpu_max": "100000 100000",
+          "cgroup_memory_max": "4294967296",
+          "cgroup_cpu_stat": "usage_usec 6074475\nuser_usec 5839839\nsystem_usec 234636\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 135\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+          "network_interfaces": [
+            "lo"
+          ],
+          "http_parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+          "httptools": null,
+          "half": 2,
+          "startup_readiness_upper_seconds": [
+            1.0733528769999339,
+            0.9918557079998891
+          ]
+        }
+      ],
+      "idle_host_cpu_percent": 0.2,
+      "match_index": 12
+    }
+  ],
+  "packaging": {
+    "version": "0.8.0",
+    "installed_bytes": 1803887,
+    "app_files": [
+      "advanced_policy.py",
+      "agent.py",
+      "baseline_strategy.py",
+      "equity.py",
+      "evaluator.py",
+      "game.py",
+      "policy_config.py",
+      "range_equity.py",
+      "reliability.py",
+      "requirements.txt",
+      "strategy.py"
+    ]
+  },
+  "container_validation": {
+    "schema": "container-reliability-check-v1",
+    "started_at_utc": "2026-11-08T01:32:43.631619+00:00",
+    "prerequisite": "Run after the official tools/check_build.sh succeeds",
+    "image": "poker-agent-check:latest",
+    "container": "poker-reliability-f68c0fa2cf7148ea90a6fd92e7d0456e",
+    "restrictions": {
+      "network": "none",
+      "read_only": true,
+      "tmpfs_mb": 512,
+      "cap_drop": "ALL",
+      "no_new_privileges": true,
+      "pids_limit": 256,
+      "cpus": 1,
+      "memory": "4g",
+      "port": 5008,
+      "smoke_script_read_only": true
+    },
+    "failures": [],
+    "passed": true,
+    "fault_log_markers": 0,
+    "smoke_script_sha256": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e",
+    "image_inspection": {
+      "returncode": 0,
+      "stdout": "sha256:765c155c3f3bfb9508d12663e5f9f9b1f151ee78176278f9348f233c4cde3802\n",
+      "stderr": ""
+    },
+    "image_id": "sha256:765c155c3f3bfb9508d12663e5f9f9b1f151ee78176278f9348f233c4cde3802",
+    "launch": {
+      "returncode": 0,
+      "stdout": "8fdf66b9af86b1e2d922252b9d388a42f2bd48950efa4e425204cf95cc63f329\n",
+      "stderr": ""
+    },
+    "official_smoke": {
+      "returncode": 0,
+      "stdout": "  ok  GET / answered after 0.8 s: Starfish / ReveillePLO\n  ok  POST /new-half worked\n  ok  /act preflop, button to act: CHECK_CALL in 3 ms\n  ok  /act preflop, facing a pot raise: CHECK_CALL in 3 ms\n  ok  /act flop, first to act: CHECK_CALL in 2 ms\n  ok  /act flop, facing an all-in (only FOLD or CHECK_CALL): CHECK_CALL in 2 ms\n  ok  /act river, facing a half-pot bet: FOLD in 2 ms\n  ok  POST /hand-end worked\nSMOKE TEST PASSED\n",
+      "stderr": ""
+    },
+    "diagnostics_probe": {
+      "returncode": 0,
+      "stdout": "{\"http_status\": 200, \"diagnostics\": {\"fault_events\": 0, \"fallback_decisions\": 0, \"disabled\": false, \"last_fault_stage\": null, \"last_fault_type\": null}}\n",
+      "stderr": ""
+    },
+    "diagnostics": {
+      "fault_events": 0,
+      "fallback_decisions": 0,
+      "disabled": false,
+      "last_fault_stage": null,
+      "last_fault_type": null
+    },
+    "diagnostics_http_status": 200,
+    "container_logs": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "INFO:     Started server process [1]\nINFO:     Waiting for application startup.\nINFO:     Application startup complete.\nINFO:     Uvicorn running on http://0.0.0.0:5008 (Press CTRL+C to quit)\n"
+    },
+    "cleanup": {
+      "passed": true,
+      "removed": true,
+      "result": {
+        "returncode": 0,
+        "stdout": "poker-reliability-f68c0fa2cf7148ea90a6fd92e7d0456e\n",
+        "stderr": ""
+      }
+    },
+    "finished_at_utc": "2026-11-08T01:32:45.198730+00:00"
+  },
+  "scores": {
+    "baseline": {
+      "families": {
+        "bluffy_1": {
+          "matches": 5,
+          "points": 5.0,
+          "point_rate": 1.0,
+          "mean_bb_per_deal": 5.8096
+        },
+        "range_aware_2": {
+          "matches": 1,
+          "points": 1.0,
+          "point_rate": 1.0,
+          "mean_bb_per_deal": 1.0035
+        }
+      },
+      "equally_weighted_family_point_rate": 1.0,
+      "equally_weighted_family_bb_per_deal": 3.4065499999999997
+    },
+    "candidate": {
+      "families": {
+        "bluffy_1": {
+          "matches": 5,
+          "points": 5.0,
+          "point_rate": 1.0,
+          "mean_bb_per_deal": 5.8029
+        },
+        "range_aware_2": {
+          "matches": 1,
+          "points": 1.0,
+          "point_rate": 1.0,
+          "mean_bb_per_deal": 1.0375
+        }
+      },
+      "equally_weighted_family_point_rate": 1.0,
+      "equally_weighted_family_bb_per_deal": 3.4202000000000004
+    },
+    "matched_match_block_delta": {
+      "mean": 8.333333333333413e-05,
+      "ci95_t": [
+        -0.042416110831000574,
+        0.042582777497667236
+      ],
+      "blocks": 6,
+      "scope": "Descriptive Student-t interval across six matched match blocks (five bluff-heavy, one range-aware). Fixed opponents and consumed seeds; not uncertainty over the tournament population."
+    }
+  },
+  "environment": {
+    "idle_preflight_cpu_percent": [
+      0.3,
+      0.2,
+      0.1,
+      0.2,
+      0.6,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.1,
+      0.1,
+      0.2
+    ],
+    "baseline": {
+      "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+      "versions": {
+        "fastapi": "0.156.1",
+        "uvicorn": "0.54.0",
+        "starlette": "1.10.0",
+        "pydantic": "2.14.3",
+        "h11": "0.16.0"
+      },
+      "parser": "<class 'uvicorn.protocols.http.h11_impl.H11Protocol'>",
+      "cpu": "AMD EPYC 9V74 80-Core Processor",
+      "cpu_max": "100000 100000",
+      "memory_max": "4294967296",
+      "startup_import_median": 0.6095736764999913,
+      "startup_import_worst": 0.6325026869999988,
+      "core_seconds_median": 4.331673488999712,
+      "core_seconds_worst": 4.694420441998716,
+      "decision_counts": [
+        4021,
+        3977,
+        3963,
+        4014,
+        3959,
+        3947,
+        3970,
+        3969,
+        3954,
+        3999,
+        3416,
+        3498
+      ],
+      "throttled_usec": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        531,
+        0,
+        276,
+        0,
+        0,
+        0
+      ]
+    },
+    "candidate": {
+      "python": "3.12.16 (main, Nov  5 2026, 07:58:20) [GCC 14.2.0]",
+      "versions": {
+        "fastapi": "0.156.1",
+        "uvicorn": "0.54.0",
+        "starlette": "1.10.0",
+        "pydantic": "2.14.3",
+        "h11": "0.16.0"
+      },
+      "parser": "<class 'uvicorn.protocols.http.httptools_impl.HttpToolsProtocol'>",
+      "cpu": "AMD EPYC 9V74 80-Core Processor",
+      "cpu_max": "100000 100000",
+      "memory_max": "4294967296",
+      "startup_import_median": 0.5977336845000139,
+      "startup_import_worst": 0.6252477070000282,
+      "core_seconds_median": 4.142833073999583,
+      "core_seconds_worst": 4.473329648999453,
+      "decision_counts": [
+        4023,
+        3977,
+        3959,
+        4013,
+        3960,
+        3941,
+        3971,
+        3971,
+        3950,
+        4004,
+        3412,
+        3503
+      ],
+      "throttled_usec": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        397,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "report_generator_sha256": "c66ab851b1b7f31f830deac1ba52a9a660af1b34969129ef0533774709c7df86",
+  "evidence_sha256": {
+    "baseline-equivalence-boundary.json": "378962540c982a4eed32632fc11cb45d4f40d289a47a5dc723894b76d6118807",
+    "baseline-equivalence-full.json": "2f7064ab135322329e430e013ff2950491099239156ecaf89b547a8cee25cc04",
+    "baseline-equivalence-half.json": "19524db209fc68c1d204e40574429144ad11475e0533b5b67a5ec37e4b106c64",
+    "baseline-image.json": "5c2c8d7f82e37d54c99e0f16b2855b467992f74409f09a57622b594f25fc054e",
+    "baseline-protocol.json": "293ea2ddaa3db8870aa7be8c7fbfbf88e45d20e9ba00c11a3bf00b606d94bba5",
+    "baseline-source.json": "fd718fc8cc33602535c8f61d852a9972961e4c13f570a3e675d3bc728c6dce03",
+    "benchmark.json": "df1e6560abaedeba1c9543b35105c1c90c8ac0b074dd02f126353fa058fa396d",
+    "bluffy_1-package.json": "752a7543b037abe1650a7abee6937606a4c7f08d8d3899aaebdf98d9bac9dcfe",
+    "bluffy_1-source.json": "fd718fc8cc33602535c8f61d852a9972961e4c13f570a3e675d3bc728c6dce03",
+    "candidate-container-reliability.json": "9fa6ca375d4497a3c16efa1c30f1fa054d1517f0dbafa678c609c07739bc9981",
+    "candidate-equivalence-boundary.json": "378962540c982a4eed32632fc11cb45d4f40d289a47a5dc723894b76d6118807",
+    "candidate-equivalence-full.json": "2f7064ab135322329e430e013ff2950491099239156ecaf89b547a8cee25cc04",
+    "candidate-equivalence-half.json": "19524db209fc68c1d204e40574429144ad11475e0533b5b67a5ec37e4b106c64",
+    "candidate-image.json": "5ea50172fcb85fc5356b5dbc4501b1633af61d75f883f935f1836686ae1d6c1d",
+    "candidate-packaging.json": "8b8208e58b020911a13453f4fd509c9a4868b21929fb29f48a67baf50531937f",
+    "candidate-protocol.json": "47e8f07250a07062bac3af71847bec232c9d61cdf126d5a8679f863d737c4648",
+    "equivalence.json": "e7e9a954b9e14c33f1909b012708c2c083e4091cb1a383952b1bc6e4c37ce62d",
+    "match-ledger.json": "ecd1bee77446566ada3d2716d50d8aac5b47f97ed9d3f1ad33cb7f07a8280476",
+    "matches\\01_baseline_bluffy_1_b03-runtime-13.half1.json": "39ec9725c553a8f0426d2ac7c86ce029f72e77ac1b57c40824c4d197642a00c8",
+    "matches\\01_baseline_bluffy_1_b03-runtime-13.half2.json": "92d1c6ff40b23cf8c069e1859dfd6ca6c7f656bcff78e43f1c88e0ef50e7df0d",
+    "matches\\01_baseline_bluffy_1_b03-runtime-13.json": "f35c0155194feddf2ff20aa3106644d558717711a61cc79c1c86c1445afebed5",
+    "matches\\01_baseline_bluffy_1_b03-runtime-13.metrics.json": "adde873ba1d670168deeb3770facb9184e158f8c66a5c6ebf65344ea0d3b261e",
+    "matches\\01_baseline_bluffy_1_b03-runtime-13.reliability.json": "073431fb76234220ca99bb22fd53d896a3cb5eba7fe3631cb94853c3b915afc4",
+    "matches\\02_candidate_bluffy_1_b03-runtime-13.half1.json": "f889b51b069a56dd73c3bc43a37687e021409bb4fb5923628fa562bf03e348be",
+    "matches\\02_candidate_bluffy_1_b03-runtime-13.half2.json": "852e1f21f2513d4b975486b4256138a78a9d4759835fb3fce5dcbd5119ef202e",
+    "matches\\02_candidate_bluffy_1_b03-runtime-13.json": "22ca956e03b3eb13d580cbbe64a0511576e50965bbdeb991ddd54e8ec3fca711",
+    "matches\\02_candidate_bluffy_1_b03-runtime-13.metrics.json": "f596f7e0ec041fa758fe5d1b5f580b3ebaa70d88c5cc4e0abb337084c0bd0b29",
+    "matches\\02_candidate_bluffy_1_b03-runtime-13.reliability.json": "073431fb76234220ca99bb22fd53d896a3cb5eba7fe3631cb94853c3b915afc4",
+    "matches\\03_candidate_bluffy_1_b03-runtime-37.half1.json": "909a03a68e348e7d4d0cc095ec1f8038e925f8c45f0100deefdcef89dc786b3e",
+    "matches\\03_candidate_bluffy_1_b03-runtime-37.half2.json": "6a8919c2bd2bc078f7120a3892adafdeea10e83ee9bb4d1bab2628e1c39eafb2",
+    "matches\\03_candidate_bluffy_1_b03-runtime-37.json": "7efe311d828b1a3343bc4e1ec573db5735693c07403ea7e2acc2de5f45f3e09b",
+    "matches\\03_candidate_bluffy_1_b03-runtime-37.metrics.json": "5255d8dc3d3955a5bd38553df56e812bcb741b0165df01b48101417255955a8d",
+    "matches\\03_candidate_bluffy_1_b03-runtime-37.reliability.json": "2a813c6f1839cd6dd33c26efbb86d0487a1bae710398a4c4e5336f9ad56bab26",
+    "matches\\04_baseline_bluffy_1_b03-runtime-37.half1.json": "093783428c2fc0e18fd125c25f2e293749e92dfa894ad6eb31b4a9e5e37f484c",
+    "matches\\04_baseline_bluffy_1_b03-runtime-37.half2.json": "b0f56547ec013757ea4344688a3308db2bc6e39487957ad92d43f3142807fefa",
+    "matches\\04_baseline_bluffy_1_b03-runtime-37.json": "4507799f85ea2953bae8d0e39834b0a647eb631b343643d584536fdbad246ab7",
+    "matches\\04_baseline_bluffy_1_b03-runtime-37.metrics.json": "a7ad8dfff931a988931c3c77d9daeb741f19195290ee69f6142c46a12e92195c",
+    "matches\\04_baseline_bluffy_1_b03-runtime-37.reliability.json": "2a813c6f1839cd6dd33c26efbb86d0487a1bae710398a4c4e5336f9ad56bab26",
+    "matches\\05_baseline_bluffy_1_b03-runtime-73.half1.json": "0ce73ded4620136aae4cbaea3a17f2e9eb08e6f10e74910865ce1f61e40739bf",
+    "matches\\05_baseline_bluffy_1_b03-runtime-73.half2.json": "3a7b3e8e87d292c6bff90f4491cf52f50baaee27315264863e2a9e4f11e69450",
+    "matches\\05_baseline_bluffy_1_b03-runtime-73.json": "16145f3c1672cc8187275c38b66c93a7858d871320b5cecc6547a3e57b28c25f",
+    "matches\\05_baseline_bluffy_1_b03-runtime-73.metrics.json": "34f4e9c31d2a0ee2b6e757e2d3bdd8a1786b641695527a3874924d8ab4c9ba06",
+    "matches\\05_baseline_bluffy_1_b03-runtime-73.reliability.json": "c501a6423e82ab752f464f839841bf7e44975273c08c0de2d782d11fbb50a6f8",
+    "matches\\06_candidate_bluffy_1_b03-runtime-73.half1.json": "de1fdd0090212fb3068df0790c07e4ac94a39901132625f07cf482c5ee824f1d",
+    "matches\\06_candidate_bluffy_1_b03-runtime-73.half2.json": "05adb4ec1cd97359b4240706f5d478d7226a19e1660c82d995af5b0095843334",
+    "matches\\06_candidate_bluffy_1_b03-runtime-73.json": "0141a67ce0d03cf59324338032450499164cd2aa19fe8305bc67b9e6ac221b00",
+    "matches\\06_candidate_bluffy_1_b03-runtime-73.metrics.json": "f4f8e14b90a1fed655dc6147f6b42ddf09ee015ade5ef35b1c46187bffc89e67",
+    "matches\\06_candidate_bluffy_1_b03-runtime-73.reliability.json": "c501a6423e82ab752f464f839841bf7e44975273c08c0de2d782d11fbb50a6f8",
+    "matches\\07_candidate_bluffy_1_b02-confirm-29.half1.json": "01fcc29fbbeeb3d9c42fc81870e9e4aea4aa67f00030cc4c8cdfd95b6779f4c8",
+    "matches\\07_candidate_bluffy_1_b02-confirm-29.half2.json": "d888d85587dea49f0224c241bf234b94094e2bbede964df9b0a9802ea977d49c",
+    "matches\\07_candidate_bluffy_1_b02-confirm-29.json": "d9c9a1b46405db999a75f2b1c206fd787846d41aa81e860368df952fb4c6c9f2",
+    "matches\\07_candidate_bluffy_1_b02-confirm-29.metrics.json": "8a2bf4db056e3576d335dbfdfab9431297277794345acfa765b81b15be8577a7",
+    "matches\\07_candidate_bluffy_1_b02-confirm-29.reliability.json": "df288e35b80d79cab3bc794c02f3b8f353f94b954cbd6c87cf2aaf95ec7bac9a",
+    "matches\\08_baseline_bluffy_1_b02-confirm-29.half1.json": "d1be2bdde57a7b47d709d0e60a57d5eae10686b1d45ad6caca0dee94bf95c0a4",
+    "matches\\08_baseline_bluffy_1_b02-confirm-29.half2.json": "d0da6ef7c485d7b9d1f049518f2c0473a982738feb6061aa5332b88cbec00f86",
+    "matches\\08_baseline_bluffy_1_b02-confirm-29.json": "58a8746ca9107a7387fd97fe4b78c3270a9aab4f2414834690f39b4c3c20f4e5",
+    "matches\\08_baseline_bluffy_1_b02-confirm-29.metrics.json": "fdbad9b7912d71cb384368ab034531c821700eda53dcddbe82ce77ed1ba6cce6",
+    "matches\\08_baseline_bluffy_1_b02-confirm-29.reliability.json": "df288e35b80d79cab3bc794c02f3b8f353f94b954cbd6c87cf2aaf95ec7bac9a",
+    "matches\\09_baseline_bluffy_1_b02-confirm-61.half1.json": "c845c689361da513a13db2dd66def5489220bc348dc53b10ffbdab234ed9ab65",
+    "matches\\09_baseline_bluffy_1_b02-confirm-61.half2.json": "0d9dbdf0644d7b173a25f45fee522d3e292c46b76ea9615137a544782b887f90",
+    "matches\\09_baseline_bluffy_1_b02-confirm-61.json": "965336e12fa4b0007bf45ab46ef5caa09566f7d381a09e9ba37c0ec466667290",
+    "matches\\09_baseline_bluffy_1_b02-confirm-61.metrics.json": "853010d1021da48e11c0534f40b4849ffd2fd1ff9e08b1c17ae8b4904e2e4c91",
+    "matches\\09_baseline_bluffy_1_b02-confirm-61.reliability.json": "92e68f1406ac8c2b171c0f0ac1935636f0b7c800c43e7b422eb15fd01421dadb",
+    "matches\\10_candidate_bluffy_1_b02-confirm-61.half1.json": "5a75e0996b883b668b8204f08f26693cea6595012e4fa202aa5b0e51ba4156cb",
+    "matches\\10_candidate_bluffy_1_b02-confirm-61.half2.json": "e9ecda913c844bdb9b9a1b3109a1a2b11c318b0115da0a6ccad908424145eb0a",
+    "matches\\10_candidate_bluffy_1_b02-confirm-61.json": "48772fad598ffc614c788c70169cdea2d7a7480de146d9340def96838c534529",
+    "matches\\10_candidate_bluffy_1_b02-confirm-61.metrics.json": "472de293c8fdfbe1b60c5e62a1bf0de9fde153020a7d8f4ab86d070740f9e5cd",
+    "matches\\10_candidate_bluffy_1_b02-confirm-61.reliability.json": "92e68f1406ac8c2b171c0f0ac1935636f0b7c800c43e7b422eb15fd01421dadb",
+    "matches\\11_candidate_range_aware_2_b03-screen-23.half1.json": "de8e2830764a1406017161280fd342da1ca4f409df914b128ee23444a1d81e28",
+    "matches\\11_candidate_range_aware_2_b03-screen-23.half2.json": "7ce24dfce51b264bcf808770b0a1c6024a4b883f6f409f7bfbcba3a778244f07",
+    "matches\\11_candidate_range_aware_2_b03-screen-23.json": "f63895957c71fcaaeb78980b352e51016a98027e194a0847660bfd0f99ef8a0a",
+    "matches\\11_candidate_range_aware_2_b03-screen-23.metrics.json": "234978b373dce7281e5a9877d4f2f8c29e062f737b72ab1c31d551fdd687ad3e",
+    "matches\\11_candidate_range_aware_2_b03-screen-23.reliability.json": "f8781162eead7a3151404a56a4d3f688825634d2e09b546a8aa67a4c1545b1b9",
+    "matches\\12_baseline_range_aware_2_b03-screen-23.half1.json": "3e1f4c4cf7d214c2d3e272a5fa770fd1470dccc39716e1709649ca303a3d8ea1",
+    "matches\\12_baseline_range_aware_2_b03-screen-23.half2.json": "caeb207abffd0e5f89e02291e23ca4d16af3b3a694904b46b90ea276990bfae4",
+    "matches\\12_baseline_range_aware_2_b03-screen-23.json": "c76eaa351dcc63c33a0287829afa8e3885612ae6aca81bc4409b0b06e01e851a",
+    "matches\\12_baseline_range_aware_2_b03-screen-23.metrics.json": "4f47fea151a09b135929907830fdfebf955406e1440fef07af10bfb0ee822983",
+    "matches\\12_baseline_range_aware_2_b03-screen-23.reliability.json": "f8781162eead7a3151404a56a4d3f688825634d2e09b546a8aa67a4c1545b1b9",
+    "range_aware_2-package.json": "ce0ecdeacb9826b6bf4a44202d85a26b03e3d36acd3f44b70e28c4649d5d0a97",
+    "range_aware_2-source.json": "fd718fc8cc33602535c8f61d852a9972961e4c13f570a3e675d3bc728c6dce03"
+  },
+  "images": {
+    "baseline": "sha256:f1acdf5f810b1adc128cdc0db643fb88c9039525643bbc78e40dee0f796f8ff3",
+    "candidate": "sha256:765c155c3f3bfb9508d12663e5f9f9b1f151ee78176278f9348f233c4cde3802"
+  },
+  "ledger": [
+    {
+      "index": 1,
+      "profile": "baseline",
+      "seed": "b03-runtime-13",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 2,
+      "profile": "candidate",
+      "seed": "b03-runtime-13",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 3,
+      "profile": "candidate",
+      "seed": "b03-runtime-37",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 4,
+      "profile": "baseline",
+      "seed": "b03-runtime-37",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 5,
+      "profile": "baseline",
+      "seed": "b03-runtime-73",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 6,
+      "profile": "candidate",
+      "seed": "b03-runtime-73",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 7,
+      "profile": "candidate",
+      "seed": "b02-confirm-29",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 8,
+      "profile": "baseline",
+      "seed": "b02-confirm-29",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 9,
+      "profile": "baseline",
+      "seed": "b02-confirm-61",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 10,
+      "profile": "candidate",
+      "seed": "b02-confirm-61",
+      "opponent": "bluffy_1",
+      "status": "complete"
+    },
+    {
+      "index": 11,
+      "profile": "candidate",
+      "seed": "b03-screen-23",
+      "opponent": "range_aware_2",
+      "status": "complete"
+    },
+    {
+      "index": 12,
+      "profile": "baseline",
+      "seed": "b03-screen-23",
+      "opponent": "range_aware_2",
+      "status": "complete"
+    }
+  ],
+  "heldouts_used": false,
+  "unused_confirmation_seeds_used": false,
+  "policy_hashes": {
+    "agent.py": "2db07977774e47236cdd570ecee87c17cdbefa2fa7f5e3328a186c50ddc281e3",
+    "strategy.py": "d6469ae73d903359cba53a652f6f2f8fcaaca957d6751483f984ca1ce0f89036",
+    "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+    "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+    "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+    "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+    "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+    "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+    "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+    "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+    "requirements.txt": "b66bdd08019ccc993e87a8f53f092c8fd1361dfd7476d2e567c92579908feb3a"
+  },
+  "incidents": [
+    "Local Docker probe was unresponsive; only its owned probe processes were stopped. Linux CI used instead.",
+    "Initial unscored replay-client attempt 42433778162 exited nonzero; stderr was not retained by that first harness. Closing failed HTTP connections and retaining failure logs corrected the retry path. The failed artifact and log remain preserved; zero scored match slots were consumed."
+  ],
+  "limitations": [
+    "Profiling overhead changes pacing; profile timings are excluded from performance gates.",
+    "Identical observed inputs plus identical clock budgets have exact actions, bet amounts, equity outputs, rollout streams, RNG progression, and opponent memory. Different real clocks can still change trajectories.",
+    "Idle preflight and cgroup limits do not establish physical-host isolation or a future runtime guarantee.",
+    "Official image transitive dependency versions differ from Batch03 host tests; baseline and candidate in this batch share the same built official base."
+  ],
+  "workflows": [
+    "https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434045945",
+    "https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434610957"
+  ],
+  "submission": {
+    "commit": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+    "path": "C:\\Users\\shrih\\OneDrive\\Documents\\ChatGPT\\TAMU Datathon\\reports\\batch04-bench\\submission\\Starfish-6e5b590.zip",
+    "sha256": "ae8e1de9360dfcef3ac60262a6cfb3b5e509601076f1c512daceeb2f39c04227",
+    "bytes": 40637,
+    "files": {
+      "agent.py": "2db07977774e47236cdd570ecee87c17cdbefa2fa7f5e3328a186c50ddc281e3",
+      "strategy.py": "d6469ae73d903359cba53a652f6f2f8fcaaca957d6751483f984ca1ce0f89036",
+      "reliability.py": "2394c9e62d170a9aeba9b47ec42003d0aa2a9573c0a821034766ca3eab9d1781",
+      "advanced_policy.py": "54d5e50519b28b45b357155afc7492b1fa84528f3b7d62619e3fbda5d2974378",
+      "baseline_strategy.py": "beb2a1943962ccfc695f92383d4f34c7b20a10540c2bc612d625282b52c5a27a",
+      "range_equity.py": "92dd7bd41c1f51323ba927aa7cfe68e970b565b924ac89fc851eddd5ac4b1756",
+      "policy_config.py": "84534909c10f821737d224994681f76af56d2993e98d70f0910f6eb4081633a1",
+      "equity.py": "0dc148497609e11a4a1c7675db1c568713f9f3c90e41b7b982ded6d929e585e7",
+      "evaluator.py": "e2a151a4c41828a035030f490c91b81015d04bc209abfb860ca3d0dce649e0b4",
+      "game.py": "bc00e3c2d1bf64cbd36bf5553dae218767f11b20f388e5c417d989919877f2db",
+      "requirements.txt": "b66bdd08019ccc993e87a8f53f092c8fd1361dfd7476d2e567c92579908feb3a",
+      ".dockerignore": "31719c9b413e0cf1829bf9c396b14bca37dd6a469030632bfb6b32c246fb109a",
+      "docker/Dockerfile.base": "d54f26ad44236c8a90308286e7de703d9e8c3916e6baa77d3a6fc3c56ab04d15",
+      "docker/Dockerfile.agent": "6baea809885f97fd50187d437009bb9ac38d5d0855e29e71dcf1194b4c2ce186",
+      "tools/check_build.sh": "bddedcd556ca4145378738ff4ee64add44ee9b7d6fb2f1609d5104dfdc893c6c",
+      "tools/smoke_test.py": "6bfd9f0e78c3343acceebbf7214aee7cb049821b950998de53f440140c5a652e",
+      "tools/check_container_reliability.py": "7be030e52d65a55cd5c371d453a8372a4ea311051a430ef1e6e8e6d7b5f69305"
+    }
+  }
+}
