@@ -6,7 +6,7 @@ on:
       profile:
         description: Use committed strategy or stage a frozen experimental profile
         type: choice
-        options: [release, baseline, range_130, range_130_budget25, batch03, batch03_parser, batch04_profile, batch04_bench]
+        options: [release, baseline, range_130, range_130_budget25, batch03, batch03_parser, batch04_profile, batch04_bench, final_generalization]
         default: release
         required: true
 
@@ -19,7 +19,7 @@ defaults:
 
 jobs:
   release-checks:
-    if: inputs.profile != 'batch03' && inputs.profile != 'batch03_parser' && inputs.profile != 'batch04_profile' && inputs.profile != 'batch04_bench'
+    if: inputs.profile != 'batch03' && inputs.profile != 'batch03_parser' && inputs.profile != 'batch04_profile' && inputs.profile != 'batch04_bench' && inputs.profile != 'final_generalization'
     name: release-checks (${{ inputs.profile }})
     runs-on: ubuntu-24.04
     timeout-minutes: 45
@@ -80,3 +80,6 @@ jobs:
     uses: ./.github/workflows/batch04.yml
     with:
       phase: bench
+  final-generalization:
+    if: inputs.profile == 'final_generalization'
+    uses: ./.github/workflows/final-generalization.yml

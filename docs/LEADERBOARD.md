@@ -1,21 +1,52 @@
 # Starfish research leaderboard
 
-Strategy champion: **range_130_budget25**, commit
-`fd5c428475eee98edb7c38bd1e7fc0870ddbf42d`, tag `champion-range-130-budget25`.
-This is the frozen fallback. Strategy source and configuration remain frozen.
+Recommended release: **range_130_budget25 with transport optimizations**, frozen
+commit `6e5b590bc922f047de670efdd5fd599f7459a75d`, tag `release-candidate-6e5b590`.
+Fallback remains `fd5c428475eee98edb7c38bd1e7fc0870ddbf42d`, tag
+`champion-range-130-budget25`. Latest research branch: `codex/final-generalization`.
 
-Release candidate: `6e5b590bc922f047de670efdd5fd599f7459a75d` (`codex/batch04-runtime`).
-It is the same strategy with a faster HTTP path (native `httptools` parser and a
-direct `JSONResponse`); policy files are byte-identical to the champion. It is a
-runtime improvement only; Batch 04 found no evidence of a playing-strength change.
-Research branch: `codex/batch04-lab`.
+Final generalization: **36/36 official points, 36 wins, no chops or losses**, on
+12 previously unevaluated configurations and three locked new seeds each.
+Equally weighted mean: **1.000 points/match**, **+3.625069 BB/paired deal**;
+across-seed 95% t interval **[+2.498999, +4.751140]**. Worst candidate charged
+half: **3.728515s**; all 72 halves below four seconds, with zero faults, fallbacks,
+errors, forfeits or bank exhaustion. Exact-commit 127 tests and official Docker
+checks passed. [Full final scorecard and all official CIs](FINAL_GENERALIZATION.md).
+
+All 12 held-out configurations and these three seeds are now **consumed final
+validation history**. No tuning occurred during this evaluation. If these results
+inform another candidate, reclassify the pool as development history and reserve
+a new independent final evaluation. These policies share known architectures;
+the result is not a claim of tournament dominance.
+
+Batch 04: both champion and candidate earned 6/6 points on the runtime pool.
+The candidate reduced median charged time by 21.47%; controlled-clock behavior
+matched exactly, while live pacing still varied. Profit difference was +0.0001
+BB/deal, so Batch 04 shows no strategic change in either direction; the candidate's
+policy files are byte-identical to the champion. [Batch 04 evidence](BATCH04.md).
+
+Independent handoff verification recomputed Batch 04 and all 36 final matches from
+raw judge JSON without the original report generators; every verdict, interval,
+gate and source/artifact hash matched ([Batch 04](BATCH04_VERIFY.json),
+[final](FINAL_GENERALIZATION_VERIFY.json)).
+
+Desktop compatibility check: exact `6e5b590` versus the frozen Desktop
+ShortDeckAce-v2 snapshot, one fresh-process match on new seed
+`cursor-desktop-6e5b590-20261107-a`: **1/1 point, +1.799 BB/paired deal**,
+official CI [+0.861, +2.737], zero errors/faults/fallbacks. Charged 5.010s/4.835s
+on the Windows host, within the champion's historical Windows range and below the
+eight-second bank; the official Linux measurement is the release number. One match
+against one opponent is a compatibility check, not a strength estimate.
+
+[Exact submission values](SUBMISSION.md) are prepared. The agent has not submitted
+the bot; no organizer receipt was found. Independent teammate submissions remain
+unverified. A Git tag or successful CI run is not a tournament submission.
+
+The following entries and notes are preserved **historical Batch 01/02 records**;
+their statements that the held-out pool was unused apply at that earlier time.
 
 | Policy | Evaluation pool | Official points | Decision |
 |---|---|---:|---|
-| Runtime candidate `6e5b590` | Batch 04, Linux official image, bluffy_1 x5 + range_aware_2 x1 | 6/6 | Advance on runtime: worst half 2.498s vs 3.202s; profit delta +0.0001 BB/deal, inconclusive |
-| Frozen champion | Same Batch 04 deals/opponents | 6/6 | Retain as fallback |
-| Runtime candidate `6e5b590` | Desktop ShortDeckAce-v2, one new seed, Windows host | 1/1 | Compatibility check only: +1.799 BB/deal [+0.861, +2.737]; 5.01s charged (Windows) |
-| Batch 03 hybrid preflop model | Batch 03 screen, Linux, range_aware_2 + champion | 2.5/4 | Inconclusive; -0.1365 BB/deal vs exact champion (2.5/4); retain champion ([report](BATCH03.md)) |
 | Frozen champion | Batch 02, six fixed development opponents, two new seeds | 11/12 | Retain fallback; Windows runtime target missed |
 | A50s16 | Same Batch 02 deals/opponents | 11/12 | Reject release: runtime; +0.1145 BB/deal development delta |
 | Bz075 | Same Batch 02 deals/opponents | 11/12 | Reject: runtime and -0.6387 BB/deal development delta |
@@ -61,9 +92,5 @@ deadline. No authoritative final freeze is scheduled pending organizer confirmat
 
 The [exact champion commit's fresh Docker checks passed](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42426541174).
 Linux's maximum charged half was 2.113s; that does not erase the Windows misses.
-The [candidate `6e5b590` passed its own exact-commit Docker checks and 12 matches](https://github.com/shriharish1310/tamu-datathon-poker-bot/actions/runs/42434610957);
-see [Batch 04](BATCH04.md) and the [independent verification](BATCH04_VERIFY.json).
-The 12 held-out opponent configurations were first opened by the final
-generalization evaluation locked in `experiments/FINAL_GENERALIZATION_LOCK.json`
-on `codex/final-generalization`; its results are reported there, not here.
+Any different final submission commit must pass its own official Docker checks.
 No tournament submission has been made.

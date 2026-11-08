@@ -1,0 +1,1448 @@
+{
+  "schema": "starfish-final-generalization-handoff-verify-v1",
+  "artifact": {
+    "run": 42440992607,
+    "artifact_id": 13601892902,
+    "name": "final-generalization",
+    "expires_utc": "2027-02-06T03:02:14Z",
+    "github_digest": "0e626f47c8f26a7e583b041cd423dc01bcada465c324c8935cf0561d79cc6e01",
+    "raw_zip_sha256": "0e626f47c8f26a7e583b041cd423dc01bcada465c324c8935cf0561d79cc6e01"
+  },
+  "lock_commit": "a16e68f9139a638743c9d085a48bd68b54f7e51e",
+  "harness_commit": "aea0985877efe459579581dc7310fafffd51d2a9",
+  "procedure": {
+    "pool_digest_matches_lock": true,
+    "ledger_order_follows_lock_rotation": true,
+    "ledger_36_complete": true,
+    "note": "Lock committed 21:00:44 CST; executing harness committed 21:02:09 and dispatched 21:02:12, before any outcome existed"
+  },
+  "codex_report_cross_check": {
+    "per_match_mean_bb_agree": 36,
+    "of": 36
+  },
+  "candidate_commit": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+  "candidate_image": "sha256:802ea8bdafa7f5a249f290ab49867a6455e957090b5fc744da8d5c37968f4d75",
+  "gates": {
+    "complete_match_slots": [
+      36,
+      true
+    ],
+    "equally_weighted_points": [
+      1.0,
+      true
+    ],
+    "min_points_per_configuration": [
+      3.0,
+      true
+    ],
+    "positive_mean_bb_every_configuration": [
+      0.7869999999999999,
+      true
+    ],
+    "aggregate_profit_seed_t_ci95": [
+      [
+        3.6250694444444442,
+        2.4989991083049223,
+        4.751139780583966
+      ],
+      true
+    ],
+    "candidate_max_charged_half": [
+      3.728515,
+      true
+    ],
+    "zero_faults_errors_forfeits_exhaustion": [
+      0,
+      true
+    ],
+    "raw_recomputation_matches_reports": [
+      36,
+      true
+    ],
+    "all_1000_deals": [
+      null,
+      true
+    ],
+    "seed_round_means": [
+      [
+        3.6675,
+        3.152041666666667,
+        4.055666666666666
+      ],
+      null
+    ]
+  },
+  "all_pass": true,
+  "per_configuration": {
+    "aggressive_held_0": {
+      "points": 3.0,
+      "mean_bb": 4.121666666666667,
+      "min_bb": 3.6195,
+      "max_bb": 4.779,
+      "t95_df2": [
+        2.643307113851165,
+        5.600026219482169
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          2.7825,
+          5.1505
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          2.5209,
+          4.7181
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          3.6093,
+          5.9487
+        ]
+      }
+    },
+    "aggressive_held_1": {
+      "points": 3.0,
+      "mean_bb": 3.6133333333333333,
+      "min_bb": 3.2295,
+      "max_bb": 4.257,
+      "t95_df2": [
+        2.2200573923495113,
+        5.006609274317155
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          2.0667,
+          4.3923
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          2.2349,
+          4.4721
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          3.1449,
+          5.3691
+        ]
+      }
+    },
+    "bluffy_held_0": {
+      "points": 3.0,
+      "mean_bb": 8.272333333333334,
+      "min_bb": 6.958,
+      "max_bb": 9.0995,
+      "t95_df2": [
+        5.413411254116988,
+        11.131255412549681
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          7.825,
+          10.374
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          5.7216,
+          8.1944
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          7.5378,
+          9.9812
+        ]
+      }
+    },
+    "bluffy_held_1": {
+      "points": 3.0,
+      "mean_bb": 6.2075000000000005,
+      "min_bb": 5.8705,
+      "max_bb": 6.727,
+      "t95_df2": [
+        5.07353058758102,
+        7.341469412418981
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          4.9148,
+          7.1352
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          4.7446,
+          6.9964
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          5.6143,
+          7.8397
+        ]
+      }
+    },
+    "loose_held_0": {
+      "points": 3.0,
+      "mean_bb": 5.552499999999999,
+      "min_bb": 5.001,
+      "max_bb": 6.107,
+      "t95_df2": [
+        4.178756684557431,
+        6.9262433154425675
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          4.585,
+          6.514
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          4.0808,
+          5.9212
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          5.1415,
+          7.0725
+        ]
+      }
+    },
+    "loose_held_1": {
+      "points": 3.0,
+      "mean_bb": 5.996333333333333,
+      "min_bb": 5.2365,
+      "max_bb": 7.036,
+      "t95_df2": [
+        3.681575366229224,
+        8.311091300437443
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          4.5098,
+          6.9232
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          4.0761,
+          6.3969
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          5.8638,
+          8.2082
+        ]
+      }
+    },
+    "range_aware_held_0": {
+      "points": 3.0,
+      "mean_bb": 1.1513333333333333,
+      "min_bb": 0.929,
+      "max_bb": 1.3445,
+      "t95_df2": [
+        0.63145320111805,
+        1.6712134655486166
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          0.7027,
+          1.9863
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          0.3228,
+          1.5352
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          0.5001,
+          1.8609
+        ]
+      }
+    },
+    "range_aware_held_1": {
+      "points": 3.0,
+      "mean_bb": 2.1906666666666665,
+      "min_bb": 1.8,
+      "max_bb": 2.7975,
+      "t95_df2": [
+        0.8673005391195199,
+        3.514032794213813
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          1.1979,
+          2.7511
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          0.962,
+          2.638
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          1.9499,
+          3.6451
+        ]
+      }
+    },
+    "selective_held_0": {
+      "points": 3.0,
+      "mean_bb": 1.2108333333333332,
+      "min_bb": 0.75,
+      "max_bb": 1.4885,
+      "t95_df2": [
+        0.21250637314033993,
+        2.2091602935263266
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          0.9087,
+          1.8793
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          0.2746,
+          1.2254
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          0.9843,
+          1.9927
+        ]
+      }
+    },
+    "selective_held_1": {
+      "points": 3.0,
+      "mean_bb": 2.9418333333333333,
+      "min_bb": 2.4675,
+      "max_bb": 3.4125,
+      "t95_df2": [
+        1.7680517585551236,
+        4.115614908111543
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          2.6935,
+          4.1315
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          1.7773,
+          3.1577
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          2.2433,
+          3.6477
+        ]
+      }
+    },
+    "tight_held_0": {
+      "points": 3.0,
+      "mean_bb": 0.7869999999999999,
+      "min_bb": 0.565,
+      "max_bb": 1.0945,
+      "t95_df2": [
+        0.10408686775774756,
+        1.4699131322422523
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          0.0948,
+          1.0352
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          0.1628,
+          1.2402
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          0.6061,
+          1.5829
+        ]
+      }
+    },
+    "tight_held_1": {
+      "points": 3.0,
+      "mean_bb": 1.4555,
+      "min_bb": 1.1375,
+      "max_bb": 1.733,
+      "t95_df2": [
+        0.7107339293162449,
+        2.200266070683755
+      ],
+      "official_cis": {
+        "final-6e5b590-20261107-a-19f273e4": [
+          1.0638,
+          2.4022
+        ],
+        "final-6e5b590-20261107-b-62ad8301": [
+          0.4107,
+          1.8643
+        ],
+        "final-6e5b590-20261107-c-b4c9175e": [
+          0.7508,
+          2.2412
+        ]
+      }
+    }
+  },
+  "matches": [
+    {
+      "index": 1,
+      "opponent": "tight_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 0.565,
+      "ci95": [
+        0.09483355188940912,
+        1.0351664481105907
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.280559,
+        2.665291
+      ],
+      "opp_half_seconds": [
+        3.123222,
+        3.582556
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 2,
+      "opponent": "tight_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.733,
+      "ci95": [
+        1.0638350102096188,
+        2.402164989790381
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.627377,
+        2.477934
+      ],
+      "opp_half_seconds": [
+        3.635571,
+        3.433545
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 3,
+      "opponent": "loose_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 5.5495,
+      "ci95": [
+        4.584971935345007,
+        6.514028064654993
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.897252,
+        2.743085
+      ],
+      "opp_half_seconds": [
+        4.007485,
+        3.701036
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 4,
+      "opponent": "loose_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 5.7165,
+      "ci95": [
+        4.5097973506085065,
+        6.923202649391493
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.307601,
+        2.420837
+      ],
+      "opp_half_seconds": [
+        2.999529,
+        3.327237
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 5,
+      "opponent": "aggressive_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 3.9665,
+      "ci95": [
+        2.782510679830821,
+        5.150489320169179
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.318461,
+        2.843742
+      ],
+      "opp_half_seconds": [
+        3.2356,
+        3.769856
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 6,
+      "opponent": "aggressive_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 3.2295,
+      "ci95": [
+        2.06665151951935,
+        4.392348480480649
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.769088,
+        2.61234
+      ],
+      "opp_half_seconds": [
+        3.811477,
+        3.598163
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 7,
+      "opponent": "selective_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.394,
+      "ci95": [
+        0.9087106967073244,
+        1.8792893032926754
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.651672,
+        2.992711
+      ],
+      "opp_half_seconds": [
+        3.762933,
+        4.026574
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 8,
+      "opponent": "selective_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 3.4125,
+      "ci95": [
+        2.69354286002633,
+        4.13145713997367
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.315576,
+        3.620245
+      ],
+      "opp_half_seconds": [
+        4.367665,
+        4.61063
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 9,
+      "opponent": "bluffy_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 9.0995,
+      "ci95": [
+        7.825017373690656,
+        10.373982626309346
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.151093,
+        3.551146
+      ],
+      "opp_half_seconds": [
+        4.08147,
+        4.738195
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 10,
+      "opponent": "bluffy_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 6.025,
+      "ci95": [
+        4.914781140442969,
+        7.135218859557032
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.096035,
+        2.732129
+      ],
+      "opp_half_seconds": [
+        4.097596,
+        3.786281
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 11,
+      "opponent": "range_aware_held_0",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.3445,
+      "ci95": [
+        0.702701622697043,
+        1.986298377302957
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.982231,
+        2.721085
+      ],
+      "opp_half_seconds": [
+        4.259532,
+        3.747711
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 12,
+      "opponent": "range_aware_held_1",
+      "seed": "final-6e5b590-20261107-a-19f273e4",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.9745,
+      "ci95": [
+        1.1979476677490921,
+        2.7510523322509077
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.525365,
+        2.591633
+      ],
+      "opp_half_seconds": [
+        3.715875,
+        3.726949
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 13,
+      "opponent": "aggressive_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 3.6195,
+      "ci95": [
+        2.520858955100831,
+        4.718141044899169
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.577009,
+        2.978396
+      ],
+      "opp_half_seconds": [
+        3.583402,
+        4.010972
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 14,
+      "opponent": "aggressive_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 3.3535,
+      "ci95": [
+        2.234894488252757,
+        4.472105511747243
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.764155,
+        2.785269
+      ],
+      "opp_half_seconds": [
+        3.698148,
+        3.655416
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 15,
+      "opponent": "selective_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 0.75,
+      "ci95": [
+        0.2746168514367196,
+        1.2253831485632805
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.113568,
+        2.866409
+      ],
+      "opp_half_seconds": [
+        4.095562,
+        4.024773
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 16,
+      "opponent": "selective_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 2.4675,
+      "ci95": [
+        1.7773373118995446,
+        3.157662688100455
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.005545,
+        2.950188
+      ],
+      "opp_half_seconds": [
+        4.109071,
+        4.004565
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 17,
+      "opponent": "bluffy_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 6.958,
+      "ci95": [
+        5.721601667967377,
+        8.194398332032623
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.895588,
+        2.850829
+      ],
+      "opp_half_seconds": [
+        3.832964,
+        3.850816
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 18,
+      "opponent": "bluffy_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 5.8705,
+      "ci95": [
+        4.744615279341702,
+        6.996384720658297
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.833574,
+        2.759924
+      ],
+      "opp_half_seconds": [
+        3.771481,
+        3.809939
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 19,
+      "opponent": "range_aware_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 0.929,
+      "ci95": [
+        0.32282231822981455,
+        1.5351776817701857
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.920737,
+        2.850404
+      ],
+      "opp_half_seconds": [
+        3.940157,
+        4.067994
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 20,
+      "opponent": "range_aware_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.8,
+      "ci95": [
+        0.9619565796604722,
+        2.6380434203395278
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.986441,
+        3.043312
+      ],
+      "opp_half_seconds": [
+        4.107478,
+        4.161426
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 21,
+      "opponent": "tight_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 0.7015,
+      "ci95": [
+        0.1627666332620219,
+        1.2402333667379781
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.407434,
+        2.569847
+      ],
+      "opp_half_seconds": [
+        3.567925,
+        3.8019
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 22,
+      "opponent": "tight_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.1375,
+      "ci95": [
+        0.4106798934968727,
+        1.8643201065031272
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.730839,
+        2.545652
+      ],
+      "opp_half_seconds": [
+        3.65763,
+        3.542947
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 23,
+      "opponent": "loose_held_0",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 5.001,
+      "ci95": [
+        4.0808109672385715,
+        5.921189032761429
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.129666,
+        2.855494
+      ],
+      "opp_half_seconds": [
+        4.168313,
+        3.823369
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 24,
+      "opponent": "loose_held_1",
+      "seed": "final-6e5b590-20261107-b-62ad8301",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 5.2365,
+      "ci95": [
+        4.076095026048246,
+        6.396904973951755
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.597677,
+        2.466987
+      ],
+      "opp_half_seconds": [
+        3.515324,
+        3.452248
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 25,
+      "opponent": "bluffy_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 8.7595,
+      "ci95": [
+        7.5378445552360835,
+        9.981155444763916
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.379358,
+        2.407619
+      ],
+      "opp_half_seconds": [
+        3.239569,
+        3.234642
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 26,
+      "opponent": "bluffy_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 6.727,
+      "ci95": [
+        5.614345214153975,
+        7.839654785846026
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.312016,
+        2.567972
+      ],
+      "opp_half_seconds": [
+        3.365645,
+        3.498043
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 27,
+      "opponent": "range_aware_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.1805,
+      "ci95": [
+        0.5001169140438195,
+        1.8608830859561807
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.926661,
+        2.549706
+      ],
+      "opp_half_seconds": [
+        4.193405,
+        3.664285
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 28,
+      "opponent": "range_aware_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 2.7975,
+      "ci95": [
+        1.949933718821359,
+        3.6450662811786407
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.695648,
+        2.356896
+      ],
+      "opp_half_seconds": [
+        3.569185,
+        3.386913
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 29,
+      "opponent": "tight_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.0945,
+      "ci95": [
+        0.6060649279882011,
+        1.582935072011799
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.365575,
+        2.352404
+      ],
+      "opp_half_seconds": [
+        3.372574,
+        3.26909
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 30,
+      "opponent": "tight_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.496,
+      "ci95": [
+        0.7508363926384112,
+        2.241163607361589
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.521375,
+        2.35531
+      ],
+      "opp_half_seconds": [
+        3.49864,
+        3.268736
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 31,
+      "opponent": "loose_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 6.107,
+      "ci95": [
+        5.141536967259135,
+        7.072463032740865
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.705659,
+        2.957213
+      ],
+      "opp_half_seconds": [
+        3.925459,
+        4.001589
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 32,
+      "opponent": "loose_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 7.036,
+      "ci95": [
+        5.863773505058923,
+        8.208226494941076
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        2.564421,
+        2.927139
+      ],
+      "opp_half_seconds": [
+        3.583163,
+        4.114213
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 33,
+      "opponent": "aggressive_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 4.779,
+      "ci95": [
+        3.609261169086472,
+        5.948738830913528
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.474248,
+        3.310837
+      ],
+      "opp_half_seconds": [
+        4.411508,
+        4.448752
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 34,
+      "opponent": "aggressive_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 4.257,
+      "ci95": [
+        3.1449173802658743,
+        5.369082619734125
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.207577,
+        3.297395
+      ],
+      "opp_half_seconds": [
+        4.310741,
+        4.396924
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 35,
+      "opponent": "selective_held_0",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 1.4885,
+      "ci95": [
+        0.9842814856050417,
+        1.9927185143949582
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.28697,
+        3.503644
+      ],
+      "opp_half_seconds": [
+        4.452968,
+        4.381296
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    },
+    {
+      "index": 36,
+      "opponent": "selective_held_1",
+      "seed": "final-6e5b590-20261107-c-b4c9175e",
+      "status": "complete",
+      "deals": 1000,
+      "mean_bb": 2.9455,
+      "ci95": [
+        2.243347633748178,
+        3.647652366251822
+      ],
+      "points": 1.0,
+      "matches_report": true,
+      "bot_half_seconds": [
+        3.728515,
+        3.235827
+      ],
+      "opp_half_seconds": [
+        4.7635,
+        4.368149
+      ],
+      "judge_bad": {
+        "agent1": 0,
+        "agent2": 0
+      },
+      "bank_exhausted": false,
+      "reliability_bad": 0,
+      "agent1": "Starfish / ReveillePLO",
+      "agent2": "Starfish / ReveillePLO"
+    }
+  ]
+}
