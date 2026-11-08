@@ -1,0 +1,61 @@
+name: Frozen Starfish vs public opponents
+on:
+  push:
+    branches: ['research/public-opponents-20261108']
+    paths:
+      - 'tools/public_opponents.py'
+      - 'experiments/PUBLIC_OPPONENTS_LOCK.json'
+      - '.github/workflows/public-opponents.yml'
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - name: Build organizer base image
+        run: docker build -t poker-agent-base:local -f docker/Dockerfile.base .
+      - name: Full fresh-process matches on pinned repositories
+        run: python tools/public_opponents.py '${{ matrix.shard }}' 6
+      - name: Preserve results and failures
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: public-opponents-${{ matrix.shard }}
+          path: |
+            reports/public-opponents/**/*.json
+            reports/public-opponents/**/*.log
+          retention-days: 30
+  results:
+    needs: benchmark
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: public-opponents-*
+          path: reports/public-downloaded
+      - name: Summarize played matches and explicit exclusions
+        run: python tools/public_opponents.py summarize reports/public-downloaded
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: public-opponents-results
+          path: |
+            reports/public-downloaded/PUBLIC_RESULTS.json
+            reports/public-downloaded/PUBLIC_RESULTS.md
+          retention-days: 30

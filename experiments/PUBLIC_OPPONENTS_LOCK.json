@@ -1,0 +1,397 @@
+{
+  "starfish_sha": "6e5b590bc922f047de670efdd5fd599f7459a75d",
+  "seed": "public-screen-20261108-01",
+  "deals": 1000,
+  "opponents": [
+    {
+      "repo": "650JoshLee (teammate baseline)",
+      "sha": "987f97aa183cf93cb846afb5cc235664db24a90f",
+      "pin_error": null
+    },
+    {
+      "repo": "aa22222/pkbot",
+      "sha": "ec0977e9f2ce0519eea8f97e50d3a7f88a9a7280",
+      "pin_error": null
+    },
+    {
+      "repo": "aashrithtutuku02-stack/rangerunner-plo5",
+      "sha": "3aa177f6e9e98ea64cd3482a6b6c5bc35c50a8eb",
+      "pin_error": null
+    },
+    {
+      "repo": "Aditi6301/rangehunter",
+      "sha": "94f8d820c3ed66ea7540e4d9ff5609dab2f5e235",
+      "pin_error": null
+    },
+    {
+      "repo": "AdityaVSM/heads-up-bundle",
+      "sha": "22330246ecb2143b9256204b106473bdfdeaa7a1",
+      "pin_error": null
+    },
+    {
+      "repo": "AiWithAmman/heads-up-bundle-main",
+      "sha": "7294d34a065f1ca3d3aed0091f2cea12282ab39b",
+      "pin_error": null
+    },
+    {
+      "repo": "Aiyshwariya/poker-bot",
+      "sha": "2ba65a83546143c9ea78d50064dcea0b968026a1",
+      "pin_error": null
+    },
+    {
+      "repo": "akshajag/testpokerbot",
+      "sha": "910ff15c18baf8bf3fa81cdaaf5463bfec135791",
+      "pin_error": null
+    },
+    {
+      "repo": "AllenChirayil/stallion-poker-bot",
+      "sha": "766a71b2108d3645499c18182981c0c43bb12bc3",
+      "pin_error": null
+    },
+    {
+      "repo": "alterj07/pokerbot",
+      "sha": "bc1f37338bc87e08c4dee9eb527de78e95c7feb5",
+      "pin_error": null
+    },
+    {
+      "repo": "ambavane-ayush/testing-poker-bot",
+      "sha": "0efc9ad6dfc4f9a1bd140848806afb3b4d7a01d0",
+      "pin_error": null
+    },
+    {
+      "repo": "andrewv426/timecasters-pokerbot",
+      "sha": "a61a1388f24c6495695d40be5026479266afb818",
+      "pin_error": null
+    },
+    {
+      "repo": "Aniket-tamu/heads-up-bundle",
+      "sha": "1bd6a32e21aa47544bf352f64332ca0ab4aeda6a",
+      "pin_error": null
+    },
+    {
+      "repo": "AriCommits/Poker-Bot",
+      "sha": "6ee9be5cfc7f871315c1ce72001467d7924f3a20",
+      "pin_error": null
+    },
+    {
+      "repo": "ArmaanMediratta/heads-up-bundle",
+      "sha": "ed68ed36f0a5e276cb38c1df14884cf8e20aa39a",
+      "pin_error": null
+    },
+    {
+      "repo": "aurora-quantitative-group/Aurora-Poker-Bot",
+      "sha": "41dcb7624bbc73a08d82913e9c3b34328e73c560",
+      "pin_error": null
+    },
+    {
+      "repo": "awojinrin/xplore-heads-up-poker-bot",
+      "sha": "20784b7b73ad7b1d6fb5bc4b08c518ff719c184a",
+      "pin_error": null
+    },
+    {
+      "repo": "ayandas-d/JesterBot",
+      "sha": "62e435685e756b0d5e48fdacc29908289a545008",
+      "pin_error": null
+    },
+    {
+      "repo": "burnerdrew2-prog/tamu-heads-up-bot",
+      "sha": "03c78d896fad463ef530144bfa8c8cf48a30dab2",
+      "pin_error": null
+    },
+    {
+      "repo": "conorwang8/big-cheese-poker-bot",
+      "sha": "6d430346b4b6d06d2781a17be55cb8cd451ad723",
+      "pin_error": null
+    },
+    {
+      "repo": "consandrade/pokerbot",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "danjoelsahaya/MoonLily-HeadsUp",
+      "sha": "0e884ac7ce4c00bc5d00a0e4adf20e6098db2374",
+      "pin_error": null
+    },
+    {
+      "repo": "dchen5267-tamu/heads-up-bundle-main",
+      "sha": "e6cf616af37397c9b609d627cffe93b4a8193f03",
+      "pin_error": null
+    },
+    {
+      "repo": "Dhanush006/ssd-heads-up-poker",
+      "sha": "4312bf790e061b431ea97c7ef8a1b3e20b7b7287",
+      "pin_error": null
+    },
+    {
+      "repo": "DiegoAC06/heads-up-green-fn",
+      "sha": "03d1bfeb689df095db74ea64ad508f79dca5a0be",
+      "pin_error": null
+    },
+    {
+      "repo": "dimi1729/2026_datathon_poker",
+      "sha": "37aee33524f901d4400ce48236da7fd1fc8e774e",
+      "pin_error": null
+    },
+    {
+      "repo": "dpro10/datathon-poker",
+      "sha": "56a01e3dd4848fe50614e938c62360f7a2c3c5a9",
+      "pin_error": null
+    },
+    {
+      "repo": "dunlapjack/poker-bot",
+      "sha": "33a698e4a34c0490c92be8c5ae86826e6567966d",
+      "pin_error": null
+    },
+    {
+      "repo": "Dushyant-Betala/heads-up-bundle",
+      "sha": "ba64c267aa2e8c442e5e5f824539c400faea7a64",
+      "pin_error": null
+    },
+    {
+      "repo": "EmptyDeck/tamu-datathon-2026-heads-up-poker-bot",
+      "sha": "0a45ceb6b50ef599d2d8c0704805221727338424",
+      "pin_error": null
+    },
+    {
+      "repo": "EthereumEthan/plo-heads-up-agent",
+      "sha": "b5ff8d3aaa3215f1ff7ac7f1952048619f5a5c98",
+      "pin_error": null
+    },
+    {
+      "repo": "Fargield/td26-poker-bot-v2",
+      "sha": "4ce02282e8e764766d183130d3c44b8af5d2760a",
+      "pin_error": null
+    },
+    {
+      "repo": "GetHub7163/Clanckers-Poker-Bot",
+      "sha": "a9b2e8ab81acadaf1d97b7897536ce9f63407667",
+      "pin_error": null
+    },
+    {
+      "repo": "ghodkeadityarao-tamu/twostack-poker-bot",
+      "sha": "8f4fbc964c0d2814c36cd3455f25a379e0cf6f66",
+      "pin_error": null
+    },
+    {
+      "repo": "GrantGallun/plo5-heads-up-bot",
+      "sha": "cea5447b405582723dbbdd1af9ba5f549d99cb6f",
+      "pin_error": null
+    },
+    {
+      "repo": "harishkumar123tamu/outliers",
+      "sha": "c0fe5ee1d40dc746d738aa2701ea688b4f93add0",
+      "pin_error": null
+    },
+    {
+      "repo": "HarshavardhanRVaricuti/beta-dancers-poker-bot",
+      "sha": "4f520b4319917e64a5a941d101f087feb033d124",
+      "pin_error": null
+    },
+    {
+      "repo": "imaas-goob/DATATHON",
+      "sha": "21cb4a66f511769b60b151228df8ba2986eb7677",
+      "pin_error": null
+    },
+    {
+      "repo": "imaas-goob/HeadsUpBot",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "itsoporo/datathon-poker-f26-winner",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "jait-mukkamalla/tamu-datathon-poker-bot-challenge",
+      "sha": "0b4c196f3206f24339251771bc2ea7e5e4084f4e",
+      "pin_error": null
+    },
+    {
+      "repo": "jane-vo/tamu-datathon26",
+      "sha": "ecbe79cc9340b6a355bf246428223e1ddbd80819",
+      "pin_error": null
+    },
+    {
+      "repo": "jbailey117/poker-bot",
+      "sha": "b65c8f66d2d47646359a86edac47acb9085b611b",
+      "pin_error": null
+    },
+    {
+      "repo": "jiaxinglucasen/poker-bot",
+      "sha": "dd2593212855cf79c64c864e72ed889fabab58a6",
+      "pin_error": null
+    },
+    {
+      "repo": "Juan-Sett/HeadsUpBot",
+      "sha": "c210362b3d222142049ab08fdc3cdcc58e40326e",
+      "pin_error": null
+    },
+    {
+      "repo": "junehwang0930-lang/PokerBot-Team-quad-j",
+      "sha": "9925feaa9d6342997ceca515fc40d88435138caf",
+      "pin_error": null
+    },
+    {
+      "repo": "karammasad/pokerMAKK",
+      "sha": "74f698d3f22ee3f29e6e609a4e9c437d52694b9a",
+      "pin_error": null
+    },
+    {
+      "repo": "KrishitaM/ReachForTheMoon--HeadsUp",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "kswamyget/pokerbot",
+      "sha": "8d5a5556a5089ba15e24dfcd85b24b93ff69d549",
+      "pin_error": null
+    },
+    {
+      "repo": "LaserRyan/Heads-Up-Poker",
+      "sha": "95a47b59be6718b363844de6269a09a58e3dd812",
+      "pin_error": null
+    },
+    {
+      "repo": "malki-aal/heads-up-bundle",
+      "sha": "3b94b4233dde531a01ab7fc64a3c740fed38f726",
+      "pin_error": null
+    },
+    {
+      "repo": "Nave3425/poker-bot",
+      "sha": "252a8f3f96e0217997a6a0a1667d882514dde0cc",
+      "pin_error": null
+    },
+    {
+      "repo": "nikhil-inja/heads-up-bundle",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "oskarexists/heads_up_datathon_2026",
+      "sha": "527d20a32e91e8b71b36eda6f567d6917e7e847a",
+      "pin_error": null
+    },
+    {
+      "repo": "pablois0/heads-up-bundle",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "PayneAM/heads-up-bundle",
+      "sha": "65b9dfd7a5f9d6eb0f118f5e723c5b840b09f81c",
+      "pin_error": null
+    },
+    {
+      "repo": "Prunuus/heads-up",
+      "sha": "c65ac241e4948248c8384ee399cc6f9551c0f8df",
+      "pin_error": null
+    },
+    {
+      "repo": "RedRojoaka/datathon_2026",
+      "sha": "10d910e65690beba5e1a5821a22ce2637aec323a",
+      "pin_error": null
+    },
+    {
+      "repo": "returnedlegend/Pokerbot",
+      "sha": "b31f2d17ac5c1fbdca347722944bc7303583046b",
+      "pin_error": null
+    },
+    {
+      "repo": "Risus-Pieces/sooz-pokerbot",
+      "sha": "5f7ed054ac4f392b2576ccdf4291e3a07b878f85",
+      "pin_error": null
+    },
+    {
+      "repo": "rtang311627/three-fourths",
+      "sha": "c83ab6eeb7660a2fd1fae7df224315d41fe985a9",
+      "pin_error": null
+    },
+    {
+      "repo": "ruby22-gif/team-blackjack",
+      "sha": "768cf905d6f23516485ac026cba92ddf9e63c51c",
+      "pin_error": null
+    },
+    {
+      "repo": "SahithReddy-GitHub/poker-bot-tamu-datathon",
+      "sha": "533b6cd844c10cda10d9c827bc0cc676c0634ce0",
+      "pin_error": null
+    },
+    {
+      "repo": "sapyao/heads-up",
+      "sha": "82be707748d9d84202b891047686b7c3c4fc4e73",
+      "pin_error": null
+    },
+    {
+      "repo": "shaswat-singh23/datathon-poker",
+      "sha": "644305ebf435eadd1c8ad2502745431a74eec014",
+      "pin_error": null
+    },
+    {
+      "repo": "shreynath/PitBossEquity",
+      "sha": "6b2921de93674e8600659540e307df5894b9e259",
+      "pin_error": null
+    },
+    {
+      "repo": "snr2753423/heads-up-bot",
+      "sha": "1fefd42f8cf893f3bc0d9aadc926017ae4956e6c",
+      "pin_error": null
+    },
+    {
+      "repo": "Solomon1493/heads-up-bot",
+      "sha": "3e86d7d2b608f8aedf0ab4e41494d0147290839d",
+      "pin_error": null
+    },
+    {
+      "repo": "someoneisarhino/tamu-datathon26",
+      "sha": "f81031252a30ea76c6c1e12fcea1b275e1ff8212",
+      "pin_error": null
+    },
+    {
+      "repo": "Sploofie/f26-datathon-poker-bot",
+      "sha": "e1c4d9bda85f517aa94fd47f2ee36f6d84457214",
+      "pin_error": null
+    },
+    {
+      "repo": "Tanu1007/heads-up-bundle",
+      "sha": "2203267f2c1636c0caedac87965de34475469a0f",
+      "pin_error": null
+    },
+    {
+      "repo": "The007Programmer/AEY-TDatathon",
+      "sha": "7ee8b402ff4626129e10892b0514253a168ccbf2",
+      "pin_error": null
+    },
+    {
+      "repo": "thmfirst50-jpg/PokerBot",
+      "sha": "431f53bc8629453ebc309d74d2d196f0752b7c16",
+      "pin_error": null
+    },
+    {
+      "repo": "ujjwalbana07/poker-bot",
+      "sha": "3a6a3c5104ba01b9abf4c78b43e2350dc2f6b586",
+      "pin_error": null
+    },
+    {
+      "repo": "Utsavdotcom/aura-farmer",
+      "sha": "b98a11afb8d940842a5bbfe876ed44956582c40a",
+      "pin_error": null
+    },
+    {
+      "repo": "vignesh-nagarajan-vn/ShortStack-Poker",
+      "sha": "7ab25b614ac294d259fc9332352ca8d381f679e3",
+      "pin_error": null
+    },
+    {
+      "repo": "zeyad-commits/heads_up",
+      "sha": "33eb79e16af039227cc1d0c4c6a568aeccc93487",
+      "pin_error": null
+    },
+    {
+      "repo": "zuhairrr07/Poker-Bot",
+      "sha": "16965ebd30dbc7a79bcbcc6f695b4c65fceaf727",
+      "pin_error": null
+    }
+  ]
+}
